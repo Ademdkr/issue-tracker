@@ -1,101 +1,214 @@
-# IssueTracker
+# Issue Tracker 🎯
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+A modern full-stack issue tracking application built with cutting-edge technologies.
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
+## 🏗️ Architecture
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/nest?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+This project uses an **Nx monorepo** architecture with:
 
-## Run tasks
+- **Frontend**: Angular 20.3 with TypeScript
+- **Backend**: NestJS 11 with TypeScript  
+- **Database**: Prisma ORM with SQLite (development) / PostgreSQL (production)
+- **Testing**: Jest (unit tests) + Cypress (E2E tests)
+- **Build System**: Nx Dev Tools with Webpack
 
-To run the dev server for your app, use:
+## 📁 Project Structure
 
-```sh
-npx nx serve issue-tracker
+```
+issue-tracker/
+├── apps/
+│   ├── frontend/           # Angular application
+│   ├── frontend-e2e/       # Frontend E2E tests
+│   ├── backend/            # NestJS API server
+│   └── backend-e2e/        # Backend E2E tests
+├── libs/                   # Shared libraries (future)
+├── tools/                  # Custom tools and scripts
+└── docs/                   # Documentation
 ```
 
-To create a production bundle:
+## 🚀 Features
 
-```sh
-npx nx build issue-tracker
+### Current Features
+- ✅ Nx monorepo setup with Angular frontend and NestJS backend
+- ✅ Prisma ORM integration with database migrations
+- ✅ Issue management data model (CRUD operations)
+- ✅ TypeScript throughout the stack
+- ✅ Modern development tooling (ESLint, Prettier, Jest)
+
+### Planned Features
+- 🔄 REST API endpoints for issue management
+- 🔄 Angular UI for issue tracking
+- 🔄 User authentication and authorization
+- 🔄 Real-time updates with WebSockets
+- 🔄 Advanced filtering and search
+- 🔄 Email notifications
+- 🔄 Dashboard with analytics
+
+## 🛠️ Technology Stack
+
+### Frontend
+- **Angular 20.3** - Modern web framework
+- **TypeScript** - Type-safe JavaScript
+- **SCSS** - Enhanced CSS with variables and mixins
+- **Cypress** - End-to-end testing
+
+### Backend  
+- **NestJS 11** - Progressive Node.js framework
+- **Prisma** - Next-generation ORM
+- **SQLite** - Development database
+- **Jest** - Testing framework
+
+### Development Tools
+- **Nx** - Smart monorepo build system
+- **ESLint** - Code linting
+- **Prettier** - Code formatting
+- **Webpack** - Module bundler
+
+## 📊 Database Schema
+
+```prisma
+model Issue {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  status      Status   @default(OPEN)
+  priority    Priority @default(MEDIUM)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum Status {
+  OPEN
+  IN_PROGRESS  
+  CLOSED
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
 ```
 
-To see all available targets to run for a project, run:
+## 🚦 Getting Started
 
-```sh
-npx nx show project issue-tracker
+### Prerequisites
+- Node.js (LTS version)
+- npm or yarn
+- Git
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Ademdkr/issue-tracker.git
+   cd issue-tracker
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install --legacy-peer-deps
+   ```
+
+3. **Setup the database**
+   ```bash
+   cd apps/backend
+   npx prisma generate
+   npx prisma migrate dev
+   ```
+
+4. **Start the development servers**
+   ```bash
+   # Backend (from root directory)
+   npx nx serve backend
+   
+   # Frontend (in another terminal)
+   npx nx serve frontend
+   ```
+
+### Development URLs
+- **Frontend**: http://localhost:4200
+- **Backend API**: http://localhost:3000/api
+- **Prisma Studio**: `npx prisma studio` (from apps/backend)
+
+## 📚 Available Scripts
+
+### Development
+```bash
+# Start backend
+npx nx serve backend
+
+# Start frontend  
+npx nx serve frontend
+
+# Build all projects
+npx nx build backend
+npx nx build frontend
 ```
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+### Testing
+```bash
+# Run unit tests
+npx nx test backend
+npx nx test frontend
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Add new projects
-
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
-
-Use the plugin's generator to create new projects.
-
-To generate a new application, use:
-
-```sh
-npx nx g @nx/nest:app demo
+# Run E2E tests
+npx nx e2e backend-e2e
+npx nx e2e frontend-e2e
 ```
 
-To generate a new library, use:
+### Database Operations
+```bash
+# Generate Prisma client
+npx prisma generate
 
-```sh
-npx nx g @nx/node:lib mylib
+# Create and run migration
+npx prisma migrate dev --name <migration-name>
+
+# Open Prisma Studio
+npx prisma studio
+
+# Reset database (development only!)
+npx prisma migrate reset
 ```
 
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
+### Code Quality
+```bash
+# Lint all projects
+npx nx lint backend
+npx nx lint frontend
 
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+# Format code
+npx nx format
 
-## Set up CI!
-
-### Step 1
-
-To connect to Nx Cloud, run the following command:
-
-```sh
-npx nx connect
+# Show project graph
+npx nx graph
 ```
 
-Connecting to Nx Cloud ensures a [fast and scalable CI](https://nx.dev/ci/intro/why-nx-cloud?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) pipeline. It includes features such as:
+## 📖 Documentation
 
-- [Remote caching](https://nx.dev/ci/features/remote-cache?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task distribution across multiple machines](https://nx.dev/ci/features/distribute-task-execution?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Automated e2e test splitting](https://nx.dev/ci/features/split-e2e-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task flakiness detection and rerunning](https://nx.dev/ci/features/flaky-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+- [Setup Guide](./SETUP_ANLEITUNG.md) - Detailed setup instructions (German)
+- [Prisma Setup](./apps/backend/PRISMA_SETUP.md) - Database setup guide
 
-### Step 2
+## 🤝 Contributing
 
-Use the following command to configure a CI workflow for your workspace:
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-```sh
-npx nx g ci-workflow
-```
+## 📝 License
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Install Nx Console
+## 🔗 Links
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+- **Repository**: [GitHub](https://github.com/Ademdkr/issue-tracker)
+- **Issues**: [GitHub Issues](https://github.com/Ademdkr/issue-tracker/issues)
+- **Documentation**: [Nx Docs](https://nx.dev/), [NestJS Docs](https://nestjs.com/), [Angular Docs](https://angular.io/)
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+---
 
-## Useful links
-
-Learn more:
-
-- [Learn more about this workspace setup](https://nx.dev/nx-api/nest?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+**Built with ❤️ using Nx, Angular, NestJS, and Prisma**
