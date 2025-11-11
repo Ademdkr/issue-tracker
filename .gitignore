@@ -38,7 +38,23 @@ testem.log
 .DS_Store
 Thumbs.db
 
+# Nx
 .nx/cache
 .nx/workspace-data
 .cursor/rules/nx-rules.mdc
 .github/instructions/nx.instructions.md
+
+.angular
+
+# Environment variables
+.env
+.env.local
+.env.production
+
+# Prisma
+# Keep the schema and migrations, but ignore the generated client and database files
+apps/backend/prisma/dev.db
+apps/backend/prisma/dev.db-journal
+
+# Logs
+*.log
