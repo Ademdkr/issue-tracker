@@ -1,0 +1,17 @@
+{
+  "name": "issue-tracker-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "implicitDependencies": ["issue-tracker"],
+  "targets": {
+    "e2e": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{e2eProjectRoot}"],
+      "options": {
+        "jestConfig": "apps/issue-tracker-e2e/jest.config.cts",
+        "passWithNoTests": true
+      },
+      "dependsOn": ["issue-tracker:build", "issue-tracker:serve"]
+    }
+  }
+}
