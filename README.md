@@ -7,7 +7,7 @@ A modern full-stack issue tracking application built with cutting-edge technolog
 This project uses an **Nx monorepo** architecture with:
 
 - **Frontend**: Angular 20.3 with TypeScript
-- **Backend**: NestJS 11 with TypeScript  
+- **Backend**: NestJS 11 with TypeScript
 - **Database**: Prisma ORM with SQLite (development) / PostgreSQL (production)
 - **Testing**: Jest (unit tests) + Cypress (E2E tests)
 - **Build System**: Nx Dev Tools with Webpack
@@ -29,6 +29,7 @@ issue-tracker/
 ## 🚀 Features
 
 ### Current Features
+
 - ✅ Nx monorepo setup with Angular frontend and NestJS backend
 - ✅ Prisma ORM integration with database migrations
 - ✅ Issue management data model (CRUD operations)
@@ -36,6 +37,7 @@ issue-tracker/
 - ✅ Modern development tooling (ESLint, Prettier, Jest)
 
 ### Planned Features
+
 - 🔄 REST API endpoints for issue management
 - 🔄 Angular UI for issue tracking
 - 🔄 User authentication and authorization
@@ -47,18 +49,21 @@ issue-tracker/
 ## 🛠️ Technology Stack
 
 ### Frontend
+
 - **Angular 20.3** - Modern web framework
 - **TypeScript** - Type-safe JavaScript
 - **SCSS** - Enhanced CSS with variables and mixins
 - **Cypress** - End-to-end testing
 
-### Backend  
+### Backend
+
 - **NestJS 11** - Progressive Node.js framework
 - **Prisma** - Next-generation ORM
 - **SQLite** - Development database
 - **Jest** - Testing framework
 
 ### Development Tools
+
 - **Nx** - Smart monorepo build system
 - **ESLint** - Code linting
 - **Prettier** - Code formatting
@@ -79,7 +84,7 @@ model Issue {
 
 enum Status {
   OPEN
-  IN_PROGRESS  
+  IN_PROGRESS
   CLOSED
 }
 
@@ -94,6 +99,7 @@ enum Priority {
 ## 🚦 Getting Started
 
 ### Prerequisites
+
 - Node.js (LTS version)
 - npm or yarn
 - Git
@@ -101,17 +107,20 @@ enum Priority {
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/Ademdkr/issue-tracker.git
    cd issue-tracker
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install --legacy-peer-deps
    ```
 
 3. **Setup the database**
+
    ```bash
    cd apps/backend
    npx prisma generate
@@ -119,15 +128,17 @@ enum Priority {
    ```
 
 4. **Start the development servers**
+
    ```bash
    # Backend (from root directory)
    npx nx serve backend
-   
+
    # Frontend (in another terminal)
    npx nx serve frontend
    ```
 
 ### Development URLs
+
 - **Frontend**: http://localhost:4200
 - **Backend API**: http://localhost:3000/api
 - **Prisma Studio**: `npx prisma studio` (from apps/backend)
@@ -135,11 +146,12 @@ enum Priority {
 ## 📚 Available Scripts
 
 ### Development
+
 ```bash
 # Start backend
 npx nx serve backend
 
-# Start frontend  
+# Start frontend
 npx nx serve frontend
 
 # Build all projects
@@ -148,6 +160,7 @@ npx nx build frontend
 ```
 
 ### Testing
+
 ```bash
 # Run unit tests
 npx nx test backend
@@ -159,6 +172,7 @@ npx nx e2e frontend-e2e
 ```
 
 ### Database Operations
+
 ```bash
 # Generate Prisma client
 npx prisma generate
@@ -174,6 +188,7 @@ npx prisma migrate reset
 ```
 
 ### Code Quality
+
 ```bash
 # Lint all projects
 npx nx lint backend

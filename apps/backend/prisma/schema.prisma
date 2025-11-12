@@ -6,31 +6,177 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
-model Issue {
-  id          String   @id @default(cuid())
+model User {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name         String
+  surname      String
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  role         UserRole @default(REPORTER)
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  // Relations
+  createdProjects    Project[]        @relation("ProjectCreator")
+  reportedTickets    Ticket[]         @relation("TicketReporter")
+  assignedTickets    Ticket[]         @relation("TicketAssignee")
+  projectMemberships ProjectMember[]  @relation("ProjectMemberUser")
+  addedMembers       ProjectMember[]  @relation("ProjectMemberAdder")
+  comments           Comment[]
+  ticketActivities   TicketActivity[]
+
+  @@map("users")
+}
+
+model Project {
+  id          String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdBy   String        @map("created_by") @db.Uuid
+  name        String
+  description String
+  slug        String        @unique
+  status      ProjectStatus @default(OPEN)
+  createdAt   DateTime      @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime?     @map("updated_at") @db.Timestamptz
+
+  // Relations
+  creator User            @relation("ProjectCreator", fields: [createdBy], references: [id])
+  tickets Ticket[]
+  labels  Label[]
+  members ProjectMember[]
+
+  @@map("projects")
+}
+
+model Label {
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  projectId String    @map("project_id") @db.Uuid
+  name      String
+  color     String
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime? @map("updated_at") @db.Timestamptz
+
+  // Relations
+  project      Project       @relation(fields: [projectId], references: [id])
+  ticketLabels TicketLabel[]
+
+  @@unique([projectId, name])
+  @@map("labels")
+}
+
+model Ticket {
+  id          String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  projectId   String         @map("project_id") @db.Uuid
+  reporterId  String         @map("reporter_id") @db.Uuid
+  assigneeId  String?        @map("assignee_id") @db.Uuid
   title       String
-  description String?
-  status      Status   @default(OPEN)
-  priority    Priority @default(MEDIUM)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  description String
+  status      TicketStatus   @default(OPEN)
+  priority    TicketPriority @default(LOW)
+  createdAt   DateTime       @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime?      @map("updated_at") @db.Timestamptz
 
-  @@map("issues")
+  // Relations
+  project      Project          @relation(fields: [projectId], references: [id])
+  reporter     User             @relation("TicketReporter", fields: [reporterId], references: [id])
+  assignee     User?            @relation("TicketAssignee", fields: [assigneeId], references: [id])
+  ticketLabels TicketLabel[]
+  comments     Comment[]
+  activities   TicketActivity[]
+
+  @@map("tickets")
 }
 
-enum Status {
-  OPEN
-  IN_PROGRESS
-  CLOSED
+model TicketLabel {
+  ticketId  String   @map("ticket_id") @db.Uuid
+  labelId   String   @map("label_id") @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  // Relations
+  ticket Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  label  Label  @relation(fields: [labelId], references: [id], onDelete: Cascade)
+
+  @@id([ticketId, labelId])
+  @@map("ticket_labels")
 }
 
-enum Priority {
-  LOW
-  MEDIUM
-  HIGH
-  CRITICAL
+model ProjectMember {
+  projectId String   @map("project_id") @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  addedBy   String   @map("added_by") @db.Uuid
+  addedAt   DateTime @default(now()) @map("added_at") @db.Timestamptz
+
+  // Relations
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user    User    @relation("ProjectMemberUser", fields: [userId], references: [id], onDelete: Cascade)
+  adder   User    @relation("ProjectMemberAdder", fields: [addedBy], references: [id])
+
+  @@id([projectId, userId])
+  @@map("project_members")
+}
+
+model Comment {
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  ticketId  String    @map("ticket_id") @db.Uuid
+  authorId  String    @map("author_id") @db.Uuid
+  content   String
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime? @map("updated_at") @db.Timestamptz
+
+  // Relations
+  ticket Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  author User   @relation(fields: [authorId], references: [id])
+
+  @@map("comments")
+}
+
+model TicketActivity {
+  id           String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  ticketId     String             @map("ticket_id") @db.Uuid
+  actorId      String             @map("actor_id") @db.Uuid
+  activityType TicketActivityType @map("activity_type")
+  detail       Json
+  createdAt    DateTime           @default(now()) @map("created_at") @db.Timestamptz
+
+  // Relations
+  ticket Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  actor  User   @relation(fields: [actorId], references: [id])
+
+  @@map("ticket_activity")
+}
+
+// Enums
+enum UserRole {
+  REPORTER  @map("reporter")
+  DEVELOPER @map("developer")
+  MANAGER   @map("manager")
+  ADMIN     @map("admin")
+}
+
+enum ProjectStatus {
+  OPEN   @map("open")
+  CLOSED @map("closed")
+}
+
+enum TicketStatus {
+  OPEN        @map("open")
+  IN_PROGRESS @map("in_progress")
+  RESOLVED    @map("resolved")
+  CLOSED      @map("closed")
+}
+
+enum TicketPriority {
+  LOW      @map("low")
+  MEDIUM   @map("medium")
+  HIGH     @map("high")
+  CRITICAL @map("critical")
+}
+
+enum TicketActivityType {
+  STATUS_CHANGE   @map("status_change")
+  ASSIGNEE_CHANGE @map("assignee_change")
+  LABEL_ADDED     @map("label_added")
+  LABEL_REMOVED   @map("label_removed")
 }

@@ -56,5 +56,9 @@ Thumbs.db
 apps/backend/prisma/dev.db
 apps/backend/prisma/dev.db-journal
 
+# Docker
+.docker/
+docker-volumes/
+
 # Logs
 *.log
