@@ -32,19 +32,19 @@ export interface TicketWithDetails extends Ticket {
     surname: string;
     email: string;
   };
-  labels?: Label[];
+  // labels?: Label[];
   commentCount?: number;
 }
 
-// Label Interface
-export interface Label {
-  id: string;
-  projectId: string;
-  name: string;
-  color: string;
-  createdAt: Date;
-  updatedAt: Date | null;
-}
+// // Label Interface
+// export interface Label {
+//   id: string;
+//   projectId: string;
+//   name: string;
+//   color: string;
+//   createdAt: Date;
+//   updatedAt: Date | null;
+// }
 
 // Comment Interface
 export interface Comment {
@@ -94,7 +94,7 @@ export interface TicketActivity {
   detail: {
     oldValue?: string | null;
     newValue?: string | null;
-    labelName?: string;
+    // labelName?: string;
     [key: string]: unknown;
   };
   createdAt: Date;

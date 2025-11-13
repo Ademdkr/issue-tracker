@@ -13,6 +13,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { ProjectsService } from './projects.service';
+import { LabelsService } from '../labels/labels.service';
 import {
   CreateProjectDto,
   UpdateProjectDto,
@@ -20,6 +21,9 @@ import {
   Project,
   AddProjectMemberDto,
   MessageResponse,
+  CreateLabelDto,
+  UpdateLabelDto,
+  Label,
 } from '@issue-tracker/shared-types';
 import { RoleGuard } from '../guards/role.guard';
 import { ProjectAccessGuard } from '../guards/project-access.guard';
@@ -27,7 +31,10 @@ import { Roles } from '../decorators/roles.decorator';
 
 @Controller('projects')
 export class ProjectsController {
-  constructor(private readonly projectsService: ProjectsService) {}
+  constructor(
+    private readonly projectsService: ProjectsService,
+    private readonly labelsService: LabelsService
+  ) {}
 
   @Post()
   @UseGuards(RoleGuard)
@@ -145,6 +152,22 @@ export class ProjectsController {
   }
 
   /**
+   * Alle verfügbaren Benutzer abrufen (nicht-Mitglieder)
+   * Ohne Suchfilter - gibt alle User zurück, die noch keine Mitglieder sind
+   * Nur Manager und Admins
+   */
+  @Get(':id/members/available')
+  @UseGuards(RoleGuard)
+  @Roles('manager', 'admin')
+  async getAvailableMembers(@Param('id') id: string) {
+    try {
+      return await this.projectsService.getAvailableMembers(id);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  /**
    * Verfügbare Benutzer für Projekt suchen
    * Query Parameter: ?search=<suchbegriff>
    * Gibt nur User zurück, die noch KEINE Mitglieder sind
@@ -204,6 +227,105 @@ export class ProjectsController {
   ): Promise<MessageResponse> {
     try {
       return await this.projectsService.removeMember(id, userId);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.NOT_FOUND);
+    }
+  }
+
+  // ==================== LABELS ====================
+
+  /**
+   * Label für Projekt erstellen
+   * POST /api/projects/:id/labels
+   *
+   * Body (JSON):
+   * {
+   *   "name": "Bug",
+   *   "color": "#FF0000"
+   * }
+   *
+   * Nur Manager und Admins
+   */
+  @Post(':id/labels')
+  @UseGuards(RoleGuard)
+  @Roles('manager', 'admin')
+  async createLabel(
+    @Param('id') projectId: string,
+    @Body(new ValidationPipe()) createLabelDto: CreateLabelDto
+  ): Promise<Label> {
+    try {
+      return await this.labelsService.create(projectId, createLabelDto);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  /**
+   * Alle Labels eines Projekts abrufen
+   * GET /api/projects/:id/labels
+   *
+   * Kein Body erforderlich
+   *
+   * Alle Projektmitglieder + Manager/Admin
+   */
+  @Get(':id/labels')
+  @UseGuards(ProjectAccessGuard)
+  async getProjectLabels(@Param('id') projectId: string): Promise<Label[]> {
+    try {
+      return await this.labelsService.findAllByProject(projectId);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  /**
+   * Label aktualisieren
+   * PATCH /api/projects/:id/labels/:labelId
+   *
+   * Body (JSON - alle Felder optional):
+   * {
+   *   "name": "Critical Bug",
+   *   "color": "#FF0000"
+   * }
+   *
+   * Nur Manager und Admins
+   */
+  @Patch(':id/labels/:labelId')
+  @UseGuards(RoleGuard)
+  @Roles('manager', 'admin')
+  async updateLabel(
+    @Param('id') projectId: string,
+    @Param('labelId') labelId: string,
+    @Body(new ValidationPipe()) updateLabelDto: UpdateLabelDto
+  ): Promise<Label> {
+    try {
+      return await this.labelsService.update(
+        projectId,
+        labelId,
+        updateLabelDto
+      );
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  /**
+   * Label löschen
+   * DELETE /api/projects/:id/labels/:labelId
+   *
+   * Kein Body erforderlich
+   *
+   * Nur Manager und Admins
+   */
+  @Delete(':id/labels/:labelId')
+  @UseGuards(RoleGuard)
+  @Roles('manager', 'admin')
+  async deleteLabel(
+    @Param('id') projectId: string,
+    @Param('labelId') labelId: string
+  ): Promise<Label> {
+    try {
+      return await this.labelsService.remove(projectId, labelId);
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.NOT_FOUND);
     }

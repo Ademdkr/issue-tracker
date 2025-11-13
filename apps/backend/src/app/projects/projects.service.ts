@@ -648,6 +648,48 @@ export class ProjectsService {
   }
 
   /**
+   * Ruft alle verfügbaren Benutzer ab, die zu einem Projekt hinzugefügt werden können
+   * (ohne Suchfilter)
+   *
+   * @param projectId - UUID des Projekts
+   * @returns Array von Benutzern die noch keine Mitglieder sind
+   */
+  async getAvailableMembers(projectId: string) {
+    // 1. Hole alle aktuellen Mitglieder-IDs
+    const currentMembers = await this.prisma.projectMember.findMany({
+      where: { projectId },
+      select: { userId: true },
+    });
+
+    const memberIds = currentMembers.map((m) => m.userId);
+
+    // 2. Hole alle Benutzer die noch KEINE Mitglieder sind
+    const users = await this.prisma.user.findMany({
+      where: {
+        id: {
+          notIn: memberIds,
+        },
+      },
+      select: {
+        id: true,
+        name: true,
+        surname: true,
+        email: true,
+        role: true,
+      },
+      orderBy: [{ name: 'asc' }, { surname: 'asc' }],
+    });
+
+    return users.map((user) => ({
+      id: user.id,
+      name: user.name,
+      surname: user.surname,
+      email: user.email,
+      role: user.role.toLowerCase(),
+    }));
+  }
+
+  /**
    * Sucht nach verfügbaren Benutzern, die zu einem Projekt hinzugefügt werden können
    *
    * @param projectId - UUID des Projekts
