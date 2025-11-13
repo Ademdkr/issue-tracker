@@ -21,7 +21,8 @@ issue-tracker/
 │   ├── frontend-e2e/       # Frontend E2E tests
 │   ├── backend/            # NestJS API server
 │   └── backend-e2e/        # Backend E2E tests
-├── libs/                   # Shared libraries (future)
+├── libs/
+│   └── shared-types/       # Shared DTOs, types, constants (used by frontend & backend)
 ├── tools/                  # Custom tools and scripts
 └── docs/                   # Documentation
 ```
@@ -61,6 +62,14 @@ issue-tracker/
 - **Prisma** - Next-generation ORM
 - **SQLite** - Development database
 - **Jest** - Testing framework
+- **class-validator** - DTO validation with decorators
+
+### Shared Libraries
+
+- **@issue-tracker/shared-types** - Shared DTOs, types, and constants
+  - All DTOs are defined as classes with validation decorators
+  - Backend imports DTOs directly from shared-types (no local DTOs)
+  - Constants for API routes, validation limits, error codes
 
 ### Development Tools
 

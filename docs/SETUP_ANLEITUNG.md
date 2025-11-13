@@ -492,3 +492,69 @@ npx prisma migrate reset
 **Nx Version:** 22.0.3  
 **Prisma Version:** 6.19.0  
 **Node.js:** Aktuelle LTS-Version empfohlen
+
+## 📚 Shared Types Library Setup
+
+### 1. Shared Types Library erstellen
+
+```bash
+# Im Root-Verzeichnis des Projekts
+npx nx generate @nx/js:library shared-types --directory=libs/shared-types
+```
+
+**Konfiguration bei der Generierung:**
+
+- Bundler: `tsc` (TypeScript Compiler)
+- Linter: `eslint`
+- Unit test runner: `jest`
+
+### 2. Library-Struktur
+
+Nach der Erstellung entsteht folgende Struktur:
+
+```
+libs/shared-types/
+├── src/
+│   ├── index.ts                    # Haupt-Export-Datei
+│   └── lib/
+│       ├── shared-types.ts         # Basis-Types-Datei
+│       └── shared-types.spec.ts    # Test-Datei
+├── project.json                    # Nx-Projektdefinition
+├── package.json                    # Package-Metadaten
+├── tsconfig.json                   # TypeScript-Konfiguration
+├── tsconfig.lib.json              # Library-spezifische TS-Config
+├── tsconfig.spec.json             # Test-spezifische TS-Config
+├── jest.config.cts                # Jest-Testkonfiguration
+├── eslint.config.mjs              # ESLint-Konfiguration
+└── README.md                       # Library-Dokumentation
+```
+
+### 3. Library-Commands
+
+```bash
+# Library bauen
+npx nx build shared-types
+
+# Library testen
+npx nx test shared-types
+
+# Library linting
+npx nx lint shared-types
+
+# Library-Details anzeigen
+npx nx show project shared-types
+```
+
+### 4. Zukünftige Verwendung
+
+Die Library kann später in Backend und Frontend importiert werden:
+
+```typescript
+// Import in Backend (NestJS)
+import { SomeType } from '@issue-tracker/shared-types';
+
+// Import in Frontend (Angular)
+import { SomeType } from '@issue-tracker/shared-types';
+```
+
+**Hinweis:** Die Library ist aktuell in Minimalkonfiguration ohne konkrete Types implementiert.
