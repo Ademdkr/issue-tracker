@@ -5,7 +5,7 @@ import {
   IsEnum,
   IsUUID,
   MaxLength,
-  IsHexColor,
+  // IsHexColor,
   IsObject,
 } from 'class-validator';
 import { TicketStatus, TicketPriority, TicketActivityType } from '../enums';
@@ -13,13 +13,16 @@ import { VALIDATION_LIMITS } from '../constants';
 
 /**
  * DTO für Ticket-Erstellung
+ *
+ * projectId kommt aus dem Route-Parameter: POST /api/projects/:projectId/tickets
+ * reporterId wird automatisch aus dem angemeldeten User gesetzt
+ *
+ * Berechtigungen:
+ * - Reporter: Kann nur title und description setzen (priority=MEDIUM, assignee=null)
+ * - Developer: Kann zusätzlich priority und assigneeId (nur sich selbst) setzen
+ * - Manager/Admin: Können alles setzen
  */
 export class CreateTicketDto {
-  @IsString()
-  @IsNotEmpty()
-  @IsUUID(4)
-  projectId: string;
-
   @IsString()
   @IsNotEmpty()
   @MaxLength(VALIDATION_LIMITS.TICKET_TITLE_MAX)
@@ -29,18 +32,14 @@ export class CreateTicketDto {
   @IsNotEmpty()
   description: string;
 
+  @IsOptional()
   @IsEnum(TicketPriority)
-  priority: TicketPriority;
+  priority?: TicketPriority;
 
   @IsOptional()
   @IsString()
   @IsUUID(4)
   assigneeId?: string;
-
-  @IsString()
-  @IsNotEmpty()
-  @IsUUID(4)
-  reporterId: string;
 }
 
 /**
@@ -71,68 +70,38 @@ export class UpdateTicketDto {
 }
 
 /**
- * DTO für Label-Erstellung
+ * DTO zum Hinzufügen eines Labels zu einem Ticket
  */
-export class CreateLabelDto {
-  @IsString()
+export class AddLabelToTicketDto {
+  @IsUUID()
   @IsNotEmpty()
-  @IsUUID(4)
-  projectId: string;
-
-  @IsString()
-  @IsNotEmpty()
-  @MaxLength(VALIDATION_LIMITS.LABEL_NAME_MAX)
-  name: string;
-
-  @IsString()
-  @IsNotEmpty()
-  @IsHexColor()
-  color: string;
+  labelId!: string;
 }
 
 /**
- * DTO für Label-Update
- */
-export class UpdateLabelDto {
-  @IsOptional()
-  @IsString()
-  @MaxLength(VALIDATION_LIMITS.LABEL_NAME_MAX)
-  name?: string;
-
-  @IsOptional()
-  @IsString()
-  @IsHexColor()
-  color?: string;
-}
-
-/**
- * DTO für Kommentar-Erstellung
+ * DTO zum Hinzufügen eines Kommentars
  */
 export class CreateCommentDto {
   @IsString()
   @IsNotEmpty()
-  @IsUUID(4)
-  ticketId: string;
+  content!: string;
 
-  @IsString()
+  @IsUUID()
   @IsNotEmpty()
-  @IsUUID(4)
-  authorId: string;
+  ticketId!: string;
 
-  @IsString()
+  @IsUUID()
   @IsNotEmpty()
-  @MaxLength(VALIDATION_LIMITS.COMMENT_MAX)
-  content: string;
+  userId!: string;
 }
 
 /**
- * DTO für Kommentar-Update
+ * DTO zum Aktualisieren eines Kommentars
  */
 export class UpdateCommentDto {
   @IsString()
-  @IsNotEmpty()
-  @MaxLength(VALIDATION_LIMITS.COMMENT_MAX)
-  content: string;
+  @IsOptional()
+  content?: string;
 }
 
 /**

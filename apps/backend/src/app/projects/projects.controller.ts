@@ -11,7 +11,10 @@ import {
   ValidationPipe,
   UseGuards,
   Query,
+  Req,
 } from '@nestjs/common';
+import { Request } from 'express';
+import { BadRequestException } from '@nestjs/common';
 import { ProjectsService } from './projects.service';
 import { LabelsService } from '../labels/labels.service';
 import {
@@ -24,16 +27,19 @@ import {
   CreateLabelDto,
   UpdateLabelDto,
   Label,
+  CreateTicketDto,
 } from '@issue-tracker/shared-types';
 import { RoleGuard } from '../guards/role.guard';
 import { ProjectAccessGuard } from '../guards/project-access.guard';
 import { Roles } from '../decorators/roles.decorator';
+import { TicketsService } from '../tickets/tickets.service';
 
 @Controller('projects')
 export class ProjectsController {
   constructor(
     private readonly projectsService: ProjectsService,
-    private readonly labelsService: LabelsService
+    private readonly labelsService: LabelsService,
+    private readonly ticketsService: TicketsService
   ) {}
 
   @Post()
@@ -329,5 +335,43 @@ export class ProjectsController {
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.NOT_FOUND);
     }
+  }
+
+  // ==================== TICKETS ====================
+
+  /**
+   * Ticket für ein Projekt erstellen
+   * POST /api/projects/:id/tickets
+   *
+   * Body:
+   * {
+   *   "title": "Bug: Login funktioniert nicht",
+   *   "description": "Beim Einloggen erscheint eine Fehlermeldung",
+   *   "priority": "HIGH",        // Optional (nur Developer/Manager/Admin)
+   *   "assigneeId": "uuid"       // Optional (Developer: nur sich selbst, Manager/Admin: beliebig)
+   * }
+   *
+   * Reporter wird automatisch aus x-user-id Header gesetzt
+   *
+   * Berechtigungen:
+   * - Reporter: Kann nur title/description setzen
+   * - Developer: Kann zusätzlich priority setzen und sich selbst zuweisen
+   * - Manager/Admin: Können alles setzen
+   */
+  @Post(':id/tickets')
+  @UseGuards(RoleGuard, ProjectAccessGuard)
+  async createTicket(
+    @Param('id') projectId: string,
+    @Body() createTicketDto: CreateTicketDto,
+    @Req() req: Request
+  ) {
+    // User-ID aus Header lesen (nicht aus req.user)
+    const reporterId = req.headers['x-user-id'] as string;
+
+    if (!reporterId) {
+      throw new BadRequestException('x-user-id header is required');
+    }
+
+    return this.ticketsService.create(projectId, reporterId, createTicketDto);
   }
 }
