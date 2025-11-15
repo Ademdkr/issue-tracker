@@ -1,5 +1,10 @@
 // NestJS Dependencies und Decorators
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+  ConflictException,
+} from '@nestjs/common';
 // Prisma Datenbankservice für Datenbankoperationen
 import { PrismaService } from '../prisma.service';
 // Prisma-generierte Typen für typsichere Datenbankoperationen
@@ -10,6 +15,7 @@ import {
   CreateProjectDto,
   UpdateProjectDto,
   AddProjectMemberDto,
+  UserRole,
 } from '@issue-tracker/shared-types';
 
 /**
@@ -25,7 +31,7 @@ import {
 @Injectable()
 export class ProjectsService {
   /**
-   * Konstruktor - Injiziert den PrismaService für Datenbankzugriff
+   * Konstruktor - Injiziert PrismaService für Datenbankzugriff
    */
   constructor(private readonly prisma: PrismaService) {}
 
@@ -115,10 +121,6 @@ export class ProjectsService {
   /**
    * Konvertiert Prisma-Projekt-Objekt zu Shared-Types-Projekt
    *
-   * Notwendig da Prisma und Shared-Types unterschiedliche Enum-Werte haben:
-   * - Prisma: OPEN, CLOSED (Großbuchstaben)
-   * - Shared-Types: 'open', 'closed' (Kleinbuchstaben)
-   *
    * @param prismaProject - Projekt-Objekt aus der Datenbank
    * @returns Typsicheres Projekt-Objekt für API-Response
    */
@@ -175,12 +177,14 @@ export class ProjectsService {
     });
 
     if (!creator) {
-      throw new Error('Creator user not found');
+      throw new NotFoundException('Creator user not found');
     }
 
     // 3. Authorization: Nur Manager und Admins erlaubt
-    if (!['MANAGER', 'ADMIN'].includes(creator.role)) {
-      throw new Error('Only managers and admins can create projects');
+    if (creator.role !== UserRole.MANAGER && creator.role !== UserRole.ADMIN) {
+      throw new BadRequestException(
+        'Only managers and admins can create projects'
+      );
     }
 
     // Hinweis: Slug-Eindeutigkeitsprüfung erfolgt bereits in ensureUniqueSlug()
@@ -346,7 +350,7 @@ export class ProjectsService {
     });
 
     if (!currentProject) {
-      throw new Error('Project not found');
+      throw new NotFoundException('Project not found');
     }
 
     const updateData: {
@@ -395,7 +399,9 @@ export class ProjectsService {
       });
 
       if (existingProject) {
-        throw new Error(`Slug "${adminUpdateDto.slug}" wird bereits verwendet`);
+        throw new ConflictException(
+          `Slug "${adminUpdateDto.slug}" wird bereits verwendet`
+        );
       }
 
       updateData.slug = adminUpdateDto.slug;
@@ -465,7 +471,7 @@ export class ProjectsService {
     });
 
     if (!project) {
-      throw new Error('Project not found');
+      throw new NotFoundException('Project not found');
     }
 
     // 2. Benutzer existiert?
@@ -474,7 +480,7 @@ export class ProjectsService {
     });
 
     if (!user) {
-      throw new Error('User not found');
+      throw new NotFoundException('User not found');
     }
 
     // 3. Bereits Mitglied?
@@ -488,7 +494,7 @@ export class ProjectsService {
     });
 
     if (existingMember) {
-      throw new Error('User is already a member of this project');
+      throw new ConflictException('User is already a member of this project');
     }
 
     // 4. Mitglied hinzufügen
@@ -538,7 +544,7 @@ export class ProjectsService {
     });
 
     if (!member) {
-      throw new Error('User is not a member of this project');
+      throw new NotFoundException('User is not a member of this project');
     }
 
     // 2. Mitglied entfernen
@@ -580,7 +586,7 @@ export class ProjectsService {
     }
 
     // 2. Admins und Manager haben immer Zugriff
-    if (user.role === 'ADMIN' || user.role === 'MANAGER') {
+    if (user.role === UserRole.ADMIN || user.role === UserRole.MANAGER) {
       return true;
     }
 
@@ -636,7 +642,7 @@ export class ProjectsService {
         name: member.user.name,
         surname: member.user.surname,
         email: member.user.email,
-        role: member.user.role.toLowerCase(),
+        role: member.user.role as UserRole,
       },
       addedBy: {
         id: member.adder.id,
@@ -685,7 +691,7 @@ export class ProjectsService {
       name: user.name,
       surname: user.surname,
       email: user.email,
-      role: user.role.toLowerCase(),
+      role: user.role as UserRole,
     }));
   }
 
@@ -746,7 +752,7 @@ export class ProjectsService {
       name: user.name,
       surname: user.surname,
       email: user.email,
-      role: user.role.toLowerCase(),
+      role: user.role as UserRole,
     }));
   }
 }

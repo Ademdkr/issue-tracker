@@ -18,4 +18,7 @@ export * from './lib/utils';
 // Constants - Shared constants between backend and frontend
 export * from './lib/constants';
 
+// Authorization - Permissions and authorization types
+export * from './lib/authorization';
+
 // Note: Legacy shared-types.ts removed to avoid export conflicts

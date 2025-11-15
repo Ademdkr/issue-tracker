@@ -4,7 +4,7 @@ import {
   ExecutionContext,
   ForbiddenException,
 } from '@nestjs/common';
-import { ProjectsService } from '../projects/projects.service';
+import { ProjectsService } from '../../projects/projects.service';
 
 /**
  * Guard zur Prüfung des Projektzugriffs
@@ -13,6 +13,8 @@ import { ProjectsService } from '../projects/projects.service';
  * - Admins: Voller Zugriff auf alle Projekte
  * - Manager: Voller Zugriff auf alle Projekte
  * - Andere Rollen: Nur Zugriff auf Projekte, bei denen sie Mitglied sind
+ *
+ * User muss bereits am Request verfügbar sein (via CurrentUserInterceptor)
  */
 @Injectable()
 export class ProjectAccessGuard implements CanActivate {
@@ -20,25 +22,23 @@ export class ProjectAccessGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
+    const user = request.user;
+
+    if (!user) {
+      throw new ForbiddenException('User not authenticated');
+    }
 
     // Projekt-ID aus Route-Parameter
     const projectId = request.params.id || request.params.projectId;
-
-    // User-ID aus Header (später aus JWT-Token)
-    const userId = request.headers['x-user-id'];
 
     if (!projectId) {
       throw new ForbiddenException('Project ID is required');
     }
 
-    if (!userId) {
-      throw new ForbiddenException('User ID is required');
-    }
-
     // Prüfe Projektzugriff
     const hasAccess = await this.projectsService.hasProjectAccess(
       projectId,
-      userId
+      user.id
     );
 
     if (!hasAccess) {

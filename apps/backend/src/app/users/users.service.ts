@@ -12,23 +12,6 @@ import { User as PrismaUser, UserRole as PrismaUserRole } from '@prisma/client';
 export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
 
-  private mapSharedRoleToPrismaRole(role?: string): PrismaUserRole {
-    if (!role) return 'REPORTER';
-
-    switch (role) {
-      case 'reporter':
-        return 'REPORTER';
-      case 'developer':
-        return 'DEVELOPER';
-      case 'manager':
-        return 'MANAGER';
-      case 'admin':
-        return 'ADMIN';
-      default:
-        return 'REPORTER';
-    }
-  }
-
   private mapPrismaToUser(prismaUser: PrismaUser): User {
     return {
       id: prismaUser.id,
@@ -56,7 +39,7 @@ export class UsersService {
         surname: createUserDto.surname,
         email: createUserDto.email,
         passwordHash: createUserDto.password, // TODO: Hash this!
-        role: this.mapSharedRoleToPrismaRole(createUserDto.role),
+        role: (createUserDto.role as PrismaUserRole) || 'REPORTER',
       },
     });
 
@@ -116,7 +99,7 @@ export class UsersService {
     if (updateUserDto.surname) updateData.surname = updateUserDto.surname;
     if (updateUserDto.email) updateData.email = updateUserDto.email;
     if (updateUserDto.role)
-      updateData.role = this.mapSharedRoleToPrismaRole(updateUserDto.role);
+      updateData.role = updateUserDto.role as PrismaUserRole;
 
     const user = await this.prisma.user.update({
       where: { id },

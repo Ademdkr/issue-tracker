@@ -4,8 +4,7 @@ import { ProjectsController } from './projects.controller';
 import { LabelsService } from '../labels/labels.service';
 import { TicketsService } from '../tickets/tickets.service';
 import { PrismaService } from '../prisma.service';
-import { RoleGuard } from '../guards/role.guard';
-import { ProjectAccessGuard } from '../guards/project-access.guard';
+import { RoleGuard, ProjectAccessGuard } from '../common/guards';
 
 @Module({
   controllers: [ProjectsController],

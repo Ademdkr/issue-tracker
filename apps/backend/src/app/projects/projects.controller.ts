@@ -6,12 +6,11 @@ import {
   Patch,
   Param,
   Delete,
-  HttpException,
-  HttpStatus,
   ValidationPipe,
   UseGuards,
   Query,
   Req,
+  NotFoundException,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { BadRequestException } from '@nestjs/common';
@@ -27,14 +26,31 @@ import {
   CreateLabelDto,
   UpdateLabelDto,
   Label,
+  Ticket,
   CreateTicketDto,
+  UpdateTicketDto,
+  User,
+  UserRole,
 } from '@issue-tracker/shared-types';
-import { RoleGuard } from '../guards/role.guard';
-import { ProjectAccessGuard } from '../guards/project-access.guard';
-import { Roles } from '../decorators/roles.decorator';
+import { RoleGuard, ProjectAccessGuard } from '../common/guards';
+import { Roles } from '../common/decorators';
+import { CurrentUser } from '../common/decorators/current-user.decorator';
+import { PoliciesGuard, CheckPolicies } from '../common/guards/policies.guard';
+import {
+  UpdateTicketPolicyHandler,
+  UpdateProjectPolicyHandler,
+  DeleteProjectPolicyHandler,
+  ManageProjectMembersPolicyHandler,
+  CreateLabelPolicyHandler,
+  UpdateLabelPolicyHandler,
+  DeleteLabelPolicyHandler,
+} from '../authorization/policies';
 import { TicketsService } from '../tickets/tickets.service';
+import { CurrentUserInterceptor } from '../common/interceptors';
+import { UseInterceptors } from '@nestjs/common';
 
 @Controller('projects')
+@UseInterceptors(CurrentUserInterceptor) // User aus x-user-id Header laden
 export class ProjectsController {
   constructor(
     private readonly projectsService: ProjectsService,
@@ -44,7 +60,7 @@ export class ProjectsController {
 
   @Post()
   @UseGuards(RoleGuard)
-  @Roles('manager', 'admin')
+  @Roles(UserRole.MANAGER, UserRole.ADMIN)
   /**
    * Body (JSON):
    * {
@@ -56,11 +72,7 @@ export class ProjectsController {
   async create(
     @Body(new ValidationPipe()) createProjectDto: CreateProjectDto
   ): Promise<Project> {
-    try {
-      return await this.projectsService.create(createProjectDto);
-    } catch (error) {
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
-    }
+    return await this.projectsService.create(createProjectDto);
   }
 
   @Get()
@@ -77,7 +89,7 @@ export class ProjectsController {
   async findOne(@Param('id') id: string): Promise<Project> {
     const project = await this.projectsService.findOne(id);
     if (!project) {
-      throw new HttpException('Project not found', HttpStatus.NOT_FOUND);
+      throw new NotFoundException('Project not found');
     }
     return project;
   }
@@ -93,17 +105,14 @@ export class ProjectsController {
    * }
    */
   @Patch(':id')
-  @UseGuards(RoleGuard)
-  @Roles('manager', 'admin')
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies(UpdateProjectPolicyHandler)
   async update(
+    @CurrentUser() user: User,
     @Param('id') id: string,
     @Body(new ValidationPipe()) updateProjectDto: UpdateProjectDto
   ): Promise<Project> {
-    try {
-      return await this.projectsService.update(id, updateProjectDto);
-    } catch (error) {
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
-    }
+    return await this.projectsService.update(id, updateProjectDto);
   }
 
   /**
@@ -119,27 +128,22 @@ export class ProjectsController {
    */
   @Patch(':id/admin')
   @UseGuards(RoleGuard)
-  @Roles('admin')
+  @Roles(UserRole.ADMIN)
   async adminUpdate(
     @Param('id') id: string,
     @Body(new ValidationPipe()) adminUpdateDto: AdminUpdateProjectDto
   ): Promise<Project> {
-    try {
-      return await this.projectsService.adminUpdate(id, adminUpdateDto);
-    } catch (error) {
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
-    }
+    return await this.projectsService.adminUpdate(id, adminUpdateDto);
   }
 
   @Delete(':id')
-  @UseGuards(RoleGuard)
-  @Roles('admin')
-  async remove(@Param('id') id: string): Promise<Project> {
-    try {
-      return await this.projectsService.remove(id);
-    } catch (error) {
-      throw new HttpException(error.message, HttpStatus.NOT_FOUND);
-    }
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies(DeleteProjectPolicyHandler)
+  async remove(
+    @CurrentUser() user: User,
+    @Param('id') id: string
+  ): Promise<Project> {
+    return await this.projectsService.remove(id);
   }
 
   /**
@@ -147,14 +151,10 @@ export class ProjectsController {
    * Nur Manager und Admins
    */
   @Get(':id/members')
-  @UseGuards(RoleGuard)
-  @Roles('manager', 'admin')
-  async getMembers(@Param('id') id: string) {
-    try {
-      return await this.projectsService.getProjectMembers(id);
-    } catch (error) {
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
-    }
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies(ManageProjectMembersPolicyHandler)
+  async getMembers(@CurrentUser() user: User, @Param('id') id: string) {
+    return await this.projectsService.getProjectMembers(id);
   }
 
   /**
@@ -163,14 +163,13 @@ export class ProjectsController {
    * Nur Manager und Admins
    */
   @Get(':id/members/available')
-  @UseGuards(RoleGuard)
-  @Roles('manager', 'admin')
-  async getAvailableMembers(@Param('id') id: string) {
-    try {
-      return await this.projectsService.getAvailableMembers(id);
-    } catch (error) {
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
-    }
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies(ManageProjectMembersPolicyHandler)
+  async getAvailableMembers(
+    @CurrentUser() user: User,
+    @Param('id') id: string
+  ) {
+    return await this.projectsService.getAvailableMembers(id);
   }
 
   /**
@@ -180,20 +179,17 @@ export class ProjectsController {
    * Nur Manager und Admins
    */
   @Get(':id/members/search')
-  @UseGuards(RoleGuard)
-  @Roles('manager', 'admin')
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies(ManageProjectMembersPolicyHandler)
   async searchAvailableMembers(
+    @CurrentUser() user: User,
     @Param('id') id: string,
     @Query('search') searchQuery: string
   ) {
-    try {
-      if (!searchQuery) {
-        throw new Error('Search query is required');
-      }
-      return await this.projectsService.searchAvailableMembers(id, searchQuery);
-    } catch (error) {
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    if (!searchQuery) {
+      throw new BadRequestException('Search query is required');
     }
+    return await this.projectsService.searchAvailableMembers(id, searchQuery);
   }
 
   /**
@@ -207,17 +203,14 @@ export class ProjectsController {
    * }
    */
   @Post(':id/members')
-  @UseGuards(RoleGuard)
-  @Roles('manager', 'admin')
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies(ManageProjectMembersPolicyHandler)
   async addMember(
+    @CurrentUser() user: User,
     @Param('id') id: string,
     @Body(new ValidationPipe()) addMemberDto: AddProjectMemberDto
   ): Promise<MessageResponse> {
-    try {
-      return await this.projectsService.addMember(id, addMemberDto);
-    } catch (error) {
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
-    }
+    return await this.projectsService.addMember(id, addMemberDto);
   }
 
   /**
@@ -225,17 +218,14 @@ export class ProjectsController {
    * Nur Manager und Admins
    */
   @Delete(':id/members/:userId')
-  @UseGuards(RoleGuard)
-  @Roles('manager', 'admin')
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies(ManageProjectMembersPolicyHandler)
   async removeMember(
+    @CurrentUser() user: User,
     @Param('id') id: string,
     @Param('userId') userId: string
   ): Promise<MessageResponse> {
-    try {
-      return await this.projectsService.removeMember(id, userId);
-    } catch (error) {
-      throw new HttpException(error.message, HttpStatus.NOT_FOUND);
-    }
+    return await this.projectsService.removeMember(id, userId);
   }
 
   // ==================== LABELS ====================
@@ -253,17 +243,14 @@ export class ProjectsController {
    * Nur Manager und Admins
    */
   @Post(':id/labels')
-  @UseGuards(RoleGuard)
-  @Roles('manager', 'admin')
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies(CreateLabelPolicyHandler)
   async createLabel(
+    @CurrentUser() user: User,
     @Param('id') projectId: string,
     @Body(new ValidationPipe()) createLabelDto: CreateLabelDto
   ): Promise<Label> {
-    try {
-      return await this.labelsService.create(projectId, createLabelDto);
-    } catch (error) {
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
-    }
+    return await this.labelsService.create(projectId, createLabelDto);
   }
 
   /**
@@ -277,11 +264,7 @@ export class ProjectsController {
   @Get(':id/labels')
   @UseGuards(ProjectAccessGuard)
   async getProjectLabels(@Param('id') projectId: string): Promise<Label[]> {
-    try {
-      return await this.labelsService.findAllByProject(projectId);
-    } catch (error) {
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
-    }
+    return await this.labelsService.findAllByProject(projectId);
   }
 
   /**
@@ -297,22 +280,15 @@ export class ProjectsController {
    * Nur Manager und Admins
    */
   @Patch(':id/labels/:labelId')
-  @UseGuards(RoleGuard)
-  @Roles('manager', 'admin')
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies(UpdateLabelPolicyHandler)
   async updateLabel(
+    @CurrentUser() user: User,
     @Param('id') projectId: string,
     @Param('labelId') labelId: string,
     @Body(new ValidationPipe()) updateLabelDto: UpdateLabelDto
   ): Promise<Label> {
-    try {
-      return await this.labelsService.update(
-        projectId,
-        labelId,
-        updateLabelDto
-      );
-    } catch (error) {
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
-    }
+    return await this.labelsService.update(projectId, labelId, updateLabelDto);
   }
 
   /**
@@ -324,17 +300,14 @@ export class ProjectsController {
    * Nur Manager und Admins
    */
   @Delete(':id/labels/:labelId')
-  @UseGuards(RoleGuard)
-  @Roles('manager', 'admin')
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies(DeleteLabelPolicyHandler)
   async deleteLabel(
+    @CurrentUser() user: User,
     @Param('id') projectId: string,
     @Param('labelId') labelId: string
   ): Promise<Label> {
-    try {
-      return await this.labelsService.remove(projectId, labelId);
-    } catch (error) {
-      throw new HttpException(error.message, HttpStatus.NOT_FOUND);
-    }
+    return await this.labelsService.remove(projectId, labelId);
   }
 
   // ==================== TICKETS ====================
@@ -373,5 +346,46 @@ export class ProjectsController {
     }
 
     return this.ticketsService.create(projectId, reporterId, createTicketDto);
+  }
+
+  @Get(':id/tickets')
+  @UseGuards(ProjectAccessGuard)
+  async getProjectTickets(@Param('id') projectId: string): Promise<Ticket[]> {
+    return await this.ticketsService.findAllByProject(projectId);
+  }
+
+  /**
+   * Ticket aktualisieren
+   * PATCH /api/projects/:id/tickets/:ticketId
+   *
+   * Body (JSON) - Alle Felder optional:
+   * {
+   *   "title": "Neuer Titel",
+   *   "description": "Neue Beschreibung",
+   *   "status": "in_progress",     // open, in_progress, resolved, closed
+   *   "priority": "high",           // low, medium, high, critical
+   *   "assigneeId": "uuid" | null   // null zum Entfernen
+   * }
+   *
+   * Berechtigungen werden durch Policies geprüft:
+   * - Reporter (Ersteller): Nur title/description des eigenen Tickets
+   * - Developer (Assignee): Kann status/priority ändern, sich selbst zuweisen/entfernen
+   * - Manager/Admin: Können alles ändern
+   */
+  @Patch(':id/tickets/:ticketId')
+  @UseGuards(ProjectAccessGuard, PoliciesGuard)
+  @CheckPolicies(UpdateTicketPolicyHandler)
+  async updateTicket(
+    @CurrentUser() user: User,
+    @Param('id') projectId: string,
+    @Param('ticketId') ticketId: string,
+    @Body(new ValidationPipe()) updateTicketDto: UpdateTicketDto
+  ): Promise<Ticket> {
+    return await this.ticketsService.update(
+      user,
+      projectId,
+      ticketId,
+      updateTicketDto
+    );
   }
 }

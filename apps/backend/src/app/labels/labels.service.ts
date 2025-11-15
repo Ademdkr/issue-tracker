@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import {
   Label,
@@ -31,7 +35,7 @@ export class LabelsService {
     });
 
     if (!project) {
-      throw new Error('Project not found');
+      throw new NotFoundException('Project not found');
     }
 
     // 2. Prüfe ob Label-Name bereits existiert im Projekt
@@ -43,7 +47,7 @@ export class LabelsService {
     });
 
     if (existingLabel) {
-      throw new Error(
+      throw new ConflictException(
         `Label "${createLabelDto.name}" already exists in this project`
       );
     }
@@ -122,7 +126,7 @@ export class LabelsService {
       });
 
       if (existingLabel) {
-        throw new Error(
+        throw new ConflictException(
           `Label "${updateLabelDto.name}" already exists in this project`
         );
       }

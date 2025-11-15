@@ -1,20 +1,20 @@
 export enum TicketStatus {
-  OPEN = 'open',
-  IN_PROGRESS = 'in_progress',
-  RESOLVED = 'resolved',
-  CLOSED = 'closed',
+  OPEN = 'OPEN',
+  IN_PROGRESS = 'IN_PROGRESS',
+  RESOLVED = 'RESOLVED',
+  CLOSED = 'CLOSED',
 }
 
 export enum TicketPriority {
-  LOW = 'low',
-  MEDIUM = 'medium',
-  HIGH = 'high',
-  CRITICAL = 'critical',
+  LOW = 'LOW',
+  MEDIUM = 'MEDIUM',
+  HIGH = 'HIGH',
+  CRITICAL = 'CRITICAL',
 }
 
 export enum TicketActivityType {
-  STATUS_CHANGE = 'status_change',
-  ASSIGNEE_CHANGE = 'assignee_change',
-  LABEL_ADDED = 'label_added',
-  LABEL_REMOVED = 'label_removed',
+  STATUS_CHANGE = 'STATUS_CHANGE',
+  ASSIGNEE_CHANGE = 'ASSIGNEE_CHANGE',
+  LABEL_ADDED = 'LABEL_ADDED',
+  LABEL_REMOVED = 'LABEL_REMOVED',
 }
