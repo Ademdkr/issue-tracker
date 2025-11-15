@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { PolicyHandler } from './policy-handler.interface';
+import { PolicyHandler } from '../policy-handler.interface';
 import { User, Project, Permission } from '@issue-tracker/shared-types';
-import { AuthorizationService } from '../services/authorization.service';
+import { AuthorizationService } from '../../services/authorization.service';
 
 /**
  * Policy für Projekt-Löschung
@@ -18,7 +18,7 @@ export class DeleteProjectPolicyHandler extends PolicyHandler<Project> {
     super();
   }
 
-  async handle(user: User, project?: Project): Promise<boolean> {
+  async handle(user: User): Promise<boolean> {
     // Nur Admin darf Projekte löschen
     return this.authService.hasPermission(user, Permission.DELETE_PROJECT);
   }

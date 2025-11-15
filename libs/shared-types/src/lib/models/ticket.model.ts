@@ -11,6 +11,7 @@ export interface Ticket {
   priority: TicketPriority;
   createdAt: Date;
   updatedAt: Date | null;
+  labelIds?: string[];
 }
 
 // Ticket with related data for frontend
@@ -34,36 +35,6 @@ export interface TicketWithDetails extends Ticket {
   };
   // labels?: Label[];
   commentCount?: number;
-}
-
-// // Label Interface
-// export interface Label {
-//   id: string;
-//   projectId: string;
-//   name: string;
-//   color: string;
-//   createdAt: Date;
-//   updatedAt: Date | null;
-// }
-
-// Comment Interface
-export interface Comment {
-  id: string;
-  ticketId: string;
-  authorId: string;
-  content: string;
-  createdAt: Date;
-  updatedAt: Date | null;
-}
-
-// Comment with author for frontend
-export interface CommentWithAuthor extends Comment {
-  author?: {
-    id: string;
-    name: string;
-    surname: string;
-    email: string;
-  };
 }
 
 // Project Member Interface

@@ -9,10 +9,8 @@ import {
   ValidationPipe,
   UseGuards,
   Query,
-  Req,
   NotFoundException,
 } from '@nestjs/common';
-import { Request } from 'express';
 import { BadRequestException } from '@nestjs/common';
 import { ProjectsService } from './projects.service';
 import { LabelsService } from '../labels/labels.service';
@@ -38,6 +36,7 @@ import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { PoliciesGuard, CheckPolicies } from '../common/guards/policies.guard';
 import {
   UpdateTicketPolicyHandler,
+  DeleteTicketPolicyHandler,
   UpdateProjectPolicyHandler,
   DeleteProjectPolicyHandler,
   ManageProjectMembersPolicyHandler,
@@ -332,26 +331,39 @@ export class ProjectsController {
    * - Manager/Admin: Können alles setzen
    */
   @Post(':id/tickets')
-  @UseGuards(RoleGuard, ProjectAccessGuard)
+  @UseGuards(ProjectAccessGuard)
   async createTicket(
     @Param('id') projectId: string,
     @Body() createTicketDto: CreateTicketDto,
-    @Req() req: Request
+    @CurrentUser() user: User
   ) {
-    // User-ID aus Header lesen (nicht aus req.user)
-    const reporterId = req.headers['x-user-id'] as string;
-
-    if (!reporterId) {
-      throw new BadRequestException('x-user-id header is required');
-    }
-
-    return this.ticketsService.create(projectId, reporterId, createTicketDto);
+    return this.ticketsService.create(projectId, user.id, createTicketDto);
   }
 
   @Get(':id/tickets')
   @UseGuards(ProjectAccessGuard)
   async getProjectTickets(@Param('id') projectId: string): Promise<Ticket[]> {
     return await this.ticketsService.findAllByProject(projectId);
+  }
+
+  /**
+   * Einzelnes Ticket abrufen
+   * GET /api/projects/:id/tickets/:ticketId
+   *
+   * Zeigt alle Details eines Tickets:
+   * - Titel, Beschreibung, Status, Priorität
+   * - Assignee, Projekt, Labels
+   * - Erstellt am, Aktualisiert am, Erstellt von
+   *
+   * Zugriff: Alle Projektmitglieder + Manager/Admin
+   */
+  @Get(':id/tickets/:ticketId')
+  @UseGuards(ProjectAccessGuard)
+  async getTicketDetails(
+    @Param('id') projectId: string,
+    @Param('ticketId') ticketId: string
+  ): Promise<Ticket> {
+    return await this.ticketsService.findOne(projectId, ticketId);
   }
 
   /**
@@ -387,5 +399,25 @@ export class ProjectsController {
       ticketId,
       updateTicketDto
     );
+  }
+
+  /**
+   * Ticket löschen
+   * DELETE /api/projects/:id/tickets/:ticketId
+   *
+   * Berechtigungen:
+   * - Reporter: Nur eigene Tickets
+   * - Developer: Eigene oder zugewiesene Tickets
+   * - Manager/Admin: Alle Tickets
+   */
+  @Delete(':id/tickets/:ticketId')
+  @UseGuards(ProjectAccessGuard, PoliciesGuard)
+  @CheckPolicies(DeleteTicketPolicyHandler)
+  async deleteTicket(
+    @CurrentUser() user: User,
+    @Param('id') projectId: string,
+    @Param('ticketId') ticketId: string
+  ): Promise<Ticket> {
+    return await this.ticketsService.remove(user, projectId, ticketId);
   }
 }

@@ -7,12 +7,15 @@ import {
   AssignTicketPolicyHandler,
   SetTicketPriorityPolicyHandler,
   SetTicketStatusPolicyHandler,
+  DeleteTicketPolicyHandler,
   UpdateProjectPolicyHandler,
   DeleteProjectPolicyHandler,
   ManageProjectMembersPolicyHandler,
   CreateLabelPolicyHandler,
   UpdateLabelPolicyHandler,
   DeleteLabelPolicyHandler,
+  UpdateCommentPolicyHandler,
+  DeleteCommentPolicyHandler,
 } from './policies';
 
 /**
@@ -30,6 +33,7 @@ import {
     AssignTicketPolicyHandler,
     SetTicketPriorityPolicyHandler,
     SetTicketStatusPolicyHandler,
+    DeleteTicketPolicyHandler,
 
     // Project Policy Handlers
     UpdateProjectPolicyHandler,
@@ -40,6 +44,10 @@ import {
     CreateLabelPolicyHandler,
     UpdateLabelPolicyHandler,
     DeleteLabelPolicyHandler,
+
+    // Comment Policy Handlers
+    UpdateCommentPolicyHandler,
+    DeleteCommentPolicyHandler,
   ],
   exports: [
     // Services exportieren
@@ -50,6 +58,7 @@ import {
     AssignTicketPolicyHandler,
     SetTicketPriorityPolicyHandler,
     SetTicketStatusPolicyHandler,
+    DeleteTicketPolicyHandler,
 
     // Project Policy Handlers exportieren
     UpdateProjectPolicyHandler,
@@ -60,6 +69,10 @@ import {
     CreateLabelPolicyHandler,
     UpdateLabelPolicyHandler,
     DeleteLabelPolicyHandler,
+
+    // Comment Policy Handlers exportieren
+    UpdateCommentPolicyHandler,
+    DeleteCommentPolicyHandler,
   ],
 })
 export class AuthorizationModule {}

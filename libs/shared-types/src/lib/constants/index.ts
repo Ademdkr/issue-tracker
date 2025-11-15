@@ -34,6 +34,7 @@ export const VALIDATION_LIMITS = {
   SLUG_MAX: 50,
   LABEL_NAME_MAX: 50,
   COMMENT_MAX: 2000,
+  COMMENT_CONTENT_MAX: 5000,
 } as const;
 
 // HTTP Status Messages

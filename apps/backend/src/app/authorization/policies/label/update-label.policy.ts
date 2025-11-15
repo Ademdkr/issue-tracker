@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { PolicyHandler } from './policy-handler.interface';
+import { PolicyHandler } from '../policy-handler.interface';
 import { User, Label, Permission } from '@issue-tracker/shared-types';
-import { AuthorizationService } from '../services/authorization.service';
+import { AuthorizationService } from '../../services/authorization.service';
 
 /**
  * Policy für Label-Updates
@@ -18,7 +18,7 @@ export class UpdateLabelPolicyHandler extends PolicyHandler<Label> {
     super();
   }
 
-  async handle(user: User, label?: Label): Promise<boolean> {
+  async handle(user: User): Promise<boolean> {
     // Admin und Manager dürfen Labels bearbeiten
     return this.authService.hasPermission(user, Permission.UPDATE_LABEL);
   }

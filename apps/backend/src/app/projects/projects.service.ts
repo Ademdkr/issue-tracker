@@ -6,7 +6,9 @@ import {
   ConflictException,
 } from '@nestjs/common';
 // Prisma Datenbankservice für Datenbankoperationen
-import { PrismaService } from '../prisma.service';
+import { PrismaService } from '../../../prisma/prisma.service';
+// Slug-Generator Service für automatische Projekt-Abkürzungen
+import { SlugGeneratorService } from './slug-generator.service';
 // Prisma-generierte Typen für typsichere Datenbankoperationen
 import { Project as PrismaProject } from '@prisma/client';
 // Shared Types für einheitliche Typen zwischen Backend und Frontend
@@ -31,92 +33,12 @@ import {
 @Injectable()
 export class ProjectsService {
   /**
-   * Konstruktor - Injiziert PrismaService für Datenbankzugriff
+   * Konstruktor - Injiziert Services für Datenbankzugriff und Slug-Generierung
    */
-  constructor(private readonly prisma: PrismaService) {}
-
-  /**
-   * Generiert einen intelligenten Slug aus dem Projektnamen
-   *
-   * Algorithmus:
-   * 1. Bekannte Begriffe (Portal, CRM, Shop, etc.) → Werden als Abkürzung verwendet
-   * 2. Einzelnes Wort → Erste 5 Zeichen in Großbuchstaben
-   * 3. Mehrere Wörter → Akronym aus ersten Buchstaben
-   *
-   * Beispiele:
-   * - "Logistik-Portal" → "PORTAL"
-   * - "Kunden-CRM" → "CRM"
-   * - "Web-Shop" → "SHOP"
-   * - "Issue Tracker" → "IT"
-   *
-   * @param name - Der Projektname
-   * @returns Generierter Slug in Großbuchstaben
-   */
-  private generateSlug(name: string): string {
-    // Liste bekannter Begriffe, die als direkte Abkürzung verwendet werden
-    const knownTerms = [
-      'portal',
-      'crm',
-      'shop',
-      'app',
-      'system',
-      'tool',
-      'platform',
-      'dashboard',
-      'api',
-      'web',
-      'mobile',
-      'admin',
-      'manager',
-      'tracker',
-      'monitor',
-      'analytics',
-      'cms',
-      'erp',
-      'hr',
-      'pos',
-      'blog',
-      'forum',
-      'chat',
-      'mail',
-      'calendar',
-      'todo',
-      'task',
-      'project',
-    ];
-
-    // Projektname normalisieren und in Wörter aufteilen
-    const words = name
-      .toLowerCase() // Kleinschreibung für einheitliche Verarbeitung
-      .trim() // Leerzeichen am Anfang/Ende entfernen
-      .replace(/[^a-z0-9\s-]/g, '') // Sonderzeichen entfernen (nur Buchstaben, Zahlen, Leerzeichen, Bindestriche)
-      .split(/[-\s]+/); // Nach Leerzeichen und Bindestrichen in Wörter aufteilen
-
-    // Fallback wenn keine gültigen Wörter gefunden wurden
-    if (words.length === 0) return 'project';
-
-    // Letztes Wort extrahieren für Begriff-Prüfung
-    const lastWord = words[words.length - 1];
-
-    // Prüfung: Ist das letzte Wort ein bekannter Begriff?
-    // Beispiel: "Logistik-Portal" → "portal" ist bekannt → "PORTAL"
-    if (knownTerms.includes(lastWord)) {
-      return lastWord.toUpperCase();
-    }
-
-    // Spezialfall: Nur ein Wort vorhanden
-    // Beispiel: "Dashboard" → "DASHB" (erste 5 Zeichen)
-    if (words.length === 1) {
-      return words[0].substring(0, 5).toUpperCase();
-    }
-
-    // Standardfall: Akronym aus ersten Buchstaben aller Wörter
-    // Beispiel: "Issue Tracker" → "IT", "Customer Management" → "CM"
-    return words
-      .map((word) => word.charAt(0)) // Ersten Buchstaben jedes Wortes
-      .join('') // Zusammenfügen
-      .toUpperCase(); // In Großbuchstaben
-  }
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly slugGenerator: SlugGeneratorService
+  ) {}
 
   /**
    * Konvertiert Prisma-Projekt-Objekt zu Shared-Types-Projekt
@@ -167,7 +89,7 @@ export class ProjectsService {
    */
   async create(createProjectDto: CreateProjectDto): Promise<Project> {
     // 1. Slug aus Projektname generieren
-    const baseSlug = this.generateSlug(createProjectDto.name);
+    const baseSlug = this.slugGenerator.generateSlug(createProjectDto.name);
     const slug = await this.ensureUniqueSlug(baseSlug);
 
     // 2. Benutzer-Validierung: Existenz und Berechtigung prüfen
@@ -286,7 +208,7 @@ export class ProjectsService {
       updateData.name = updateProjectDto.name;
       // Bei Namensänderung neuen Slug generieren
       const newSlug = await this.ensureUniqueSlug(
-        this.generateSlug(updateProjectDto.name)
+        this.slugGenerator.generateSlug(updateProjectDto.name)
       );
       updateData.slug = newSlug;
       hasChanges = true;
@@ -371,7 +293,7 @@ export class ProjectsService {
       // Nur neuen Slug generieren, wenn nicht manuell gesetzt
       if (!adminUpdateDto.slug) {
         const newSlug = await this.ensureUniqueSlug(
-          this.generateSlug(adminUpdateDto.name)
+          this.slugGenerator.generateSlug(adminUpdateDto.name)
         );
         updateData.slug = newSlug;
       }

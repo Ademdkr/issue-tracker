@@ -1,5 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma.service';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+} from '@nestjs/common';
+import { PrismaService } from '../../../prisma/prisma.service';
 import {
   CreateUserDto,
   UpdateUserDto,
@@ -12,7 +16,7 @@ import { User as PrismaUser, UserRole as PrismaUserRole } from '@prisma/client';
 export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
 
-  private mapPrismaToUser(prismaUser: PrismaUser): User {
+  private mapPrismaToUserPublic(prismaUser: PrismaUser): UserPublic {
     return {
       id: prismaUser.id,
       name: prismaUser.name,
@@ -20,18 +24,20 @@ export class UsersService {
       email: prismaUser.email,
       role: prismaUser.role as User['role'],
       createdAt: prismaUser.createdAt,
-    };
-  }
-
-  private mapPrismaToUserPublic(prismaUser: PrismaUser): UserPublic {
-    const user = this.mapPrismaToUser(prismaUser);
-    return {
-      ...user,
-      fullName: `${user.name} ${user.surname}`.trim(),
+      fullName: `${prismaUser.name} ${prismaUser.surname}`.trim(),
     };
   }
 
   async create(createUserDto: CreateUserDto): Promise<UserPublic> {
+    // Prüfe ob Email bereits existiert
+    const existingUser = await this.prisma.user.findUnique({
+      where: { email: createUserDto.email },
+    });
+
+    if (existingUser) {
+      throw new ConflictException('User with this email already exists');
+    }
+
     // Note: In production, hash the password with bcrypt
     const user = await this.prisma.user.create({
       data: {
@@ -93,6 +99,26 @@ export class UsersService {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<UserPublic> {
+    // Prüfe ob User existiert
+    const existingUser = await this.prisma.user.findUnique({
+      where: { id },
+    });
+
+    if (!existingUser) {
+      throw new NotFoundException('User not found');
+    }
+
+    // Prüfe ob Email bereits von anderem User verwendet wird
+    if (updateUserDto.email) {
+      const userWithEmail = await this.prisma.user.findUnique({
+        where: { email: updateUserDto.email },
+      });
+
+      if (userWithEmail && userWithEmail.id !== id) {
+        throw new ConflictException('Email already in use');
+      }
+    }
+
     const updateData: Record<string, unknown> = {};
 
     if (updateUserDto.name) updateData.name = updateUserDto.name;
@@ -110,6 +136,14 @@ export class UsersService {
   }
 
   async remove(id: string): Promise<UserPublic> {
+    const existingUser = await this.prisma.user.findUnique({
+      where: { id },
+    });
+
+    if (!existingUser) {
+      throw new NotFoundException('User not found');
+    }
+
     const user = await this.prisma.user.delete({
       where: { id },
     });

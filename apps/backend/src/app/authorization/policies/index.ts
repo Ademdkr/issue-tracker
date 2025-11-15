@@ -6,6 +6,7 @@ export * from './ticket/update-ticket.policy';
 export * from './ticket/assign-ticket.policy';
 export * from './ticket/set-ticket-priority.policy';
 export * from './ticket/set-ticket-status.policy';
+export * from './ticket/delete-ticket.policy';
 
 // Project Policies
 export * from './project/update-project.policy';
@@ -16,3 +17,7 @@ export * from './project/manage-project-members.policy';
 export * from './label/create-label.policy';
 export * from './label/update-label.policy';
 export * from './label/delete-label.policy';
+
+// Comment Policies
+export * from './comment/update-comment.policy';
+export * from './comment/delete-comment.policy';

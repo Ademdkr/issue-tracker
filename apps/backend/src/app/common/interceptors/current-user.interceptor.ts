@@ -6,7 +6,7 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { PrismaService } from '../../prisma.service';
+import { PrismaService } from '../../../../prisma/prisma.service';
 
 /**
  * Interceptor der User aus x-user-id Header extrahiert
@@ -21,7 +21,7 @@ export class CurrentUserInterceptor implements NestInterceptor {
   async intercept(
     context: ExecutionContext,
     next: CallHandler
-  ): Promise<Observable<any>> {
+  ): Promise<Observable<unknown>> {
     const request = context.switchToHttp().getRequest();
     const userId = request.headers['x-user-id'] as string;
 

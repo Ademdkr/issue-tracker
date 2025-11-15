@@ -40,6 +40,10 @@ export class CreateTicketDto {
   @IsString()
   @IsUUID(4)
   assigneeId?: string;
+
+  @IsOptional()
+  @IsUUID(4, { each: true })
+  labelIds?: string[];
 }
 
 /**
@@ -67,6 +71,10 @@ export class UpdateTicketDto {
   @IsString()
   @IsUUID(4)
   assigneeId?: string;
+
+  @IsOptional()
+  @IsUUID(4, { each: true })
+  labelIds?: string[];
 }
 
 /**
@@ -76,32 +84,6 @@ export class AddLabelToTicketDto {
   @IsUUID()
   @IsNotEmpty()
   labelId!: string;
-}
-
-/**
- * DTO zum Hinzufügen eines Kommentars
- */
-export class CreateCommentDto {
-  @IsString()
-  @IsNotEmpty()
-  content!: string;
-
-  @IsUUID()
-  @IsNotEmpty()
-  ticketId!: string;
-
-  @IsUUID()
-  @IsNotEmpty()
-  userId!: string;
-}
-
-/**
- * DTO zum Aktualisieren eines Kommentars
- */
-export class UpdateCommentDto {
-  @IsString()
-  @IsOptional()
-  content?: string;
 }
 
 /**

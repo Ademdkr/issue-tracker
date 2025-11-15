@@ -8,7 +8,7 @@
     "emitDecoratorMetadata": true,
     "target": "es2021"
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "prisma/prisma.service.ts"],
   "exclude": [
     "jest.config.ts",
     "jest.config.cts",
