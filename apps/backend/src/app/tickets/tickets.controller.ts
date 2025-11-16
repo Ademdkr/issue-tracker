@@ -2,14 +2,12 @@
 https://docs.nestjs.com/controllers#controllers
 */
 
-import { Controller, UseInterceptors, Get, Query } from '@nestjs/common';
-import { CurrentUserInterceptor } from '../common/interceptors';
+import { Controller, Get, Query } from '@nestjs/common';
 import { TicketsService } from '../tickets/tickets.service';
-import { CurrentUser } from '../common/decorators/current-user.decorator';
+import { CurrentUser } from '../auth';
 import { User, Ticket } from '@issue-tracker/shared-types';
 
 @Controller('tickets')
-@UseInterceptors(CurrentUserInterceptor)
 export class TicketsController {
   constructor(private readonly ticketsService: TicketsService) {}
 

@@ -9,7 +9,6 @@ import {
   ValidationPipe,
   Query,
   UseGuards,
-  UseInterceptors,
   NotFoundException,
   BadRequestException,
 } from '@nestjs/common';
@@ -20,12 +19,10 @@ import {
   UserPublic,
   UserRole,
 } from '@issue-tracker/shared-types';
-import { RoleGuard } from '../common/guards';
-import { Roles } from '../common/decorators';
-import { CurrentUserInterceptor } from '../common/interceptors';
+import { RoleGuard } from '../auth';
+import { Roles } from '../auth';
 
-@Controller('api/users')
-@UseInterceptors(CurrentUserInterceptor)
+@Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 

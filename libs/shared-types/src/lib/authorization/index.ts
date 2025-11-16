@@ -1,1 +1,1 @@
-export * from './permissions.enum';
+// Permissions.enum wurde entfernt - System nutzt nur noch rollenbasierte Authorization

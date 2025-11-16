@@ -30,10 +30,10 @@ import {
   User,
   UserRole,
 } from '@issue-tracker/shared-types';
-import { RoleGuard, ProjectAccessGuard } from '../common/guards';
-import { Roles } from '../common/decorators';
-import { CurrentUser } from '../common/decorators/current-user.decorator';
-import { PoliciesGuard, CheckPolicies } from '../common/guards/policies.guard';
+import { RoleGuard, ProjectAccessGuard } from '../auth';
+import { Roles } from '../auth';
+import { CurrentUser } from '../auth';
+import { PoliciesGuard, CheckPolicies } from '../auth';
 import {
   UpdateTicketPolicyHandler,
   DeleteTicketPolicyHandler,
@@ -43,13 +43,9 @@ import {
   CreateLabelPolicyHandler,
   UpdateLabelPolicyHandler,
   DeleteLabelPolicyHandler,
-} from '../authorization/policies';
+} from '../auth/policies';
 import { TicketsService } from '../tickets/tickets.service';
-import { CurrentUserInterceptor } from '../common/interceptors';
-import { UseInterceptors } from '@nestjs/common';
-
 @Controller('projects')
-@UseInterceptors(CurrentUserInterceptor) // User aus x-user-id Header laden
 export class ProjectsController {
   constructor(
     private readonly projectsService: ProjectsService,
@@ -64,19 +60,35 @@ export class ProjectsController {
    * Body (JSON):
    * {
    *   "name": "Logistik-Portal",
-   *   "description": "Portal für Logistikverwaltung",
-   *   "createdBy": "<uuid-des-erstellers>" // muss Manager oder Admin sein
+   *   "description": "Portal für Logistikverwaltung"
    * }
+   *
+   * createdBy wird automatisch aus dem angemeldeten User übernommen
    */
   async create(
+    @CurrentUser() user: User,
     @Body(new ValidationPipe()) createProjectDto: CreateProjectDto
   ): Promise<Project> {
-    return await this.projectsService.create(createProjectDto);
+    return await this.projectsService.create({
+      ...createProjectDto,
+      createdBy: user.id,
+    });
   }
 
+  /**
+   * Alle Projekte abrufen (rollenbasiert gefiltert)
+   * GET /api/projects
+   *
+   * Berechtigungen:
+   * - Admin/Manager: Sehen alle Projekte
+   * - Developer/Reporter: Sehen nur Projekte mit eigener Mitgliedschaft
+   *
+   * @param user - Angemeldeter User (via CurrentUserGuard)
+   * @returns Promise<Project[]> - Gefilterte Projekt-Liste
+   */
   @Get()
-  async findAll(): Promise<Project[]> {
-    return this.projectsService.findAll();
+  async findAll(@CurrentUser() user: User): Promise<Project[]> {
+    return await this.projectsService.findAllByRole(user.id, user.role);
   }
 
   /**
@@ -197,9 +209,10 @@ export class ProjectsController {
    *
    * Body (JSON):
    * {
-   *   "userId": "<uuid-des-benutzers>",
-   *   "addedBy": "<uuid-des-hinzufügenden-users>" // i.d.R. aktueller Manager/Admin
+   *   "userId": "<uuid-des-benutzers>"
    * }
+   *
+   * addedBy wird automatisch vom angemeldeten User übernommen
    */
   @Post(':id/members')
   @UseGuards(PoliciesGuard)
@@ -209,7 +222,10 @@ export class ProjectsController {
     @Param('id') id: string,
     @Body(new ValidationPipe()) addMemberDto: AddProjectMemberDto
   ): Promise<MessageResponse> {
-    return await this.projectsService.addMember(id, addMemberDto);
+    return await this.projectsService.addMember(id, {
+      ...addMemberDto,
+      addedBy: user.id,
+    });
   }
 
   /**

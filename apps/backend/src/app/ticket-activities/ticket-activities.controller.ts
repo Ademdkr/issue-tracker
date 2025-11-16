@@ -3,13 +3,10 @@ import {
   Get,
   Param,
   UseGuards,
-  UseInterceptors,
   ParseUUIDPipe,
 } from '@nestjs/common';
 import { TicketActivitiesService } from './ticket-activities.service';
-import { CurrentUserInterceptor } from '../common/interceptors';
-import { RoleGuard } from '../common/guards/role.guard';
-import { ProjectAccessGuard } from '../common/guards/project-access.guard';
+import { RoleGuard, ProjectAccessGuard } from '../auth';
 import { TicketActivity } from '@issue-tracker/shared-types';
 
 /**
@@ -24,7 +21,6 @@ import { TicketActivity } from '@issue-tracker/shared-types';
  */
 @Controller('projects/:projectId/tickets/:ticketId/activities')
 @UseGuards(RoleGuard, ProjectAccessGuard)
-@UseInterceptors(CurrentUserInterceptor)
 export class TicketActivitiesController {
   constructor(private readonly activityService: TicketActivitiesService) {}
 

@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,54 +8,48 @@ datasource db {
 }
 
 model User {
-  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name         String
-  surname      String
-  email        String   @unique
-  passwordHash String   @map("password_hash")
-  role         UserRole @default(REPORTER)
-  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz
-
-  // Relations
-  createdProjects    Project[]        @relation("ProjectCreator")
-  reportedTickets    Ticket[]         @relation("TicketReporter")
-  assignedTickets    Ticket[]         @relation("TicketAssignee")
-  projectMemberships ProjectMember[]  @relation("ProjectMemberUser")
-  addedMembers       ProjectMember[]  @relation("ProjectMemberAdder")
+  id                 String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name               String
+  surname            String
+  email              String           @unique
+  passwordHash       String           @map("password_hash")
+  role               UserRole         @default(REPORTER)
+  createdAt          DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
   comments           Comment[]
+  addedMembers       ProjectMember[]  @relation("ProjectMemberAdder")
+  projectMemberships ProjectMember[]  @relation("ProjectMemberUser")
+  createdProjects    Project[]        @relation("ProjectCreator")
   ticketActivities   TicketActivity[]
+  assignedTickets    Ticket[]         @relation("TicketAssignee")
+  reportedTickets    Ticket[]         @relation("TicketReporter")
 
   @@map("users")
 }
 
 model Project {
-  id          String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  createdBy   String        @map("created_by") @db.Uuid
+  id          String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdBy   String          @map("created_by") @db.Uuid
   name        String
   description String
-  slug        String        @unique
-  status      ProjectStatus @default(OPEN)
-  createdAt   DateTime      @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt   DateTime?     @map("updated_at") @db.Timestamptz
-
-  // Relations
-  creator User            @relation("ProjectCreator", fields: [createdBy], references: [id])
-  tickets Ticket[]
-  labels  Label[]
-  members ProjectMember[]
+  slug        String          @unique
+  status      ProjectStatus   @default(OPEN)
+  createdAt   DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime?       @map("updated_at") @db.Timestamptz(6)
+  labels      Label[]
+  members     ProjectMember[]
+  creator     User            @relation("ProjectCreator", fields: [createdBy], references: [id])
+  tickets     Ticket[]
 
   @@map("projects")
 }
 
 model Label {
-  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  projectId String    @map("project_id") @db.Uuid
-  name      String
-  color     String
-  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt DateTime? @map("updated_at") @db.Timestamptz
-
-  // Relations
+  id           String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  projectId    String        @map("project_id") @db.Uuid
+  name         String
+  color        String
+  createdAt    DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime?     @map("updated_at") @db.Timestamptz(6)
   project      Project       @relation(fields: [projectId], references: [id])
   ticketLabels TicketLabel[]
 
@@ -67,24 +58,22 @@ model Label {
 }
 
 model Ticket {
-  id          String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  projectId   String         @map("project_id") @db.Uuid
-  reporterId  String         @map("reporter_id") @db.Uuid
-  assigneeId  String?        @map("assignee_id") @db.Uuid
-  title       String
-  description String
-  status      TicketStatus   @default(OPEN)
-  priority    TicketPriority @default(LOW)
-  createdAt   DateTime       @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt   DateTime?      @map("updated_at") @db.Timestamptz
-
-  // Relations
-  project      Project          @relation(fields: [projectId], references: [id])
-  reporter     User             @relation("TicketReporter", fields: [reporterId], references: [id])
-  assignee     User?            @relation("TicketAssignee", fields: [assigneeId], references: [id])
-  ticketLabels TicketLabel[]
+  id           String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  projectId    String           @map("project_id") @db.Uuid
+  reporterId   String           @map("reporter_id") @db.Uuid
+  assigneeId   String?          @map("assignee_id") @db.Uuid
+  title        String
+  description  String
+  status       TicketStatus     @default(OPEN)
+  priority     TicketPriority   @default(LOW)
+  createdAt    DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime?        @map("updated_at") @db.Timestamptz(6)
   comments     Comment[]
   activities   TicketActivity[]
+  ticketLabels TicketLabel[]
+  assignee     User?            @relation("TicketAssignee", fields: [assigneeId], references: [id])
+  project      Project          @relation(fields: [projectId], references: [id])
+  reporter     User             @relation("TicketReporter", fields: [reporterId], references: [id])
 
   @@map("tickets")
 }
@@ -92,11 +81,9 @@ model Ticket {
 model TicketLabel {
   ticketId  String   @map("ticket_id") @db.Uuid
   labelId   String   @map("label_id") @db.Uuid
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
-
-  // Relations
-  ticket Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
-  label  Label  @relation(fields: [labelId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  label     Label    @relation(fields: [labelId], references: [id], onDelete: Cascade)
+  ticket    Ticket   @relation(fields: [ticketId], references: [id], onDelete: Cascade)
 
   @@id([ticketId, labelId])
   @@map("ticket_labels")
@@ -106,12 +93,10 @@ model ProjectMember {
   projectId String   @map("project_id") @db.Uuid
   userId    String   @map("user_id") @db.Uuid
   addedBy   String   @map("added_by") @db.Uuid
-  addedAt   DateTime @default(now()) @map("added_at") @db.Timestamptz
-
-  // Relations
-  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  user    User    @relation("ProjectMemberUser", fields: [userId], references: [id], onDelete: Cascade)
-  adder   User    @relation("ProjectMemberAdder", fields: [addedBy], references: [id])
+  addedAt   DateTime @default(now()) @map("added_at") @db.Timestamptz(6)
+  adder     User     @relation("ProjectMemberAdder", fields: [addedBy], references: [id])
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user      User     @relation("ProjectMemberUser", fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([projectId, userId])
   @@map("project_members")
@@ -122,12 +107,10 @@ model Comment {
   ticketId  String    @map("ticket_id") @db.Uuid
   authorId  String    @map("author_id") @db.Uuid
   content   String
-  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt DateTime? @map("updated_at") @db.Timestamptz
-
-  // Relations
-  ticket Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
-  author User   @relation(fields: [authorId], references: [id])
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime? @map("updated_at") @db.Timestamptz(6)
+  author    User      @relation(fields: [authorId], references: [id])
+  ticket    Ticket    @relation(fields: [ticketId], references: [id], onDelete: Cascade)
 
   @@map("comments")
 }
@@ -138,16 +121,13 @@ model TicketActivity {
   actorId      String             @map("actor_id") @db.Uuid
   activityType TicketActivityType @map("activity_type")
   detail       Json
-  createdAt    DateTime           @default(now()) @map("created_at") @db.Timestamptz
-
-  // Relations
-  ticket Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
-  actor  User   @relation(fields: [actorId], references: [id])
+  createdAt    DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
+  actor        User               @relation(fields: [actorId], references: [id])
+  ticket       Ticket             @relation(fields: [ticketId], references: [id], onDelete: Cascade)
 
   @@map("ticket_activity")
 }
 
-// Enums
 enum UserRole {
   REPORTER  @map("reporter")
   DEVELOPER @map("developer")

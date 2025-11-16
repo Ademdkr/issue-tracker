@@ -3,12 +3,11 @@ import {
   NotFoundException,
   ForbiddenException,
 } from '@nestjs/common';
-import { PrismaService } from '../../../prisma/prisma.service';
-import { AuthorizationService } from '../authorization/services/authorization.service';
+import { PrismaService } from '../database';
 import {
   UpdateCommentPolicyHandler,
   DeleteCommentPolicyHandler,
-} from '../authorization/policies';
+} from '../auth/policies';
 import { Comment as PrismaComment } from '@prisma/client';
 import {
   Comment,
@@ -21,7 +20,6 @@ import {
 export class CommentsService {
   constructor(
     private prisma: PrismaService,
-    private authService: AuthorizationService,
     private updateCommentPolicy: UpdateCommentPolicyHandler,
     private deleteCommentPolicy: DeleteCommentPolicyHandler
   ) {}

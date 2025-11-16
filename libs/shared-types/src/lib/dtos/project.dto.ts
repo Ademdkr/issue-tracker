@@ -10,6 +10,7 @@ import { VALIDATION_LIMITS } from '../constants';
 /**
  * DTO für Projekt-Erstellung
  * Nur Manager und Admins können Projekte erstellen
+ * createdBy wird automatisch vom Backend gesetzt
  */
 export class CreateProjectDto {
   @IsString()
@@ -26,10 +27,10 @@ export class CreateProjectDto {
   })
   description: string;
 
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
   @IsUUID(4, { message: 'Created by must be a valid UUID' })
-  createdBy: string;
+  createdBy?: string;
 }
 
 /**
@@ -60,6 +61,7 @@ export class AdminUpdateProjectDto extends UpdateProjectDto {
 
 /**
  * DTO für Projektmitglied hinzufügen
+ * addedBy wird automatisch vom Backend gesetzt
  */
 export class AddProjectMemberDto {
   @IsString()
@@ -67,10 +69,10 @@ export class AddProjectMemberDto {
   @IsUUID(4)
   userId: string;
 
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
   @IsUUID(4)
-  addedBy: string;
+  addedBy?: string;
 }
 
 /**

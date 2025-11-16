@@ -6,7 +6,7 @@ import {
   ConflictException,
 } from '@nestjs/common';
 // Prisma Datenbankservice für Datenbankoperationen
-import { PrismaService } from '../../../prisma/prisma.service';
+import { PrismaService } from '../database';
 // Slug-Generator Service für automatische Projekt-Abkürzungen
 import { SlugGeneratorService } from './slug-generator.service';
 // Prisma-generierte Typen für typsichere Datenbankoperationen
@@ -130,16 +130,37 @@ export class ProjectsService {
   }
 
   /**
-   * Ruft alle Projekte aus der Datenbank ab
+   * Alle Projekte basierend auf User-Rolle abrufen
    *
-   * @returns Array aller Projekte, sortiert nach Erstellungsdatum (neueste zuerst)
+   * Filterlogik:
+   * - Admin/Manager: Alle Projekte
+   * - Developer/Reporter: Nur Projekte mit eigener Mitgliedschaft
+   *
+   * @param userId - ID des angemeldeten Users
+   * @param userRole - Rolle des Users
+   * @returns Promise<Project[]> - Gefilterte Projekt-Liste
    */
-  async findAll(): Promise<Project[]> {
+  async findAllByRole(userId: string, userRole: UserRole): Promise<Project[]> {
+    // Admin und Manager sehen alle Projekte
+    if (userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) {
+      const projects = await this.prisma.project.findMany({
+        orderBy: { createdAt: 'desc' },
+      });
+      return projects.map((project) => this.mapPrismaToProject(project));
+    }
+
+    // Developer und Reporter sehen nur Projekte mit Mitgliedschaft
     const projects = await this.prisma.project.findMany({
-      orderBy: { createdAt: 'desc' }, // Neueste Projekte zuerst
+      where: {
+        members: {
+          some: {
+            userId: userId,
+          },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
     });
 
-    // Alle Prisma-Objekte zu Shared-Types konvertieren
     return projects.map((project) => this.mapPrismaToProject(project));
   }
 

@@ -3,16 +3,12 @@ import {
   NotFoundException,
   ForbiddenException,
   BadRequestException,
+  Inject,
+  forwardRef,
 } from '@nestjs/common';
-import { PrismaService } from '../../../prisma/prisma.service';
-import { AuthorizationService } from '../authorization/services/authorization.service';
+import { PrismaService } from '../database';
 import { TicketActivitiesService } from '../ticket-activities/ticket-activities.service';
-import {
-  UpdateTicketPolicyHandler,
-  AssignTicketPolicyHandler,
-  SetTicketPriorityPolicyHandler,
-  SetTicketStatusPolicyHandler,
-} from '../authorization/policies';
+import { UpdateTicketPolicyHandler } from '../auth/policies';
 import {
   Ticket as PrismaTicket,
   TicketPriority as PrismaTicketPriority,
@@ -32,12 +28,9 @@ import {
 export class TicketsService {
   constructor(
     private prisma: PrismaService,
-    private authService: AuthorizationService,
+    @Inject(forwardRef(() => TicketActivitiesService))
     private activityService: TicketActivitiesService,
-    private updateTicketPolicy: UpdateTicketPolicyHandler,
-    private assignTicketPolicy: AssignTicketPolicyHandler,
-    private setPriorityPolicy: SetTicketPriorityPolicyHandler,
-    private setStatusPolicy: SetTicketStatusPolicyHandler
+    private updateTicketPolicy: UpdateTicketPolicyHandler
   ) {}
 
   /**
@@ -408,7 +401,7 @@ export class TicketsService {
 
     // Priority: Policy prüfen
     if (updateTicketDto.priority !== undefined) {
-      const canSetPriority = await this.setPriorityPolicy.handle(
+      const canSetPriority = this.updateTicketPolicy.canSetPriority(
         user,
         ticketForPolicy
       );
@@ -420,7 +413,7 @@ export class TicketsService {
 
     // Status: Policy prüfen
     if (updateTicketDto.status !== undefined) {
-      const canSetStatus = await this.setStatusPolicy.handle(
+      const canSetStatus = this.updateTicketPolicy.canSetStatus(
         user,
         ticketForPolicy
       );
@@ -451,10 +444,11 @@ export class TicketsService {
 
     // Assignee: Policy prüfen
     if (updateTicketDto.assigneeId !== undefined) {
-      const canAssign = await this.assignTicketPolicy.handle(user, {
-        ticket: ticketForPolicy,
-        assigneeId: updateTicketDto.assigneeId,
-      });
+      const canAssign = this.updateTicketPolicy.canAssign(
+        user,
+        ticketForPolicy,
+        updateTicketDto.assigneeId
+      );
 
       if (!canAssign) {
         throw new ForbiddenException(

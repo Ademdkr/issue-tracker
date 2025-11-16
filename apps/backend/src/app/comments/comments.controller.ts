@@ -7,14 +7,11 @@ import {
   Body,
   Param,
   UseGuards,
-  UseInterceptors,
   ParseUUIDPipe,
 } from '@nestjs/common';
 import { CommentsService } from './comments.service';
-import { CurrentUserInterceptor } from '../common/interceptors';
-import { RoleGuard } from '../common/guards/role.guard';
-import { ProjectAccessGuard } from '../common/guards/project-access.guard';
-import { CurrentUser } from '../common/decorators/current-user.decorator';
+import { RoleGuard, ProjectAccessGuard } from '../auth';
+import { CurrentUser } from '../auth';
 import {
   User,
   Comment,
@@ -37,7 +34,6 @@ import {
  */
 @Controller('projects/:projectId/tickets/:ticketId/comments')
 @UseGuards(RoleGuard, ProjectAccessGuard)
-@UseInterceptors(CurrentUserInterceptor)
 export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
