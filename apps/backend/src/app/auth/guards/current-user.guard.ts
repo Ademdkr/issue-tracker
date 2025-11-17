@@ -4,8 +4,10 @@ import {
   ExecutionContext,
   UnauthorizedException,
 } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
 import { PrismaService } from '../../database';
 import { User } from '@issue-tracker/shared-types';
+import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
 
 /**
  * Guard für Authentifizierung via x-user-id Header
@@ -14,6 +16,8 @@ import { User } from '@issue-tracker/shared-types';
  * Muss als globaler Guard (APP_GUARD) registriert sein, um vor allen anderen
  * Guards zu laufen.
  *
+ * Respektiert @Public() Decorator für öffentliche Routen (z.B. Login).
+ *
  * @remarks
  * TEMPORÄR: Wird durch JWT Authentication (passport-jwt) ersetzt.
  *
@@ -21,9 +25,22 @@ import { User } from '@issue-tracker/shared-types';
  */
 @Injectable()
 export class CurrentUserGuard implements CanActivate {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly reflector: Reflector
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    // Prüfe ob Route als @Public() markiert ist
+    const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
+
+    if (isPublic) {
+      return true; // Öffentliche Route, keine Authentifizierung erforderlich
+    }
+
     const request = context.switchToHttp().getRequest();
     const userId = this.extractUserId(request.headers['x-user-id']);
 

@@ -15,22 +15,22 @@ import { VALIDATION_LIMITS } from '../constants';
 export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
-  name: string;
+  name!: string;
 
   @IsString()
   @IsNotEmpty()
-  surname: string;
+  surname!: string;
 
   @IsEmail()
   @IsNotEmpty()
-  email: string;
+  email!: string;
 
   @IsString()
   @IsNotEmpty()
   @MinLength(VALIDATION_LIMITS.PASSWORD_MIN, {
     message: `Password must be at least ${VALIDATION_LIMITS.PASSWORD_MIN} characters long`,
   })
-  password: string;
+  password!: string;
 
   @IsOptional()
   @IsEnum(UserRole)
@@ -64,25 +64,25 @@ export class UpdateUserDto {
 export class LoginDto {
   @IsEmail()
   @IsNotEmpty()
-  email: string;
+  email!: string;
 
   @IsString()
   @IsNotEmpty()
-  password: string;
+  password!: string;
 }
 
 /**
  * DTO für Login-Response
  */
 export class LoginResponseDto {
-  user: {
+  user!: {
     id: string;
     name: string;
     surname: string;
     email: string;
     role: UserRole;
   };
-  accessToken: string;
+  accessToken!: string;
   refreshToken?: string;
 }
 
@@ -92,12 +92,12 @@ export class LoginResponseDto {
 export class ChangePasswordDto {
   @IsString()
   @IsNotEmpty()
-  currentPassword: string;
+  currentPassword!: string;
 
   @IsString()
   @IsNotEmpty()
   @MinLength(VALIDATION_LIMITS.PASSWORD_MIN, {
     message: `New password must be at least ${VALIDATION_LIMITS.PASSWORD_MIN} characters long`,
   })
-  newPassword: string;
+  newPassword!: string;
 }

@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../../database';
 import * as bcrypt from 'bcrypt';
-import { User } from '@issue-tracker/shared-types';
+import { User, LoginResponse } from '@issue-tracker/shared-types';
 
 /**
  * JWT Payload Interface
@@ -11,14 +11,6 @@ export interface JwtPayload {
   sub: string; // User ID
   email: string;
   role: string;
-}
-
-/**
- * Login Response Interface
- */
-export interface LoginResponse {
-  access_token: string;
-  user: User;
 }
 
 /**

@@ -9,14 +9,14 @@ import { IsNotEmpty, IsString, Matches, IsOptional } from 'class-validator';
 export class CreateLabelDto {
   @IsString()
   @IsNotEmpty()
-  name: string;
+  name!: string;
 
   @IsString()
   @IsNotEmpty()
   @Matches(/^#[0-9A-Fa-f]{6}$/, {
     message: 'Color must be a valid hex color code (e.g., #FF0000)',
   })
-  color: string;
+  color!: string;
 }
 
 /**

@@ -1,9 +1,17 @@
+import { User } from '../models/user.model';
+
 // Generic API Response Wrapper
 export interface ApiResponse<T = unknown> {
   data: T;
   message?: string;
   success: boolean;
   timestamp: string;
+}
+
+// Auth Login Response
+export interface LoginResponse {
+  access_token: string;
+  user: User;
 }
 
 // Simple Message Response (z.B. für Health Checks)

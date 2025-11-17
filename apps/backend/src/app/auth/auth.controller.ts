@@ -6,22 +6,9 @@ import {
   HttpStatus,
   ValidationPipe,
 } from '@nestjs/common';
-import { AuthService, LoginResponse } from './services/auth.service';
+import { AuthService } from './services/auth.service';
 import { Public } from './decorators/public.decorator';
-import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
-
-/**
- * Login DTO
- */
-export class LoginDto {
-  @IsEmail({}, { message: 'Invalid email format' })
-  @IsNotEmpty({ message: 'Email is required' })
-  email: string;
-
-  @IsNotEmpty({ message: 'Password is required' })
-  @MinLength(6, { message: 'Password must be at least 6 characters' })
-  password: string;
-}
+import { LoginDto, LoginResponse } from '@issue-tracker/shared-types';
 
 /**
  * Authentication Controller
@@ -38,7 +25,7 @@ export class AuthController {
    *
    * Body:
    * {
-   *   "email": "admin@issuetracker.com",
+   *   "email": "admin@example.com",
    *   "password": "Admin123!"
    * }
    *

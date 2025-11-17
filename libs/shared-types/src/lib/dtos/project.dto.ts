@@ -18,14 +18,14 @@ export class CreateProjectDto {
   @MaxLength(VALIDATION_LIMITS.PROJECT_NAME_MAX, {
     message: `Project name must not exceed ${VALIDATION_LIMITS.PROJECT_NAME_MAX} characters`,
   })
-  name: string;
+  name!: string;
 
   @IsString()
   @IsNotEmpty()
   @MaxLength(VALIDATION_LIMITS.PROJECT_DESCRIPTION_MAX, {
     message: `Description must not exceed ${VALIDATION_LIMITS.PROJECT_DESCRIPTION_MAX} characters`,
   })
-  description: string;
+  description!: string;
 
   @IsOptional()
   @IsString()
@@ -67,7 +67,7 @@ export class AddProjectMemberDto {
   @IsString()
   @IsNotEmpty()
   @IsUUID(4)
-  userId: string;
+  userId!: string;
 
   @IsOptional()
   @IsString()
@@ -82,5 +82,5 @@ export class RemoveProjectMemberDto {
   @IsString()
   @IsNotEmpty()
   @IsUUID(4)
-  userId: string;
+  userId!: string;
 }

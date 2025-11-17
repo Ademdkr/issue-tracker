@@ -1,1 +1,85 @@
-/* You can add global styles to this file, and also import other style files */
+/* ===================================================================
+   Angular Material Theme Configuration
+   =================================================================== */
+
+// Import Material theming functions
+@use '@angular/material' as mat;
+
+// ===================================================================
+// Error Snackbar Styling
+// ===================================================================
+
+@use './app/core/interceptors/error-snackbar.scss';
+
+// Include the common styles for Angular Material (core)
+@include mat.core();
+
+// ===================================================================
+// Define Custom Color Palette
+// ===================================================================
+
+// Primary Color Palette (Indigo)
+$issue-tracker-primary: mat.m2-define-palette(mat.$m2-indigo-palette);
+
+// Accent Color Palette (Pink)
+$issue-tracker-accent: mat.m2-define-palette(
+  mat.$m2-pink-palette,
+  A200,
+  A100,
+  A400
+);
+
+// Warn Color Palette (Red)
+$issue-tracker-warn: mat.m2-define-palette(mat.$m2-red-palette);
+
+// ===================================================================
+// Create Light Theme
+// ===================================================================
+
+$issue-tracker-theme: mat.m2-define-light-theme(
+  (
+    color: (
+      primary: $issue-tracker-primary,
+      accent: $issue-tracker-accent,
+      warn: $issue-tracker-warn,
+    ),
+    typography: mat.m2-define-typography-config(),
+    density: 0,
+  )
+);
+
+// Apply the theme to all Material components
+@include mat.all-component-themes($issue-tracker-theme);
+
+// ===================================================================
+// Global Styles
+// ===================================================================
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+/* Custom scrollbar styling (optional) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

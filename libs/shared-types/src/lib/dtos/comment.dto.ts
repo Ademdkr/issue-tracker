@@ -18,7 +18,7 @@ export class CreateCommentDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(VALIDATION_LIMITS.COMMENT_CONTENT_MAX)
-  content: string;
+  content!: string;
 }
 
 /**
@@ -33,5 +33,5 @@ export class UpdateCommentDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(VALIDATION_LIMITS.COMMENT_CONTENT_MAX)
-  content: string;
+  content!: string;
 }

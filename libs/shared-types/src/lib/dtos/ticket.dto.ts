@@ -26,11 +26,11 @@ export class CreateTicketDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(VALIDATION_LIMITS.TICKET_TITLE_MAX)
-  title: string;
+  title!: string;
 
   @IsString()
   @IsNotEmpty()
-  description: string;
+  description!: string;
 
   @IsOptional()
   @IsEnum(TicketPriority)
@@ -93,18 +93,18 @@ export class CreateTicketActivityDto {
   @IsString()
   @IsNotEmpty()
   @IsUUID(4)
-  ticketId: string;
+  ticketId!: string;
 
   @IsString()
   @IsNotEmpty()
   @IsUUID(4)
-  actorId: string;
+  actorId!: string;
 
   @IsEnum(TicketActivityType)
-  activityType: TicketActivityType;
+  activityType!: TicketActivityType;
 
   @IsObject()
-  detail: {
+  detail!: {
     oldValue?: string | null;
     newValue?: string | null;
     labelName?: string;
