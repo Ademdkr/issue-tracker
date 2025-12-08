@@ -1,0 +1,89 @@
+<div class="layout-container">
+  <app-create-project-form
+    *ngIf="showCreateProjectForm"
+    (closeForm)="onCloseCreateProjectForm()"
+    (createProject)="onCreateProject($event)"
+  ></app-create-project-form>
+
+  <app-general-settings-form
+    *ngIf="showSettingsForm && selectedProject"
+    [project]="selectedProject"
+    (closeForm)="onCloseSettings()"
+    (saveForm)="onSaveSettings($event)"
+    (deleteProject)="onDeleteProject($event)"
+  ></app-general-settings-form>
+
+  <mat-sidenav-container class="sidenav-container">
+    <!--  -->
+    <mat-sidenav
+      #drawer
+      class="sidenav"
+      mode="side"
+      fixedInViewport
+      disableClose
+      opened
+    >
+      <mat-toolbar class="sidebar-header">
+        <mat-icon class="app-icon">confirmation_number</mat-icon>
+        <span class="app-name">Issue Tracker</span>
+      </mat-toolbar>
+
+      <mat-nav-list class="nav-list">
+        <a
+          mat-list-item
+          *ngFor="let item of navigationItems"
+          [routerLink]="item.route"
+          routerLinkActive="active"
+          class="nav-item"
+        >
+          <mat-icon matListItemIcon>{{ item.icon}}</mat-icon>
+          <span matListItemTitle>{{ item.label }}</span>
+        </a>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <mat-toolbar color="primary" class="topbar">
+        <!-- <button
+          type="button"
+          aria-label="Toggle sidenav"
+          mat-icon-button
+          (click)="drawer.toggle()"
+          class="menu-button"
+        ></button> -->
+        <div class="topbar-title-group">
+          <span class="topbar-title">{{pageTitle}}</span>
+          <p class="topbar-subtitle">{{pageSubtitle}}</p>
+        </div>
+
+        <div class="topbar-button-group">
+          <button
+            class="topbar-button"
+            *ngIf="showNewProjectButton"
+            mat-raised-button
+            type="button"
+            (click)="openCreateProjectForm($event)"
+          >
+            <mat-icon class="add-icon">add</mat-icon>
+            <mat-icon>assignment</mat-icon>
+            Neues Projekt
+          </button>
+          <button
+            class="topbar-button"
+            *ngIf="showNewTicketButton"
+            mat-raised-button
+            type="button"
+          >
+            <mat-icon class="add-icon">add</mat-icon>
+            <mat-icon>confirmation_number</mat-icon>
+            Neues Ticket
+          </button>
+        </div>
+      </mat-toolbar>
+
+      <main class="content-area">
+        <router-outlet></router-outlet>
+      </main>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

@@ -14,6 +14,7 @@ import { Project as PrismaProject } from '@prisma/client';
 // Shared Types für einheitliche Typen zwischen Backend und Frontend
 import {
   Project,
+  ProjectSummary,
   CreateProjectDto,
   UpdateProjectDto,
   AddProjectMemberDto,
@@ -138,30 +139,77 @@ export class ProjectsService {
    *
    * @param userId - ID des angemeldeten Users
    * @param userRole - Rolle des Users
-   * @returns Promise<Project[]> - Gefilterte Projekt-Liste
+   * @returns Promise<ProjectSummary[]> - Gefilterte Projekt-Liste mit Statistiken
    */
-  async findAllByRole(userId: string, userRole: UserRole): Promise<Project[]> {
+  async findAllByRole(
+    userId: string,
+    userRole: UserRole
+  ): Promise<ProjectSummary[]> {
     // Admin und Manager sehen alle Projekte
-    if (userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) {
-      const projects = await this.prisma.project.findMany({
-        orderBy: { createdAt: 'desc' },
-      });
-      return projects.map((project) => this.mapPrismaToProject(project));
-    }
+    const whereClause =
+      userRole === UserRole.ADMIN || userRole === UserRole.MANAGER
+        ? {}
+        : {
+            members: {
+              some: {
+                userId: userId,
+              },
+            },
+          };
 
-    // Developer und Reporter sehen nur Projekte mit Mitgliedschaft
     const projects = await this.prisma.project.findMany({
-      where: {
+      where: whereClause,
+      include: {
+        creator: {
+          select: {
+            id: true,
+            name: true,
+            surname: true,
+          },
+        },
+        tickets: {
+          select: {
+            status: true,
+          },
+        },
         members: {
-          some: {
-            userId: userId,
+          select: {
+            userId: true,
           },
         },
       },
       orderBy: { createdAt: 'desc' },
     });
 
-    return projects.map((project) => this.mapPrismaToProject(project));
+    // Transform zu ProjectSummary mit Statistiken
+    return projects.map((project) => {
+      // Ticket-Status Aggregation
+      const ticketsByStatus = {
+        open: project.tickets.filter((t) => t.status === 'OPEN').length,
+        inProgress: project.tickets.filter((t) => t.status === 'IN_PROGRESS')
+          .length,
+        resolved: project.tickets.filter((t) => t.status === 'RESOLVED').length,
+        closed: project.tickets.filter((t) => t.status === 'CLOSED').length,
+      };
+
+      return {
+        id: project.id,
+        name: project.name,
+        description: project.description,
+        slug: project.slug,
+        status: project.status as ProjectSummary['status'],
+        createdAt: project.createdAt,
+        updatedAt: project.updatedAt,
+        ticketCount: project.tickets.length,
+        ticketsByStatus,
+        memberCount: project.members.length,
+        createdBy: {
+          id: project.creator.id,
+          name: project.creator.name,
+          surname: project.creator.surname,
+        },
+      };
+    });
   }
 
   /**
@@ -227,11 +275,6 @@ export class ProjectsService {
       updateProjectDto.name !== currentProject.name
     ) {
       updateData.name = updateProjectDto.name;
-      // Bei Namensänderung neuen Slug generieren
-      const newSlug = await this.ensureUniqueSlug(
-        this.slugGenerator.generateSlug(updateProjectDto.name)
-      );
-      updateData.slug = newSlug;
       hasChanges = true;
     }
 
@@ -311,13 +354,6 @@ export class ProjectsService {
     ) {
       updateData.name = adminUpdateDto.name;
       hasChanges = true;
-      // Nur neuen Slug generieren, wenn nicht manuell gesetzt
-      if (!adminUpdateDto.slug) {
-        const newSlug = await this.ensureUniqueSlug(
-          this.slugGenerator.generateSlug(adminUpdateDto.name)
-        );
-        updateData.slug = newSlug;
-      }
     }
 
     if (

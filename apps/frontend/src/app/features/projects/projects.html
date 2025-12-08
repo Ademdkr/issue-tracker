@@ -1,0 +1,203 @@
+<div class="projects-container">
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-spinner></mat-spinner>
+    <p>Projekte werden geladen...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !isLoading" class="error-container">
+    <mat-icon class="error-icon">error_outline</mat-icon>
+    <h3>{{ error }}</h3>
+    <button mat-raised-button color="primary" (click)="loadProjects()">
+      <mat-icon>refresh</mat-icon>
+      Erneut versuchen
+    </button>
+  </div>
+
+  <!-- Projects Content -->
+  <div *ngIf="!isLoading && !error" class="projects-content">
+    <h3>Offene Projekte</h3>
+    <div class="project-cards-group">
+      <ng-container *ngFor="let project of projects">
+        <mat-card
+          *ngIf="project.status === 'OPEN'"
+          class="project-card"
+          role="group"
+          tabindex="0"
+          MatCardAppearance="outlined"
+        >
+          <mat-card-header class="card-header">
+            <mat-card-title>{{project.name}}</mat-card-title>
+            <mat-card-subtitle> {{project.description}} </mat-card-subtitle>
+            <button
+              mat-icon-button
+              matTooltip="General-Einstellungen"
+              matTooltipPosition="below"
+              aria-label="General-Einstellungen öffnen"
+              (click)="openSettings(project, $event)"
+            >
+              <mat-icon>settings</mat-icon>
+            </button>
+          </mat-card-header>
+          <mat-card-content>
+            <!-- Ticket Statistics by Status -->
+            <div class="ticket-stats" *ngIf="project.ticketsByStatus">
+              <div class="stat-item">
+                <mat-icon class="status-icon open"
+                  >radio_button_unchecked</mat-icon
+                >
+                <span>{{ project.ticketsByStatus.open }} Offen</span>
+              </div>
+              <div class="stat-item">
+                <mat-icon class="status-icon progress">pending</mat-icon>
+                <span>{{ project.ticketsByStatus.inProgress }} In Arbeit</span>
+              </div>
+              <div class="stat-item">
+                <mat-icon class="status-icon resolved"
+                  >check_circle_outline</mat-icon
+                >
+                <span>{{ project.ticketsByStatus.resolved }} Gelöst</span>
+              </div>
+              <div class="stat-item">
+                <mat-icon class="status-icon closed">check_circle</mat-icon>
+                <span>{{ project.ticketsByStatus.closed }} Geschlossen</span>
+              </div>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <!-- General Stats -->
+            <div class="project-stats">
+              <div class="stat">
+                <mat-icon>confirmation_number</mat-icon>
+                <span>{{ project.ticketCount }} Tickets gesamt</span>
+              </div>
+              <div class="stat">
+                <mat-icon>group</mat-icon>
+                <span>{{ project.memberCount }} Mitglieder</span>
+              </div>
+              <!-- Creator Info -->
+              <div class="project-meta" *ngIf="project.createdBy">
+                <mat-icon>person</mat-icon>
+                <span
+                  >Erstellt von {{ project.createdBy.name }} {{
+                  project.createdBy.surname }}</span
+                >
+              </div>
+            </div>
+
+            <!-- Created Date -->
+            <!-- <div class="project-meta">
+            <mat-icon>schedule</mat-icon>
+            <span>{{ getRelativeTime(project.createdAt) }}</span>
+            </div>
+            </mat-card-content> -->
+
+            <mat-card-actions align="end">
+              <button mat-button [routerLink]="['/projects', project.id]">
+                Details
+              </button>
+            </mat-card-actions>
+          </mat-card-content>
+        </mat-card>
+      </ng-container>
+    </div>
+  </div>
+
+  <mat-divider
+    *ngIf="!isLoading && !error"
+    style="padding-bottom: 24px"
+  ></mat-divider>
+
+  <div *ngIf="!isLoading && !error" class="projects-content">
+    <h3>Geschlossene Projekte</h3>
+    <div class="project-cards-group">
+      <ng-container *ngFor="let project of projects">
+        <mat-card
+          *ngIf="project.status === 'CLOSED'"
+          class="project-card"
+          role="group"
+          tabindex="0"
+          MatCardAppearance="outlined"
+        >
+          <mat-card-header class="card-header">
+            <mat-card-title>{{project.name}}</mat-card-title>
+            <mat-card-subtitle> {{project.description}} </mat-card-subtitle>
+            <button
+              mat-icon-button
+              matTooltip="General-Einstellungen"
+              matTooltipPosition="below"
+              aria-label="General-Einstellungen öffnen"
+              (click)="openSettings(project, $event)"
+            >
+              <mat-icon>settings</mat-icon>
+            </button>
+          </mat-card-header>
+          <mat-card-content>
+            <!-- Ticket Statistics by Status -->
+            <div class="ticket-stats" *ngIf="project.ticketsByStatus">
+              <div class="stat-item">
+                <mat-icon class="status-icon open"
+                  >radio_button_unchecked</mat-icon
+                >
+                <span>{{ project.ticketsByStatus.open }} Offen</span>
+              </div>
+              <div class="stat-item">
+                <mat-icon class="status-icon progress">pending</mat-icon>
+                <span>{{ project.ticketsByStatus.inProgress }} In Arbeit</span>
+              </div>
+              <div class="stat-item">
+                <mat-icon class="status-icon resolved"
+                  >check_circle_outline</mat-icon
+                >
+                <span>{{ project.ticketsByStatus.resolved }} Gelöst</span>
+              </div>
+              <div class="stat-item">
+                <mat-icon class="status-icon closed">check_circle</mat-icon>
+                <span>{{ project.ticketsByStatus.closed }} Geschlossen</span>
+              </div>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <!-- General Stats -->
+            <div class="project-stats">
+              <div class="stat">
+                <mat-icon class="status-icon closed"
+                  >confirmation_number</mat-icon
+                >
+                <span>{{ project.ticketCount }} Tickets gesamt</span>
+              </div>
+              <div class="stat">
+                <mat-icon class="status-icon closed">group</mat-icon>
+                <span>{{ project.memberCount }} Mitglieder</span>
+              </div>
+              <!-- Creator Info -->
+              <div class="project-meta" *ngIf="project.createdBy">
+                <mat-icon class="status-icon closed">person</mat-icon>
+                <span
+                  >Erstellt von {{ project.createdBy.name }} {{
+                  project.createdBy.surname }}</span
+                >
+              </div>
+            </div>
+
+            <!-- Created Date -->
+            <!-- <div class="project-meta">
+            <mat-icon>schedule</mat-icon>
+            <span>{{ getRelativeTime(project.createdAt) }}</span>
+            </div>
+            </mat-card-content> -->
+
+            <mat-card-actions align="end">
+              <button mat-button [routerLink]="['/projects', project.id]">
+                Details
+              </button>
+            </mat-card-actions>
+          </mat-card-content>
+        </mat-card>
+      </ng-container>
+    </div>
+  </div>
+</div>

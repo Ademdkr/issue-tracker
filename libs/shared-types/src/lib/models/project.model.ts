@@ -21,13 +21,32 @@ export interface ProjectWithCreator extends Project {
   };
 }
 
-// Project summary for lists
+// Project summary for lists (ERWEITERT)
 export interface ProjectSummary {
   id: string;
   name: string;
+  description: string;
   slug: string;
   status: ProjectStatus;
   createdAt: Date;
+  updatedAt?: Date | null;
+
+  // Ticket-Statistiken
   ticketCount?: number;
+  ticketsByStatus?: {
+    open: number;
+    inProgress: number;
+    resolved: number;
+    closed: number;
+  };
+
+  // Member-Statistiken
   memberCount?: number;
+
+  // Creator Info (leichtgewichtig)
+  createdBy: {
+    id: string;
+    name: string;
+    surname: string;
+  };
 }

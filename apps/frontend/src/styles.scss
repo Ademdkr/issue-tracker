@@ -83,3 +83,9 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+// apps/frontend/src/styles.scss
+:root {
+  --mat-toolbar-standard-height: 96px;
+  --mat-toolbar-mobile-height: 64px; // Mobile Höhe
+}

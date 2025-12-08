@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
 import {
   FormBuilder,
   FormGroup,
@@ -37,10 +38,10 @@ import { LoginResponse } from '@issue-tracker/shared-types';
     MatProgressSpinnerModule,
     MatSnackBarModule,
   ],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
+  templateUrl: './login.html',
+  styleUrl: './login.scss',
 })
-export class LoginComponent {
+export class Login {
   loginForm: FormGroup;
   isLoading = false;
   hidePassword = true;

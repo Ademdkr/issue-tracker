@@ -19,6 +19,7 @@ import {
   UpdateProjectDto,
   AdminUpdateProjectDto,
   Project,
+  ProjectSummary,
   AddProjectMemberDto,
   MessageResponse,
   CreateLabelDto,
@@ -84,10 +85,10 @@ export class ProjectsController {
    * - Developer/Reporter: Sehen nur Projekte mit eigener Mitgliedschaft
    *
    * @param user - Angemeldeter User (via CurrentUserGuard)
-   * @returns Promise<Project[]> - Gefilterte Projekt-Liste
+   * @returns Promise<ProjectSummary[]> - Gefilterte Projekt-Liste mit Statistiken
    */
   @Get()
-  async findAll(@CurrentUser() user: User): Promise<Project[]> {
+  async findAll(@CurrentUser() user: User): Promise<ProjectSummary[]> {
     return await this.projectsService.findAllByRole(user.id, user.role);
   }
 
