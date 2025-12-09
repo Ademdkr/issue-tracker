@@ -47,6 +47,32 @@
     }
   }
   .projects-content {
+    // Filter and Search Container
+    .filter-search-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 24px;
+
+      .filter-buttons {
+        display: flex;
+        gap: 12px;
+
+        .filter-btn {
+          min-width: 120px;
+          border-radius: 24px;
+          transition: all 0.2s ease;
+        }
+      }
+
+      .search-field {
+        min-width: 320px;
+        height: 56px;
+        margin: 0;
+      }
+    }
+
     h3 {
       margin: 0 0 16px 24px;
       font-size: 20px;

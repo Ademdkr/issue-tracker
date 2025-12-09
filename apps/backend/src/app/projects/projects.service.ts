@@ -143,19 +143,37 @@ export class ProjectsService {
    */
   async findAllByRole(
     userId: string,
-    userRole: UserRole
+    userRole: UserRole,
+    search?: string
   ): Promise<ProjectSummary[]> {
-    // Admin und Manager sehen alle Projekte
+    // Erstelle die Where-Clause basierend auf Rolle und Suche
+    const whereConditions: any[] = [];
+
+    // Rollenberechtigung: Developer/Reporter sehen nur ihre Projekte
+    if (userRole !== UserRole.ADMIN && userRole !== UserRole.MANAGER) {
+      whereConditions.push({
+        members: {
+          some: {
+            userId: userId,
+          },
+        },
+      });
+    }
+
+    // Suchfilter
+    if (search && search.trim()) {
+      whereConditions.push({
+        OR: [
+          { name: { contains: search.trim(), mode: 'insensitive' } },
+          { description: { contains: search.trim(), mode: 'insensitive' } },
+          { slug: { contains: search.trim(), mode: 'insensitive' } },
+        ],
+      });
+    }
+
+    // Kombiniere alle Bedingungen mit AND
     const whereClause =
-      userRole === UserRole.ADMIN || userRole === UserRole.MANAGER
-        ? {}
-        : {
-            members: {
-              some: {
-                userId: userId,
-              },
-            },
-          };
+      whereConditions.length > 0 ? { AND: whereConditions } : {};
 
     const projects = await this.prisma.project.findMany({
       where: whereClause,

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { ProjectSummary, Project } from '@issue-tracker/shared-types';
 import { environment } from '../../../environments/environment';
@@ -18,8 +18,12 @@ export class ProjectsService {
     this.projectCreatedSubject.next();
   }
 
-  findAllByRole(): Observable<ProjectSummary[]> {
-    return this.http.get<ProjectSummary[]>(this.apiUrl);
+  findAllByRole(search?: string): Observable<ProjectSummary[]> {
+    let params = new HttpParams();
+    if (search?.trim()) {
+      params = params.set('search', search.trim());
+    }
+    return this.http.get<ProjectSummary[]>(this.apiUrl, { params });
   }
 
   create(data: { name: string; description: string }): Observable<Project> {

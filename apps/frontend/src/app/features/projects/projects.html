@@ -17,9 +17,67 @@
 
   <!-- Projects Content -->
   <div *ngIf="!isLoading && !error" class="projects-content">
-    <h3>Offene Projekte</h3>
-    <div class="project-cards-group">
-      <ng-container *ngFor="let project of projects">
+    <!-- Filter and Search Section -->
+    <div class="filter-search-container">
+      <!-- Filter Buttons -->
+      <div class="filter-buttons">
+        <button
+          mat-raised-button
+          [color]="activeFilter === 'ALL' ? 'primary' : ''"
+          (click)="setFilter('ALL')"
+          class="filter-btn"
+        >
+          Alle
+        </button>
+        <button
+          mat-raised-button
+          [color]="activeFilter === 'OPEN' ? 'primary' : ''"
+          (click)="setFilter('OPEN')"
+          class="filter-btn"
+        >
+          Offen
+        </button>
+        <button
+          mat-raised-button
+          [color]="activeFilter === 'CLOSED' ? 'primary' : ''"
+          (click)="setFilter('CLOSED')"
+          class="filter-btn"
+        >
+          Geschlossen
+        </button>
+      </div>
+
+      <!-- Search Input -->
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Projekte durchsuchen</mat-label>
+        <input
+          matInput
+          [ngModel]="searchQuery"
+          (ngModelChange)="onSearchChange($event)"
+          placeholder="Nach Name, Beschreibung oder Slug suchen..."
+        />
+        <mat-icon matPrefix>search</mat-icon>
+        <button
+          *ngIf="searchQuery"
+          matSuffix
+          mat-icon-button
+          (click)="onSearchChange('')"
+          aria-label="Suche löschen"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+
+    <!-- Open Projects Section -->
+    <h3 *ngIf="activeFilter === 'ALL' || activeFilter === 'OPEN'">
+      Offene Projekte
+    </h3>
+    <div
+      class="project-cards-group"
+      *ngIf="activeFilter === 'ALL' || activeFilter === 'OPEN'"
+    >
+      <ng-container *ngFor="let project of projects; trackBy: trackByProjectId">
         <mat-card
           *ngIf="project.status === 'OPEN'"
           class="project-card"
@@ -106,14 +164,18 @@
   </div>
 
   <mat-divider
-    *ngIf="!isLoading && !error"
+    *ngIf="!isLoading && !error && activeFilter === 'ALL'"
     style="padding-bottom: 24px"
   ></mat-divider>
 
-  <div *ngIf="!isLoading && !error" class="projects-content">
+  <!-- Closed Projects Section -->
+  <div
+    *ngIf="!isLoading && !error && (activeFilter === 'ALL' || activeFilter === 'CLOSED')"
+    class="projects-content"
+  >
     <h3>Geschlossene Projekte</h3>
     <div class="project-cards-group">
-      <ng-container *ngFor="let project of projects">
+      <ng-container *ngFor="let project of projects; trackBy: trackByProjectId">
         <mat-card
           *ngIf="project.status === 'CLOSED'"
           class="project-card"
