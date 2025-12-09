@@ -1,1 +1,56 @@
-<p>project-detail works!</p>
+<div class="project-detail-container">
+  <!-- Loading State (wie bei projects.html) -->
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-spinner></mat-spinner>
+    <p>Projekt wird geladen...</p>
+  </div>
+
+  <!-- Error State (wie bei projects.html) -->
+  <div *ngIf="!isLoading && error" class="error-container">
+    <mat-icon class="error-icon">error_outline</mat-icon>
+    <h3>{{ error }}</h3>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="loadProject(project?.id || '')"
+    >
+      <mat-icon>refresh</mat-icon>
+      Erneut versuchen
+    </button>
+  </div>
+
+  <!-- Content (nur wenn geladen) -->
+  <div *ngIf="!isLoading && !error && project" class="project-content">
+    <!-- Header Section -->
+    <div class="project-header">
+      <h1>Projekt: {{ project.name }}</h1>
+      <p>{{ project.description }}</p>
+    </div>
+
+    <!-- Tabs Navigation -->
+    <mat-tab-group animationDuration="300ms">
+      <!-- Tab 1: Tickets -->
+      <mat-tab label="Tickets">
+        <div class="tab-content">
+          <!-- Hier später: <app-tickets-tab [projectId]="project.id" /> -->
+          <p>Tickets-Tab Placeholder</p>
+          <p class="placeholder-info">
+            Hier werden alle Tickets des Projekts angezeigt mit Filtern für
+            Status, Priorität, Assignee und Labels.
+          </p>
+        </div>
+      </mat-tab>
+
+      <!-- Tab 2: Verwaltung -->
+      <mat-tab label="Verwaltung">
+        <div class="tab-content">
+          <!-- Hier später: <app-management-tab [projectId]="project.id" /> -->
+          <p>Verwaltungs-Tab Placeholder</p>
+          <p class="placeholder-info">
+            Hier können Projektmitglieder und Labels verwaltet werden.
+          </p>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

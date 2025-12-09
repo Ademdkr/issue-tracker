@@ -47,7 +47,9 @@ export const appRoutes: Route[] = [
               ),
             data: {
               title: 'Projekt-Details',
+              subtitle: 'Detailansicht des ausgewählten Projektes',
               icon: 'folder_open',
+              showNewTicketButton: true,
             },
           },
         ],

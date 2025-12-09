@@ -26,6 +26,11 @@ export class ProjectsService {
     return this.http.get<ProjectSummary[]>(this.apiUrl, { params });
   }
 
+  // NEU: Einzelnes Projekt laden (falls noch nicht vorhanden)
+  findOne(id: string): Observable<Project> {
+    return this.http.get<Project>(`${this.apiUrl}/${id}`);
+  }
+
   create(data: { name: string; description: string }): Observable<Project> {
     return this.http.post<Project>(this.apiUrl, data);
   }
