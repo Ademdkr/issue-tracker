@@ -28,13 +28,29 @@ export const appRoutes: Route[] = [
       },
       {
         path: 'projects',
-        loadComponent: () =>
-          import('./features/projects/projects').then((m) => m.Projects),
-        data: {
-          title: 'Projekte',
-          subtitle: 'Übersicht der Projekte',
-          showNewProjectButton: true,
-        },
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./features/projects/projects').then((m) => m.Projects),
+            data: {
+              title: 'Projekte',
+              subtitle: 'Übersicht der Projekte',
+              showNewProjectButton: true,
+            },
+          },
+          {
+            path: ':id', // ← NEU: Detail-Route
+            loadComponent: () =>
+              import('./features/projects/project-detail/project-detail').then(
+                (m) => m.ProjectDetail
+              ),
+            data: {
+              title: 'Projekt-Details',
+              icon: 'folder_open',
+            },
+          },
+        ],
       },
       {
         path: 'tickets',
