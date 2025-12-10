@@ -89,16 +89,16 @@ export interface ProjectFilters extends PaginationQuery {
   dateTo?: string;
 }
 
-export interface TicketFilters extends PaginationQuery {
-  projectId?: string;
-  status?: string;
-  priority?: string;
-  assigneeId?: string;
-  reporterId?: string;
-  labelId?: string;
-  dateFrom?: string;
-  dateTo?: string;
-}
+// export interface TicketFilters extends PaginationQuery {
+//   projectId?: string;
+//   status?: string;
+//   priority?: string;
+//   assigneeId?: string;
+//   reporterId?: string;
+//   labelId?: string;
+//   dateFrom?: string;
+//   dateTo?: string;
+// }
 
 export interface UserFilters extends PaginationQuery {
   role?: string;

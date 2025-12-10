@@ -14,6 +14,14 @@ export interface Ticket {
   labelIds?: string[];
 }
 
+export interface TicketFilters {
+  status?: string;
+  priority?: string;
+  assigneeId?: string;
+  labelIds?: string[];
+  search?: string;
+}
+
 // Ticket with related data for frontend
 export interface TicketWithDetails extends Ticket {
   project?: {

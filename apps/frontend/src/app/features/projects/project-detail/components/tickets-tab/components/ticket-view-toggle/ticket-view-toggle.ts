@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-ticket-view-toggle',
@@ -6,4 +6,7 @@ import { Component } from '@angular/core';
   templateUrl: './ticket-view-toggle.html',
   styleUrl: './ticket-view-toggle.scss',
 })
-export class TicketViewToggle {}
+export class TicketViewToggle {
+  @Input() viewMode: 'list' | 'grid' = 'list';
+  @Output() viewModeChange = new EventEmitter<'list' | 'grid'>();
+}

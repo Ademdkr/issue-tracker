@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
+import { TicketFilters as TicketFiltersType } from '@issue-tracker/shared-types';
 
 @Component({
   selector: 'app-ticket-filters',
@@ -6,4 +7,6 @@ import { Component } from '@angular/core';
   templateUrl: './ticket-filters.html',
   styleUrl: './ticket-filters.scss',
 })
-export class TicketFilters {}
+export class TicketFilters {
+  @Output() filtersChange = new EventEmitter<TicketFiltersType>();
+}

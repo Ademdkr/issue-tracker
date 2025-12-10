@@ -1,0 +1,42 @@
+// tickets-tab.scss
+
+.tickets-tab-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem;
+}
+
+.filters-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.loading-container,
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  text-align: center;
+
+  p {
+    margin-top: 1rem;
+    color: var(--md-sys-color-on-surface-variant);
+  }
+}
+
+.error-message {
+  color: var(--md-sys-color-error);
+  margin-bottom: 1rem;
+}
+
+.table-container {
+  background-color: var(--md-sys-color-surface);
+  border-radius: 12px;
+  overflow: hidden;
+}

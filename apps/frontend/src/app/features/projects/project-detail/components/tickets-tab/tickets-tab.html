@@ -1,1 +1,42 @@
-<p>tickets-tab works!</p>
+<div class="tickets-tab-container">
+  <!-- Filter-Section -->
+  <div class="filters-section">
+    <app-ticket-filters
+      (filtersChange)="onFiltersChange($event)"
+    ></app-ticket-filters>
+
+    <app-ticket-view-toggle
+      [viewMode]="viewMode"
+      (viewModeChange)="onViewModeChange($event)"
+    ></app-ticket-view-toggle>
+  </div>
+
+  <!-- Loading State -->
+  @if (isLoading) {
+  <div class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Tickets werden geladen...</p>
+  </div>
+  }
+
+  <!-- Error State -->
+  @if (error && !isLoading) {
+  <div class="error-container">
+    <p class="error-message">{{error}}</p>
+    <button mat-raised-button color="primary" (click)="loadTickets()">
+      Erneut versuchen
+    </button>
+  </div>
+  }
+
+  <!-- Tickets Table -->
+  @if (!isLoading && !error) {
+  <div class="table-container">
+    <app-ticket-table
+      [tickets]="filteredTickets"
+      [viewMode]="viewMode"
+      (ticketClick)="onTicketClick($event)"
+    ></app-ticket-table>
+  </div>
+  }
+</div>
