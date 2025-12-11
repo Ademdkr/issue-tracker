@@ -89,6 +89,12 @@ export class TicketsTab implements OnInit, OnDestroy {
     this.filterSubject$.next(filters);
   }
 
+  onSearchChange(search: string): void {
+    // Füge Suche zu den aktuellen Filtern hinzu
+    const updatedFilters = { ...this.currentFilters, search };
+    this.filterSubject$.next(updatedFilters);
+  }
+
   onViewModeChange(mode: 'list' | 'grid'): void {
     this.viewMode = mode;
   }

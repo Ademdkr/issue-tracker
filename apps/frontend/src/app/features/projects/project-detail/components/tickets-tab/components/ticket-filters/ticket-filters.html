@@ -1,1 +1,65 @@
-<p>ticket-filters works!</p>
+<form [formGroup]="filterForm" class="filters-form">
+  <div class="filters-group">
+    <!-- Status Filter -->
+    <mat-form-field appearance="outline">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status">
+        <mat-option
+          *ngFor="let option of statusOptions"
+          [value]="option.value"
+        >
+          {{ option.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Priority Filter -->
+    <mat-form-field appearance="outline">
+      <mat-label>Priorität</mat-label>
+      <mat-select formControlName="priority">
+        <mat-option
+          *ngFor="let option of priorityOptions"
+          [value]="option.value"
+        >
+          {{ option.label}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Assignee Filter -->
+    <mat-form-field appearance="outline">
+      <mat-label>Assignee</mat-label>
+      <mat-select formControlName="assigneeId">
+        <mat-option
+          *ngFor="let option of assigneeOptions"
+          [value]="option.value"
+        >
+          {{ option.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Label Filter (Multi-Select) -->
+    <mat-form-field appearance="outline">
+      <mat-label>Label</mat-label>
+      <mat-select formControlName="labelIds" multiple>
+        <mat-option
+          *ngFor="let option of labelOptions"
+          [value]="option.value"
+        >
+          {{ option.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <!-- Reset Button unter Filtern -->
+  <button
+    mat-button
+    type="button"
+    (click)="resetFilters()"
+    class="reset-button"
+  >
+    Filter zurücksetzen
+  </button>
+</form>

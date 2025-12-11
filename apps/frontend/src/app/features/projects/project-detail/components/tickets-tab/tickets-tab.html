@@ -1,16 +1,4 @@
 <div class="tickets-tab-container">
-  <!-- Filter-Section -->
-  <div class="filters-section">
-    <app-ticket-filters
-      (filtersChange)="onFiltersChange($event)"
-    ></app-ticket-filters>
-
-    <app-ticket-view-toggle
-      [viewMode]="viewMode"
-      (viewModeChange)="onViewModeChange($event)"
-    ></app-ticket-view-toggle>
-  </div>
-
   <!-- Loading State -->
   @if (isLoading) {
   <div class="loading-container">
@@ -28,6 +16,22 @@
     </button>
   </div>
   }
+  <!-- Filter-Section -->
+  <div class="filters-section">
+    <div class="filters-left">
+      <app-ticket-filters
+        (filtersChange)="onFiltersChange($event)"
+      ></app-ticket-filters>
+    </div>
+
+    <div class="filters-right">
+      <app-ticket-view-toggle
+        [viewMode]="viewMode"
+        (viewModeChange)="onViewModeChange($event)"
+        (searchChange)="onSearchChange($event)"
+      ></app-ticket-view-toggle>
+    </div>
+  </div>
 
   <!-- Tickets Table -->
   @if (!isLoading && !error) {
