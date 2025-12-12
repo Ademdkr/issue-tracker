@@ -1,0 +1,169 @@
+.tickets-grid {
+  display: grid;
+  gap: 1.5rem;
+  padding: 1rem 0;
+  
+  // Responsive Grid
+  // Mobile: 1 Spalte
+  grid-template-columns: 1fr;
+
+  // Tablet: 2 Spalten
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  // Desktop: 3 Spalten
+  @media (min-width: 1200px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  // Large Desktop: 4 Spalten
+  @media (min-width: 1600px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+// Ticket Card Styles
+.ticket-card {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  mat-card-header {
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--md-sys-color-outline-variant);
+
+    .card-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      margin-bottom: 0.5rem;
+
+      .ticket-id {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--md-sys-color-primary);
+      }
+    }
+
+    mat-card-title {
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+    }
+
+    mat-card-subtitle {
+      font-size: 0.875rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+      line-height: 1.4;
+      max-height: 2.8em;
+    }
+  }
+
+  mat-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding-top: 1rem;
+    flex: 1;
+
+    .card-field {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+
+      .field-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+        color: var(--md-sys-color-on-surface-variant);
+      }
+
+      &.labels-field {
+        align-items: flex-start;
+
+        .labels-container {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.5rem;
+          flex: 1;
+        }
+      }
+
+      mat-chip {
+        font-size: 0.75rem;
+        min-height: 24px;
+      }
+    }
+
+    .card-timestamps {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: auto;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--md-sys-color-outline-variant);
+
+      .timestamp {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.75rem;
+        color: var(--md-sys-color-on-surface-variant);
+
+        mat-icon {
+          font-size: 16px;
+          width: 16px;
+          height: 16px;
+        }
+
+        .timestamp-label {
+          font-weight: 500;
+        }
+      }
+    }
+  }
+}
+
+// Empty State
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  color: var(--md-sys-color-on-surface-variant);
+  grid-column: 1 / -1;
+
+  mat-icon {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+  }
+
+  h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.25rem;
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.875rem;
+  }
+}

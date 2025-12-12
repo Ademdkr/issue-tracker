@@ -4,10 +4,7 @@
     <mat-form-field appearance="outline">
       <mat-label>Status</mat-label>
       <mat-select formControlName="status">
-        <mat-option
-          *ngFor="let option of statusOptions"
-          [value]="option.value"
-        >
+        <mat-option *ngFor="let option of statusOptions" [value]="option.value">
           {{ option.label }}
         </mat-option>
       </mat-select>
@@ -43,10 +40,7 @@
     <mat-form-field appearance="outline">
       <mat-label>Label</mat-label>
       <mat-select formControlName="labelIds" multiple>
-        <mat-option
-          *ngFor="let option of labelOptions"
-          [value]="option.value"
-        >
+        <mat-option *ngFor="let option of labelOptions" [value]="option.value">
           {{ option.label }}
         </mat-option>
       </mat-select>

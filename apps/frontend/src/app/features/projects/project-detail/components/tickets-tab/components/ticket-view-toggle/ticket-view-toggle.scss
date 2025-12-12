@@ -18,7 +18,7 @@
     // Buttons minimal auf Mobile
     ::ng-deep .mat-button-toggle-label-content {
       padding: 0 8px;
-      
+
       @media (min-width: 768px) {
         padding: 0 12px;
       }

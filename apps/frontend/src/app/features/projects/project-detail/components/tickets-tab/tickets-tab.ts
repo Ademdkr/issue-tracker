@@ -6,7 +6,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
 import { TicketsService } from '../../../../../core/services/tickets.service';
 import {
-  Ticket,
+  TicketWithDetails,
   TicketFilters as TicketFiltersType,
 } from '@issue-tracker/shared-types';
 import { TicketFilters as TicketFiltersComponent } from './components/ticket-filters/ticket-filters';
@@ -30,8 +30,8 @@ import { TicketTable } from './components/ticket-table/ticket-table';
 export class TicketsTab implements OnInit, OnDestroy {
   @Input() projectId!: string;
 
-  tickets: Ticket[] = [];
-  filteredTickets: Ticket[] = [];
+  tickets: TicketWithDetails[] = [];
+  filteredTickets: TicketWithDetails[] = [];
   isLoading = false;
   error: string | null = null;
 
@@ -99,7 +99,7 @@ export class TicketsTab implements OnInit, OnDestroy {
     this.viewMode = mode;
   }
 
-  onTicketClick(ticket: Ticket): void {
+  onTicketClick(ticket: TicketWithDetails): void {
     // Navigation zu Ticket-Detail
     // Router-Navigation hier implementieren
     console.log('Navigate to ticket:', ticket.id);
