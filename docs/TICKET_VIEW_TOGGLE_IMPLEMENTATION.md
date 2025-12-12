@@ -5,6 +5,7 @@ Diese Anleitung beschreibt, wie du die Grid-Ansicht für die Ticket-Tabelle impl
 ## Übersicht
 
 **Aktueller Stand:**
+
 - ✅ List-Ansicht mit Material Table ist implementiert (ticket-list-view)
 - ✅ Grid-Ansicht mit Material Cards ist implementiert (ticket-grid-view)
 - ✅ Toggle-Buttons (Liste/Grid) sind vorhanden
@@ -14,6 +15,7 @@ Diese Anleitung beschreibt, wie du die Grid-Ansicht für die Ticket-Tabelle impl
 - ✅ Responsive Grid-Layout (1-4 Spalten)
 
 **Implementiert:**
+
 - Separate Komponenten für bessere Wartbarkeit
 - Conditional Rendering basierend auf viewMode
 - Responsive Design mit Mobile-First Ansatz
@@ -40,6 +42,7 @@ ticket-table/
 ```
 
 **Komponenten-Verantwortlichkeiten:**
+
 - **ticket-table**: Orchestriert List/Grid Views, gibt `tickets` und `viewMode` weiter
 - **ticket-list-view**: Standalone Komponente mit Material Table, Sorting, Pagination
 - **ticket-grid-view**: Standalone Komponente mit Card-Grid, Responsive Layout
@@ -77,9 +80,10 @@ export interface TicketWithDetails extends Ticket {
 
 **Grund:** `TicketWithDetails` hat die `labels` Property auskommentiert. Das Backend liefert nur `labelIds` (Array von Strings), nicht die vollständigen Label-Objekte mit `name` und `color`.
 
-**Lösung:** Labels-Spalte wurde aus beiden Views entfernt. 
+**Lösung:** Labels-Spalte wurde aus beiden Views entfernt.
 
 **Zukünftig:** Wenn Labels benötigt werden:
+
 1. Backend muss Label-Objekte zurückgeben
 2. `labels?: Label[]` in TicketWithDetails aktivieren
 3. Labels-Spalte wieder hinzufügen
@@ -93,27 +97,23 @@ export interface TicketWithDetails extends Ticket {
 Die Komponente wurde in separate Child-Komponenten aufgeteilt für bessere Wartbarkeit.
 
 **Implementierte Struktur:**
+
 ```html
 <div class="ticket-views">
   <!-- List View: Material Table -->
   @if (viewMode === 'list') {
-    <app-ticket-list-view
-      [tickets]="tickets"
-      (ticketClick)="onTicketClick($event)"
-    ></app-ticket-list-view>
+  <app-ticket-list-view [tickets]="tickets" (ticketClick)="onTicketClick($event)"></app-ticket-list-view>
   }
 
   <!-- Grid View: Card Grid -->
   @if (viewMode === 'grid') {
-    <app-ticket-grid-view
-      [tickets]="tickets"
-      (ticketClick)="onTicketClick($event)"
-    ></app-ticket-grid-view>
+  <app-ticket-grid-view [tickets]="tickets" (ticketClick)="onTicketClick($event)"></app-ticket-grid-view>
   }
 </div>
 ```
 
 **ticket-table.ts:**
+
 ```typescript
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -150,65 +150,62 @@ export class TicketTable {
 ```html
 <div class="tickets-grid">
   @for (ticket of tickets; track ticket.id) {
-    <mat-card class="ticket-card" (click)="onCardClick(ticket)">
-      <!-- Header mit Titel, Status und ID -->
-      <mat-card-header>
-        <mat-card-title>
-          <div class="title-row">
-            <span class="ticket-id">#{{ ticket.id }}</span>
-            <mat-chip [color]="getStatusColor(ticket.status)">
-              {{ ticket.status }}
-            </mat-chip>
-          </div>
-        </mat-card-title>
-        <mat-card-subtitle>{{ ticket.title }}</mat-card-subtitle>
-      </mat-card-header>
-
-      <!-- Content -->
-      <mat-card-content>
-        <!-- Priorität -->
-        <div class="card-field">
-          <mat-icon class="field-icon">flag</mat-icon>
-          <mat-chip [color]="getPriorityColor(ticket.priority)">
-            {{ ticket.priority }}
-          </mat-chip>
+  <mat-card class="ticket-card" (click)="onCardClick(ticket)">
+    <!-- Header mit Titel, Status und ID -->
+    <mat-card-header>
+      <mat-card-title>
+        <div class="title-row">
+          <span class="ticket-id">#{{ ticket.id }}</span>
+          <mat-chip [color]="getStatusColor(ticket.status)"> {{ ticket.status }} </mat-chip>
         </div>
+      </mat-card-title>
+      <mat-card-subtitle>{{ ticket.title }}</mat-card-subtitle>
+    </mat-card-header>
 
-        <!-- Assignee (verwendet assignee Objekt aus TicketWithDetails) -->
-        <div class="card-field">
-          <mat-icon class="field-icon">person</mat-icon>
-          <span>{{ ticket.assignee?.name || 'Nicht zugewiesen' }}</span>
-        </div>
+    <!-- Content -->
+    <mat-card-content>
+      <!-- Priorität -->
+      <div class="card-field">
+        <mat-icon class="field-icon">flag</mat-icon>
+        <mat-chip [color]="getPriorityColor(ticket.priority)"> {{ ticket.priority }} </mat-chip>
+      </div>
 
-        <!-- Timestamps -->
-        <div class="card-timestamps">
-          <div class="timestamp">
-            <mat-icon>schedule</mat-icon>
-            <span>{{ ticket.createdAt | date: 'short' }}</span>
-          </div>
-          @if (ticket.updatedAt) {
-            <div class="timestamp">
-              <mat-icon>update</mat-icon>
-              <span>{{ ticket.updatedAt | date: 'short' }}</span>
-            </div>
-          }
+      <!-- Assignee (verwendet assignee Objekt aus TicketWithDetails) -->
+      <div class="card-field">
+        <mat-icon class="field-icon">person</mat-icon>
+        <span>{{ ticket.assignee?.name || 'Nicht zugewiesen' }}</span>
+      </div>
+
+      <!-- Timestamps -->
+      <div class="card-timestamps">
+        <div class="timestamp">
+          <mat-icon>schedule</mat-icon>
+          <span>{{ ticket.createdAt | date: 'short' }}</span>
         </div>
-      </mat-card-content>
-    </mat-card>
+        @if (ticket.updatedAt) {
+        <div class="timestamp">
+          <mat-icon>update</mat-icon>
+          <span>{{ ticket.updatedAt | date: 'short' }}</span>
+        </div>
+        }
+      </div>
+    </mat-card-content>
+  </mat-card>
   }
 </div>
 
 <!-- Empty State -->
 @if (tickets.length === 0) {
-  <div class="empty-state">
-    <mat-icon>inbox</mat-icon>
-    <h3>Keine Tickets vorhanden</h3>
-    <p>Es wurden keine Tickets gefunden.</p>
-  </div>
+<div class="empty-state">
+  <mat-icon>inbox</mat-icon>
+  <h3>Keine Tickets vorhanden</h3>
+  <p>Es wurden keine Tickets gefunden.</p>
+</div>
 }
 ```
 
 **Wichtige Änderungen:**
+
 - ❌ **Labels entfernt**: `TicketWithDetails` hat nur `labelIds` (Array von IDs), nicht die vollständigen Label-Objekte. Die Label-Anzeige wurde aus beiden Views entfernt.
 - ✅ **assignee Objekt**: Verwendet `ticket.assignee?.name` statt `ticket.assigneeId`, da `TicketWithDetails` das erweiterte Objekt enthält.
 - ✅ **Empty State**: Zeigt Message wenn keine Tickets vorhanden sind.
@@ -229,28 +226,18 @@ import { TicketWithDetails } from '@issue-tracker/shared-types';
 @Component({
   selector: 'app-ticket-list-view',
   standalone: true,
-  imports: [
-    CommonModule,
-    MatTableModule,
-    MatSortModule,
-    MatPaginatorModule,
-    MatChipsModule,
-    MatIconModule,
-  ],
+  imports: [CommonModule, MatTableModule, MatSortModule, MatPaginatorModule, MatChipsModule, MatIconModule],
   // ...
 })
 export class TicketListView implements OnChanges, AfterViewInit {
   @Input() tickets: TicketWithDetails[] = [];
   @Output() ticketClick = new EventEmitter<TicketWithDetails>();
-  
+
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  
+
   dataSource = new MatTableDataSource<TicketWithDetails>([]);
-  displayedColumns: string[] = [
-    'title', 'status', 'priority', 'assignee', 
-    'reporterId', 'createdAt', 'updatedAt'
-  ]; // Labels entfernt
+  displayedColumns: string[] = ['title', 'status', 'priority', 'assignee', 'reporterId', 'createdAt', 'updatedAt']; // Labels entfernt
 }
 ```
 
@@ -266,12 +253,7 @@ import { TicketWithDetails } from '@issue-tracker/shared-types';
 @Component({
   selector: 'app-ticket-grid-view',
   standalone: true,
-  imports: [
-    CommonModule,
-    MatCardModule,
-    MatChipsModule,
-    MatIconModule,
-  ],
+  imports: [CommonModule, MatCardModule, MatChipsModule, MatIconModule],
   // ...
 })
 export class TicketGridView {
@@ -303,7 +285,7 @@ Container-Styles (minimal, da Logik in Child-Komponenten):
   display: grid;
   gap: 1.5rem;
   padding: 1rem 0;
-  
+
   // Mobile: 1 Spalte (< 768px)
   grid-template-columns: 1fr;
 
@@ -440,17 +422,17 @@ Container-Styles (minimal, da Logik in Child-Komponenten):
 
 // Chip Colors (falls noch nicht vorhanden)
 mat-chip {
-  &[color="primary"] {
+  &[color='primary'] {
     background-color: var(--md-sys-color-primary-container);
     color: var(--md-sys-color-on-primary-container);
   }
 
-  &[color="accent"] {
+  &[color='accent'] {
     background-color: var(--md-sys-color-secondary-container);
     color: var(--md-sys-color-on-secondary-container);
   }
 
-  &[color="warn"] {
+  &[color='warn'] {
     background-color: var(--md-sys-color-error-container);
     color: var(--md-sys-color-on-error-container);
   }
@@ -464,21 +446,20 @@ mat-chip {
 Da List und Grid separate Komponenten sind, hat jede ihren eigenen Paginator:
 
 **ticket-list-view.html:**
+
 ```html
-<mat-paginator
-  [pageSizeOptions]="[10, 25, 50, 100]"
-  [pageSize]="25"
-  showFirstLastButtons
-></mat-paginator>
+<mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="25" showFirstLastButtons></mat-paginator>
 ```
 
 **ticket-grid-view.html:**
+
 ```html
 <!-- Aktuell: Kein Paginator in Grid-View implementiert -->
 <!-- Optional: Kann später hinzugefügt werden mit angepassten Optionen -->
 ```
 
 **ticket-list-view.ts - Lifecycle:**
+
 ```typescript
 ngOnChanges(changes: SimpleChanges): void {
   if (changes['tickets']) {
@@ -506,6 +487,7 @@ ngAfterViewInit(): void {
 ### Input/Output Pattern
 
 **Implementierte Datenfluss:**
+
 ```
 tickets-tab (Container)
     ↓ [tickets]="filteredTickets" [viewMode]="viewMode"
@@ -515,11 +497,13 @@ ticket-list-view / ticket-grid-view (Presentation)
 ```
 
 **Vorteile:**
+
 1. **Einfache Datenbindung**: Tickets werden als Input weitergegeben
 2. **Keine Paginator-Konflikte**: Jede View verwaltet ihre eigene Pagination (oder keine)
 3. **Filtering**: Wird im Parent (tickets-tab) gehandhabt, gefilterte Daten werden durchgereicht
 
 **Grid-View Implementierung:**
+
 - Verwendet `@Input() tickets` direkt
 - Keine `dataSource` notwendig (einfacher als List-View)
 - Rendering über `@for (ticket of tickets; track ticket.id)`
@@ -528,23 +512,23 @@ ticket-list-view / ticket-grid-view (Presentation)
 
 ```html
 @if (viewMode === 'grid') {
-  <div class="grid-controls">
-    <mat-form-field appearance="outline" class="sort-field">
-      <mat-label>Sortieren nach</mat-label>
-      <mat-select [(value)]="currentSort" (selectionChange)="onSortChange($event)">
-        <mat-option value="title-asc">Titel (A-Z)</mat-option>
-        <mat-option value="title-desc">Titel (Z-A)</mat-option>
-        <mat-option value="createdAt-desc">Neueste zuerst</mat-option>
-        <mat-option value="createdAt-asc">Älteste zuerst</mat-option>
-        <mat-option value="priority-desc">Priorität (Hoch-Niedrig)</mat-option>
-        <mat-option value="priority-asc">Priorität (Niedrig-Hoch)</mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-  
-  <div class="tickets-grid">
-    <!-- Cards -->
-  </div>
+<div class="grid-controls">
+  <mat-form-field appearance="outline" class="sort-field">
+    <mat-label>Sortieren nach</mat-label>
+    <mat-select [(value)]="currentSort" (selectionChange)="onSortChange($event)">
+      <mat-option value="title-asc">Titel (A-Z)</mat-option>
+      <mat-option value="title-desc">Titel (Z-A)</mat-option>
+      <mat-option value="createdAt-desc">Neueste zuerst</mat-option>
+      <mat-option value="createdAt-asc">Älteste zuerst</mat-option>
+      <mat-option value="priority-desc">Priorität (Hoch-Niedrig)</mat-option>
+      <mat-option value="priority-asc">Priorität (Niedrig-Hoch)</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<div class="tickets-grid">
+  <!-- Cards -->
+</div>
 }
 ```
 
@@ -553,7 +537,7 @@ currentSort = 'createdAt-desc';
 
 onSortChange(event: any): void {
   const [field, direction] = event.value.split('-');
-  
+
   if (this.sort) {
     this.sort.active = field;
     this.sort.direction = direction as 'asc' | 'desc';
@@ -567,13 +551,15 @@ onSortChange(event: any): void {
 ### TrackBy für Grid
 
 **Implementiert:**
+
 ```html
 @for (ticket of tickets; track ticket.id) {
-  <mat-card class="ticket-card">...</mat-card>
+<mat-card class="ticket-card">...</mat-card>
 }
 ```
 
 Zusätzliche `trackByTicketId` Methode in beiden Views:
+
 ```typescript
 trackByTicketId(index: number, ticket: TicketWithDetails): string {
   return ticket.id;
@@ -590,17 +576,17 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 // In imports array:
 imports: [
   // ...
-  ScrollingModule
-]
+  ScrollingModule,
+];
 ```
 
 ```html
 <cdk-virtual-scroll-viewport itemSize="280" class="grid-viewport">
   <div class="tickets-grid">
     @for (ticket of dataSource.data; track ticket.id) {
-      <mat-card class="ticket-card">
-        <!-- ... -->
-      </mat-card>
+    <mat-card class="ticket-card">
+      <!-- ... -->
+    </mat-card>
     }
   </div>
 </cdk-virtual-scroll-viewport>
@@ -645,24 +631,26 @@ Stelle sicher, dass beide Ansichten barrierefrei sind:
 ## Schritt 10: Empty State (✅ IMPLEMENTIERT in Grid-View)
 
 **ticket-grid-view.html:**
+
 ```html
 <div class="tickets-grid">
   @for (ticket of tickets; track ticket.id) {
-    <!-- Cards -->
+  <!-- Cards -->
   }
 </div>
 
 <!-- Empty State -->
 @if (tickets.length === 0) {
-  <div class="empty-state">
-    <mat-icon>inbox</mat-icon>
-    <h3>Keine Tickets vorhanden</h3>
-    <p>Es wurden keine Tickets gefunden.</p>
-  </div>
+<div class="empty-state">
+  <mat-icon>inbox</mat-icon>
+  <h3>Keine Tickets vorhanden</h3>
+  <p>Es wurden keine Tickets gefunden.</p>
+</div>
 }
 ```
 
 **ticket-grid-view.scss:**
+
 ```scss
 .empty-state {
   display: flex;
@@ -671,7 +659,7 @@ Stelle sicher, dass beide Ansichten barrierefrei sind:
   justify-content: center;
   padding: 4rem 2rem;
   text-align: center;
-  
+
   // Nimmt volle Grid-Breite ein
   grid-column: 1 / -1;
 
@@ -751,6 +739,7 @@ Stelle sicher, dass beide Ansichten barrierefrei sind:
 ### 📊 Aktuelle Spalten (List-View)
 
 7 Spalten (ohne Labels):
+
 1. title
 2. status
 3. priority
@@ -769,6 +758,7 @@ Stelle sicher, dass beide Ansichten barrierefrei sind:
 ## Nächste Schritte
 
 Nach erfolgreicher Implementierung kannst du weitere Features hinzufügen:
+
 - Drag & Drop für Status-Änderung in Grid-Ansicht
 - Quick-Actions (Edit, Delete) direkt auf der Card
 - Hover-Preview mit mehr Details

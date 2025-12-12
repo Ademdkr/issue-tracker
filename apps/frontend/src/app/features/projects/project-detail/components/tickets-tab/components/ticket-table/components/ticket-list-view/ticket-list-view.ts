@@ -6,6 +6,7 @@ import {
   ViewChild,
   OnChanges,
   SimpleChanges,
+  AfterViewInit,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
@@ -15,6 +16,24 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { TicketWithDetails } from '@issue-tracker/shared-types';
 import { Ticket } from '@issue-tracker/shared-types';
+
+type TableTicket = TicketWithDetails | EmptyTicketRow;
+
+interface EmptyTicketRow {
+  id: string;
+  isEmpty: true;
+  // Alle anderen Properties sind optional/undefined
+  projectId?: string;
+  reporterId?: string;
+  assigneeId?: string;
+  title?: string;
+  description?: string;
+  status?: any;
+  priority?: any;
+  createdAt?: Date;
+  updatedAt?: Date | null;
+  labelIds?: string[];
+}
 
 @Component({
   selector: 'app-ticket-list-view',
@@ -30,14 +49,14 @@ import { Ticket } from '@issue-tracker/shared-types';
   templateUrl: './ticket-list-view.html',
   styleUrl: './ticket-list-view.scss',
 })
-export class TicketListView implements OnChanges {
+export class TicketListView implements OnChanges, AfterViewInit {
   @Input() tickets: TicketWithDetails[] = [];
   @Output() ticketClick = new EventEmitter<TicketWithDetails>();
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  dataSource = new MatTableDataSource<TicketWithDetails>([]);
+  dataSource = new MatTableDataSource<TableTicket>([]);
   displayedColumns: string[] = [
     'title',
     'status',
@@ -48,9 +67,12 @@ export class TicketListView implements OnChanges {
     'updatedAt',
   ];
 
+  private readonly FIXED_ROW_COUNT = 10;
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['tickets']) {
-      this.dataSource.data = this.tickets;
+      const paddedTickets = this.padTicketsToFixedCount(this.tickets);
+      this.dataSource.data = paddedTickets;
 
       if (this.sort) {
         this.dataSource.sort = this.sort;
@@ -64,6 +86,40 @@ export class TicketListView implements OnChanges {
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
+  }
+
+  /**
+   * Füllt das Tickets-Array auf mindestens FIXED_ROW_COUNT Elemente auf
+   */
+  private padTicketsToFixedCount(tickets: TicketWithDetails[]): TableTicket[] {
+    const currentCount = tickets.length;
+
+    // Wenn bereits genug Tickets vorhanden sind, gib sie unverändert zurück
+    if (currentCount >= this.FIXED_ROW_COUNT) {
+      return tickets;
+    }
+
+    // Berechne wie viele leere Zeilen benötigt werden
+    const emptyRowsNeeded = this.FIXED_ROW_COUNT - currentCount;
+
+    // Erstelle leere Zeilen
+    const emptyRows: EmptyTicketRow[] = Array.from(
+      { length: emptyRowsNeeded },
+      (_, index) => ({
+        id: `empty-${index}`,
+        isEmpty: true,
+      })
+    );
+
+    // Kombiniere echte Tickets mit leeren Zeilen
+    return [...tickets, ...emptyRows];
+  }
+
+  /**
+   * Prüft ob eine Zeile leer ist
+   */
+  isEmptyRow(ticket: TableTicket): boolean {
+    return 'isEmpty' in ticket && ticket.isEmpty === true;
   }
 
   onRowClick(ticket: TicketWithDetails): void {

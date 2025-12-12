@@ -1,9 +1,4 @@
-import {
-  Component,
-  Input,
-  Output,
-  EventEmitter,
-} from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
@@ -13,12 +8,7 @@ import { TicketWithDetails } from '@issue-tracker/shared-types';
 @Component({
   selector: 'app-ticket-grid-view',
   standalone: true,
-  imports: [
-    CommonModule,
-    MatCardModule,
-    MatChipsModule,
-    MatIconModule,
-  ],
+  imports: [CommonModule, MatCardModule, MatChipsModule, MatIconModule],
   templateUrl: './ticket-grid-view.html',
   styleUrl: './ticket-grid-view.scss',
 })

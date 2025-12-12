@@ -3,11 +3,15 @@
     <!-- Title Column -->
     <ng-container matColumnDef="title">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Titel</th>
-      <td mat-cell *matCellDef="let ticket" (click)="onRowClick(ticket)">
+      <td mat-cell *matCellDef="let ticket">
+        @if (isEmptyRow(ticket)) {
+        <span class="empty-cell">-</span>
+        } @else {
         <div class="ticket-title">
           <strong>{{ticket.title}}</strong>
           <span class="ticket-id">#{{ticket.id}}</span>
         </div>
+        }
       </td>
     </ng-container>
 
@@ -15,9 +19,13 @@
     <ng-container matColumnDef="status">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
       <td mat-cell *matCellDef="let ticket">
+        @if (isEmptyRow(ticket)) {
+        <span class="empty-cell">-</span>
+        } @else {
         <mat-chip [color]="getStatusColor(ticket.status)">
           {{ticket.status}}
         </mat-chip>
+        }
       </td>
     </ng-container>
 
@@ -25,9 +33,13 @@
     <ng-container matColumnDef="priority">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Priorität</th>
       <td mat-cell *matCellDef="let ticket">
+        @if (isEmptyRow(ticket)) {
+        <span class="empty-cell">-</span>
+        } @else {
         <mat-chip [color]="getPriorityColor(ticket.priority)">
           {{ticket.priority}}
         </mat-chip>
+        }
       </td>
     </ng-container>
 
@@ -35,7 +47,9 @@
     <ng-container matColumnDef="assignee">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Zuständig</th>
       <td mat-cell *matCellDef="let ticket">
-        {{ticket.assignee?.name || '-'}}
+        @if (isEmptyRow(ticket)) {
+        <span class="empty-cell">-</span>
+        } @else { {{ticket.assignee?.name || '-'}} }
       </td>
     </ng-container>
 
@@ -43,7 +57,9 @@
     <ng-container matColumnDef="reporterId">
       <th mat-header-cell *matHeaderCellDef>Erstellt von</th>
       <td mat-cell *matCellDef="let ticket">
-        {{ticket.reporterId.name }} {{ticket.reporterId.surname}}
+        @if (isEmptyRow(ticket)) {
+        <span class="empty-cell">-</span>
+        } @else { {{ticket.reporterId.name }} {{ticket.reporterId.surname}} }
       </td>
     </ng-container>
 
@@ -51,7 +67,9 @@
     <ng-container matColumnDef="createdAt">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Erstellt am</th>
       <td mat-cell *matCellDef="let ticket">
-        {{ ticket.createdAt | date: 'short' }}
+        @if (isEmptyRow(ticket)) {
+        <span class="empty-cell">-</span>
+        } @else { {{ ticket.createdAt | date: 'short' }} }
       </td>
     </ng-container>
 
@@ -59,7 +77,9 @@
     <ng-container matColumnDef="updatedAt">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Aktualisiert am</th>
       <td mat-cell *matCellDef="let ticket">
-        {{ ticket.updatedAt | date: 'short'}}
+        @if (isEmptyRow(ticket)) {
+        <span class="empty-cell">-</span>
+        } @else { {{ ticket.updatedAt | date: 'short'}} }
       </td>
     </ng-container>
 
@@ -67,12 +87,12 @@
     <tr
       mat-row
       *matRowDef="let row; columns: displayedColumns;"
-      class="ticket-row"
+      [class.ticket-row]="!isEmptyRow(row)"
+      [class.empty-row]="isEmptyRow(row)"
       (click)="onRowClick(row)"
     ></tr>
   </table>
 
-  <!-- Paginator -->
   <mat-paginator
     [pageSizeOptions]="[10, 25, 50, 100]"
     [pageSize]="25"

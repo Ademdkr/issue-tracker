@@ -1,59 +1,57 @@
 <div class="tickets-grid">
   @for (ticket of tickets; track ticket.id) {
-    <mat-card class="ticket-card" (click)="onCardClick(ticket)">
-      <!-- Card Header -->
-      <mat-card-header>
-        <mat-card-title>
-          <div class="card-title-row">
-            <span class="ticket-id">#{{ ticket.id }}</span>
-            <mat-chip [color]="getStatusColor(ticket.status)">
-              {{ ticket.status }}
-            </mat-chip>
-          </div>
-        </mat-card-title>
-        <mat-card-subtitle>{{ ticket.title }}</mat-card-subtitle>
-      </mat-card-header>
-
-      <!-- Card Content -->
-      <mat-card-content>
-        <!-- Priority -->
-        <div class="card-field">
-          <mat-icon class="field-icon">flag</mat-icon>
-          <mat-chip [color]="getPriorityColor(ticket.priority)">
-            {{ ticket.priority }}
+  <mat-card class="ticket-card" (click)="onCardClick(ticket)">
+    <!-- Card Header -->
+    <mat-card-header>
+      <mat-card-title>
+        <div class="card-title-row">
+          <span class="ticket-id">#{{ ticket.id }}</span>
+          <mat-chip [color]="getStatusColor(ticket.status)">
+            {{ ticket.status }}
           </mat-chip>
         </div>
+      </mat-card-title>
+      <mat-card-subtitle>{{ ticket.title }}</mat-card-subtitle>
+    </mat-card-header>
 
-        <!-- Assignee -->
-        <div class="card-field">
-          <mat-icon class="field-icon">person</mat-icon>
-          <span>{{ ticket.assignee?.name || 'Nicht zugewiesen' }}</span>
+    <!-- Card Content -->
+    <mat-card-content>
+      <!-- Priority -->
+      <div class="card-field">
+        <mat-icon class="field-icon">flag</mat-icon>
+        <mat-chip [color]="getPriorityColor(ticket.priority)">
+          {{ ticket.priority }}
+        </mat-chip>
+      </div>
+
+      <!-- Assignee -->
+      <div class="card-field">
+        <mat-icon class="field-icon">person</mat-icon>
+        <span>{{ ticket.assignee?.name || 'Nicht zugewiesen' }}</span>
+      </div>
+
+      <!-- Timestamps -->
+      <div class="card-timestamps">
+        <div class="timestamp">
+          <mat-icon>schedule</mat-icon>
+          <span class="timestamp-label">Erstellt:</span>
+          <span>{{ ticket.createdAt | date:'short' }}</span>
         </div>
-
-        <!-- Timestamps -->
-        <div class="card-timestamps">
-          <div class="timestamp">
-            <mat-icon>schedule</mat-icon>
-            <span class="timestamp-label">Erstellt:</span>
-            <span>{{ ticket.createdAt | date:'short' }}</span>
-          </div>
-          @if (ticket.updatedAt) {
-            <div class="timestamp">
-              <mat-icon>update</mat-icon>
-              <span class="timestamp-label">Aktualisiert:</span>
-              <span>{{ ticket.updatedAt | date:'short' }}</span>
-            </div>
-          }
+        @if (ticket.updatedAt) {
+        <div class="timestamp">
+          <mat-icon>update</mat-icon>
+          <span class="timestamp-label">Aktualisiert:</span>
+          <span>{{ ticket.updatedAt | date:'short' }}</span>
         </div>
-      </mat-card-content>
-    </mat-card>
-  }
-
-  @if (tickets.length === 0) {
-    <div class="empty-state">
-      <mat-icon>inbox</mat-icon>
-      <h3>Keine Tickets vorhanden</h3>
-      <p>Es wurden keine Tickets für dieses Projekt gefunden.</p>
-    </div>
+        }
+      </div>
+    </mat-card-content>
+  </mat-card>
+  } @if (tickets.length === 0) {
+  <div class="empty-state">
+    <mat-icon>inbox</mat-icon>
+    <h3>Keine Tickets vorhanden</h3>
+    <p>Es wurden keine Tickets für dieses Projekt gefunden.</p>
+  </div>
   }
 </div>

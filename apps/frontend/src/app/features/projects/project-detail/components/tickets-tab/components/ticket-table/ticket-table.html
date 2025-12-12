@@ -1,17 +1,17 @@
 <div class="ticket-views">
   <!-- List View: Material Table -->
   @if (viewMode === 'list') {
-    <app-ticket-list-view
-      [tickets]="tickets"
-      (ticketClick)="onTicketClick($event)"
-    ></app-ticket-list-view>
+  <app-ticket-list-view
+    [tickets]="tickets"
+    (ticketClick)="onTicketClick($event)"
+  ></app-ticket-list-view>
   }
 
   <!-- Grid View: Card Grid -->
   @if (viewMode === 'grid') {
-    <app-ticket-grid-view
-      [tickets]="tickets"
-      (ticketClick)="onTicketClick($event)"
-    ></app-ticket-grid-view>
+  <app-ticket-grid-view
+    [tickets]="tickets"
+    (ticketClick)="onTicketClick($event)"
+  ></app-ticket-grid-view>
   }
 </div>
