@@ -66,16 +66,8 @@ export class TicketListView implements OnChanges, AfterViewInit {
 
   // Typ ändern zu TableTicket
   dataSource = new MatTableDataSource<TableTicket>([]);
-  
-  displayedColumns: string[] = [
-    'title',
-    'status',
-    'priority',
-    'assignee',
-    'reporterId',
-    'createdAt',
-    'updatedAt',
-  ];
+
+  displayedColumns: string[] = ['title', 'status', 'priority', 'assignee', 'reporterId', 'createdAt', 'updatedAt'];
 
   private readonly FIXED_ROW_COUNT = 10;
 
@@ -104,7 +96,7 @@ export class TicketListView implements OnChanges, AfterViewInit {
    */
   private padTicketsToFixedCount(tickets: TicketWithDetails[]): TableTicket[] {
     const currentCount = tickets.length;
-    
+
     // Wenn bereits genug Tickets vorhanden sind, gib sie unverändert zurück
     if (currentCount >= this.FIXED_ROW_COUNT) {
       return tickets;
@@ -112,15 +104,12 @@ export class TicketListView implements OnChanges, AfterViewInit {
 
     // Berechne wie viele leere Zeilen benötigt werden
     const emptyRowsNeeded = this.FIXED_ROW_COUNT - currentCount;
-    
+
     // Erstelle leere Zeilen
-    const emptyRows: EmptyTicketRow[] = Array.from(
-      { length: emptyRowsNeeded },
-      (_, index) => ({
-        id: `empty-${index}`,
-        isEmpty: true,
-      })
-    );
+    const emptyRows: EmptyTicketRow[] = Array.from({ length: emptyRowsNeeded }, (_, index) => ({
+      id: `empty-${index}`,
+      isEmpty: true,
+    }));
 
     // Kombiniere echte Tickets mit leeren Zeilen
     return [...tickets, ...emptyRows];
@@ -184,12 +173,12 @@ Jede Spalte muss nun prüfen, ob es sich um eine leere Zeile handelt:
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Titel</th>
       <td mat-cell *matCellDef="let ticket">
         @if (isEmptyRow(ticket)) {
-          <span class="empty-cell">-</span>
+        <span class="empty-cell">-</span>
         } @else {
-          <div class="ticket-title">
-            <strong>{{ticket.title}}</strong>
-            <span class="ticket-id">#{{ticket.id}}</span>
-          </div>
+        <div class="ticket-title">
+          <strong>{{ticket.title}}</strong>
+          <span class="ticket-id">#{{ticket.id}}</span>
+        </div>
         }
       </td>
     </ng-container>
@@ -199,11 +188,9 @@ Jede Spalte muss nun prüfen, ob es sich um eine leere Zeile handelt:
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
       <td mat-cell *matCellDef="let ticket">
         @if (isEmptyRow(ticket)) {
-          <span class="empty-cell">-</span>
+        <span class="empty-cell">-</span>
         } @else {
-          <mat-chip [color]="getStatusColor(ticket.status)">
-            {{ticket.status}}
-          </mat-chip>
+        <mat-chip [color]="getStatusColor(ticket.status)"> {{ticket.status}} </mat-chip>
         }
       </td>
     </ng-container>
@@ -213,11 +200,9 @@ Jede Spalte muss nun prüfen, ob es sich um eine leere Zeile handelt:
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Priorität</th>
       <td mat-cell *matCellDef="let ticket">
         @if (isEmptyRow(ticket)) {
-          <span class="empty-cell">-</span>
+        <span class="empty-cell">-</span>
         } @else {
-          <mat-chip [color]="getPriorityColor(ticket.priority)">
-            {{ticket.priority}}
-          </mat-chip>
+        <mat-chip [color]="getPriorityColor(ticket.priority)"> {{ticket.priority}} </mat-chip>
         }
       </td>
     </ng-container>
@@ -227,10 +212,8 @@ Jede Spalte muss nun prüfen, ob es sich um eine leere Zeile handelt:
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Zuständig</th>
       <td mat-cell *matCellDef="let ticket">
         @if (isEmptyRow(ticket)) {
-          <span class="empty-cell">-</span>
-        } @else {
-          {{ticket.assignee?.name || '-'}}
-        }
+        <span class="empty-cell">-</span>
+        } @else { {{ticket.assignee?.name || '-'}} }
       </td>
     </ng-container>
 
@@ -239,10 +222,8 @@ Jede Spalte muss nun prüfen, ob es sich um eine leere Zeile handelt:
       <th mat-header-cell *matHeaderCellDef>Erstellt von</th>
       <td mat-cell *matCellDef="let ticket">
         @if (isEmptyRow(ticket)) {
-          <span class="empty-cell">-</span>
-        } @else {
-          {{ticket.reporterId.name }} {{ticket.reporterId.surname}}
-        }
+        <span class="empty-cell">-</span>
+        } @else { {{ticket.reporterId.name }} {{ticket.reporterId.surname}} }
       </td>
     </ng-container>
 
@@ -251,10 +232,8 @@ Jede Spalte muss nun prüfen, ob es sich um eine leere Zeile handelt:
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Erstellt am</th>
       <td mat-cell *matCellDef="let ticket">
         @if (isEmptyRow(ticket)) {
-          <span class="empty-cell">-</span>
-        } @else {
-          {{ ticket.createdAt | date: 'short' }}
-        }
+        <span class="empty-cell">-</span>
+        } @else { {{ ticket.createdAt | date: 'short' }} }
       </td>
     </ng-container>
 
@@ -263,28 +242,16 @@ Jede Spalte muss nun prüfen, ob es sich um eine leere Zeile handelt:
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Aktualisiert am</th>
       <td mat-cell *matCellDef="let ticket">
         @if (isEmptyRow(ticket)) {
-          <span class="empty-cell">-</span>
-        } @else {
-          {{ ticket.updatedAt | date: 'short'}}
-        }
+        <span class="empty-cell">-</span>
+        } @else { {{ ticket.updatedAt | date: 'short'}} }
       </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr
-      mat-row
-      *matRowDef="let row; columns: displayedColumns;"
-      [class.ticket-row]="!isEmptyRow(row)"
-      [class.empty-row]="isEmptyRow(row)"
-      (click)="onRowClick(row)"
-    ></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" [class.ticket-row]="!isEmptyRow(row)" [class.empty-row]="isEmptyRow(row)" (click)="onRowClick(row)"></tr>
   </table>
 
-  <mat-paginator
-    [pageSizeOptions]="[10, 25, 50, 100]"
-    [pageSize]="25"
-    showFirstLastButtons
-  ></mat-paginator>
+  <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="25" showFirstLastButtons></mat-paginator>
 </div>
 ```
 
@@ -339,11 +306,7 @@ Wenn du Pagination verwendest und immer 10 Zeilen pro Seite zeigen willst:
 **ticket-list-view.html:**
 
 ```html
-<mat-paginator
-  [pageSizeOptions]="[10]"
-  [pageSize]="10"
-  showFirstLastButtons
-></mat-paginator>
+<mat-paginator [pageSizeOptions]="[10]" [pageSize]="10" showFirstLastButtons></mat-paginator>
 ```
 
 **ticket-list-view.ts:**
@@ -352,7 +315,7 @@ Wenn du Pagination verwendest und immer 10 Zeilen pro Seite zeigen willst:
 ngAfterViewInit(): void {
   this.dataSource.sort = this.sort;
   this.dataSource.paginator = this.paginator;
-  
+
   // Stelle sicher, dass Paginator immer 10 zeigt
   if (this.paginator) {
     this.paginator.pageSize = 10;
@@ -367,14 +330,14 @@ private padTicketsToFixedCount(tickets: TicketWithDetails[]): TableTicket[] {
   // Hole aktuelle Seite vom Paginator
   const pageIndex = this.paginator?.pageIndex || 0;
   const pageSize = 10;
-  
+
   // Berechne Start und Ende für aktuelle Seite
   const startIndex = pageIndex * pageSize;
   const endIndex = startIndex + pageSize;
-  
+
   // Hole Tickets für aktuelle Seite
   const pageTickets = tickets.slice(startIndex, endIndex);
-  
+
   // Fülle auf 10 auf, wenn weniger vorhanden
   if (pageTickets.length < pageSize) {
     const emptyRowsNeeded = pageSize - pageTickets.length;
@@ -387,7 +350,7 @@ private padTicketsToFixedCount(tickets: TicketWithDetails[]): TableTicket[] {
     );
     return [...pageTickets, ...emptyRows];
   }
-  
+
   return pageTickets;
 }
 ```
@@ -408,15 +371,15 @@ Filtere leere Zeilen vor dem Sorting:
 ngAfterViewInit(): void {
   this.dataSource.sort = this.sort;
   this.dataSource.paginator = this.paginator;
-  
+
   // Custom Sort: Sortiere nur echte Tickets
   this.dataSource.sortData = (data: TableTicket[], sort: MatSort) => {
     const realTickets = data.filter(t => !this.isEmptyRow(t));
     const emptyRows = data.filter(t => this.isEmptyRow(t));
-    
+
     // Sortiere nur echte Tickets
     const sorted = this.defaultSortData(realTickets, sort);
-    
+
     // Füge leere Zeilen am Ende hinzu
     return [...sorted, ...emptyRows];
   };
@@ -469,7 +432,7 @@ Wenn du Pagination hast, sortiere nur innerhalb der aktuellen Seite:
 ngAfterViewInit(): void {
   // Nur Paginator, kein Sort
   this.dataSource.paginator = this.paginator;
-  
+
   // Sort manuell handhaben
   if (this.sort) {
     this.sort.sortChange.subscribe(() => {
@@ -495,18 +458,18 @@ Verwende CSS, um die Tabelle auf eine feste Höhe zu setzen, die 10 Zeilen entsp
 .table-wrapper {
   width: 100%;
   overflow-x: auto;
-  
+
   // Feste Höhe für genau 10 Zeilen + Header + Paginator
   min-height: calc(
-    56px +           // Header row
-    (48px * 10) +    // 10 data rows (Standard Material Table row height)
-    56px             // Paginator
+    56px + // Header row
+    (48px * 10) + // 10 data rows (Standard Material Table row height)
+    56px // Paginator
   );
 }
 
 .tickets-table {
   width: 100%;
-  
+
   // Verhindere, dass Tabelle kleiner wird
   min-height: calc(56px + (48px * 10));
 }
@@ -521,11 +484,13 @@ Verwende CSS, um die Tabelle auf eine feste Höhe zu setzen, die 10 Zeilen entsp
 ### Ansatz 1 (Dummy-Daten)
 
 **Vorteile:**
+
 - ✅ Einfach zu implementieren
 - ✅ Volle Kontrolle über Platzhalter-Anzeige
 - ✅ Funktioniert gut mit Material Table
 
 **Nachteile:**
+
 - ⚠️ DataSource enthält "fake" Daten
 - ⚠️ Sorting muss angepasst werden
 - ⚠️ Filter müssen leere Zeilen berücksichtigen
@@ -533,10 +498,12 @@ Verwende CSS, um die Tabelle auf eine feste Höhe zu setzen, die 10 Zeilen entsp
 ### Ansatz 4 (CSS)
 
 **Vorteile:**
+
 - ✅ Keine Änderung an Daten notwendig
 - ✅ Sorting funktioniert normal
 
 **Nachteile:**
+
 - ❌ Keine Platzhalter "-" möglich
 - ❌ Zeigt nur leeren Raum
 
@@ -579,6 +546,7 @@ Nach der Implementierung teste folgende Szenarien:
 **Empfehlung:** Implementiere **Ansatz 1 (Dummy-Daten)** für die beste Balance zwischen Funktionalität und Komplexität.
 
 Die Implementierung erfordert:
+
 - ~50 Zeilen TypeScript-Code
 - Anpassungen in jeder Spalte des Templates
 - Minimale SCSS-Anpassungen

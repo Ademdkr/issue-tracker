@@ -73,8 +73,8 @@
       "unitTestRunner": "jest"
     },
     "@nx/angular:component": {
-      "standalone": true,
       "style": "scss",
+      "standalone": true,
       "skipTests": true
     }
   }
