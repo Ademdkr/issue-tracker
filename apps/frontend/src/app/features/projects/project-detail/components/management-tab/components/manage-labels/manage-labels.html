@@ -1,1 +1,46 @@
-<p>manage-labels works!</p>
+<div class="manage-labels-container">
+  <div class="header">
+    <h3>Verwaltung der Labels</h3>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="openCreateDialog()"
+      [disabled]="isLoading"
+    >
+      <mat-icon>add</mat-icon>
+      Neues Label erstellen
+    </button>
+  </div>
+
+  <div class="labels-list">
+    @if (isLoading) {
+    <p class="loading-message">Lade Labels...</p>
+    } @else if (labels.length === 0) {
+    <p class="empty-message">
+      Keine Labels vorhanden. Erstelle ein neues Label.
+    </p>
+    } @else { @for (label of labels; track label.id) {
+    <div class="label-chip" [style.background-color]="label.color">
+      <span class="label-name">{{ label.name }}</span>
+      <div class="label-actions">
+        <button
+          mat-icon-button
+          (click)="openEditDialog(label)"
+          title="Bearbeiten"
+          class="action-btn"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          (click)="deleteLabel(label)"
+          title="Löschen"
+          class="action-btn"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+    } }
+  </div>
+</div>

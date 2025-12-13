@@ -1,5 +1,13 @@
 // Angular Modules
-import { Component, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  OnInit,
+  OnDestroy,
+  inject,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
@@ -11,10 +19,18 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 
 // RxJS
-import { debounceTime } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { debounceTime, takeUntil } from 'rxjs/operators';
+
+// Services
+import { ProjectsService } from '../../../../../../../core/services/projects.service';
 
 // Shared Types
-import { TicketFilters as TicketFiltersType } from '@issue-tracker/shared-types';
+import {
+  TicketFilters as TicketFiltersType,
+  ProjectMemberWithUser,
+  Label,
+} from '@issue-tracker/shared-types';
 
 @Component({
   selector: 'app-ticket-filters',
@@ -31,8 +47,11 @@ import { TicketFilters as TicketFiltersType } from '@issue-tracker/shared-types'
   templateUrl: './ticket-filters.html',
   styleUrl: './ticket-filters.scss',
 })
-export class TicketFilters {
+export class TicketFilters implements OnInit, OnDestroy {
+  @Input() projectId!: string;
   @Output() filtersChange = new EventEmitter<TicketFiltersType>();
+
+  private destroy$ = new Subject<void>();
 
   filterForm = new FormGroup({
     status: new FormControl(''),
@@ -58,15 +77,68 @@ export class TicketFilters {
     { value: 'CRITICAL', label: 'Kritisch' },
   ];
 
-  // TODO: Assignees und Labels dynamisch vom Backend laden
-  assigneeOptions = [{ value: '', label: 'Alle Zuständigen' }];
+  assigneeOptions: { value: string; label: string }[] = [
+    { value: '', label: 'Alle Zuständigen' },
+  ];
 
-  labelOptions: { value: string; label: string }[] = [];
+  labels: Label[] = [];
+
+  private projectsService = inject(ProjectsService);
 
   constructor() {
     this.filterForm.valueChanges
-      .pipe(debounceTime(300))
+      .pipe(debounceTime(300), takeUntil(this.destroy$))
       .subscribe(() => this.emitFilters());
+  }
+
+  ngOnInit(): void {
+    this.loadAssignees();
+    this.loadLabels();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  loadAssignees(): void {
+    if (!this.projectId) return;
+
+    this.projectsService
+      .findProjectMembers(this.projectId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (members: ProjectMemberWithUser[]) => {
+          this.assigneeOptions = [
+            { value: '', label: 'Alle Zuständigen' },
+            ...members
+              .filter((member) => member.user)
+              .map((member) => ({
+                value: member.user!.id,
+                label: `${member.user!.name} ${member.user!.surname}`,
+              })),
+          ];
+        },
+        error: (err: Error) => {
+          console.error('Error loading assignees:', err);
+        },
+      });
+  }
+
+  loadLabels(): void {
+    if (!this.projectId) return;
+
+    this.projectsService
+      .findProjectLabels(this.projectId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (labels: Label[]) => {
+          this.labels = labels;
+        },
+        error: (err: Error) => {
+          console.error('Error loading labels:', err);
+        },
+      });
   }
 
   emitFilters(): void {

@@ -60,6 +60,8 @@ export class UsersService {
     return users.map((user) => this.mapPrismaToUserPublic(user));
   }
 
+  // async findAllProjectMembers(projectId: string)
+
   /**
    * Sucht Benutzer nach Name, Vorname oder Email
    *

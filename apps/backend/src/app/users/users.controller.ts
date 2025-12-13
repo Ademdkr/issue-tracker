@@ -48,6 +48,17 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
+  // /**
+  //  * Alle Projektmitglieder eines Projekts abrufen
+  //  * Authentifizierung erforderlich
+  //  */
+  // @Get('project/:projectId/members')
+  // async findAllProjectMembers(
+  //   @Param('projectId') projectId: string
+  // ): Promise<UserPublic[]> {
+  //   return this.usersService.findAllProjectMembers(projectId);
+  // }
+
   /**
    * User suchen
    * Query Parameter: ?search=<suchbegriff>

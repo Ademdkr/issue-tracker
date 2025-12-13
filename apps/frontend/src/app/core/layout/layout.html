@@ -73,6 +73,7 @@
             *ngIf="showNewTicketButton"
             mat-raised-button
             type="button"
+            (click)="openCreateTicketDialog($event)"
           >
             <mat-icon class="add-icon">add</mat-icon>
             <mat-icon>confirmation_number</mat-icon>

@@ -16,10 +16,12 @@
     </button>
   </div>
   }
+
   <!-- Filter-Section -->
   <div class="filters-section">
     <div class="filters-left">
       <app-ticket-filters
+        [projectId]="projectId"
         (filtersChange)="onFiltersChange($event)"
       ></app-ticket-filters>
     </div>

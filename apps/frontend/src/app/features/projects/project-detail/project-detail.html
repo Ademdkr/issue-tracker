@@ -34,22 +34,14 @@
         <div class="tab-content">
           <!-- Hier später: [projectId]="project.id" -->
           <app-tickets-tab [projectId]="project.id"></app-tickets-tab>
-          <!-- <p>Tickets-Tab Placeholder</p>
-          <p class="placeholder-info">
-            Hier werden alle Tickets des Projekts angezeigt mit Filtern für
-            Status, Priorität, Assignee und Labels.
-          </p> -->
         </div>
       </mat-tab>
 
       <!-- Tab 2: Verwaltung -->
       <mat-tab label="Verwaltung">
         <div class="tab-content">
-          <!-- Hier später: <app-management-tab [projectId]="project.id" /> -->
-          <p>Verwaltungs-Tab Placeholder</p>
-          <p class="placeholder-info">
-            Hier können Projektmitglieder und Labels verwaltet werden.
-          </p>
+          <!-- Hier später: [projectId]="project.id" -->
+          <app-management-tab [projectId]="project.id"></app-management-tab>
         </div>
       </mat-tab>
     </mat-tab-group>

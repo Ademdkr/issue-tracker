@@ -1,1 +1,63 @@
-<p>manage-members works!</p>
+<div class="manage-members-container">
+  <!-- Verfügbare Nutzer -->
+  <div class="available-users">
+    <h3>Verfügbare Nutzer</h3>
+    <app-members-table
+      #availableUsersTable
+      [projectId]="projectId"
+      [type]="'available'"
+      (selectionChange)="onAvailableUsersSelectionChange($event)"
+    ></app-members-table>
+  </div>
+
+  <!-- Steuerungselemente -->
+  <div class="controls-group">
+    <!-- Suchfeld -->
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Suche</mat-label>
+      <input
+        matInput
+        type="text"
+        placeholder="Name, E-Mail oder Rolle..."
+        [(ngModel)]="searchQuery"
+        (input)="onSearchChange(searchQuery)"
+      />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="selectedAvailableUsers.length === 0 || isLoading"
+      (click)="addMembers()"
+    >
+      <mat-icon>arrow_forward</mat-icon>
+      Hinzufügen @if (selectedAvailableUsers.length > 0) {
+      <span class="badge">({{ selectedAvailableUsers.length }})</span>
+      }
+    </button>
+
+    <button
+      mat-raised-button
+      color="warn"
+      [disabled]="selectedProjectMembers.length === 0 || isLoading"
+      (click)="removeMembers()"
+    >
+      <mat-icon>arrow_back</mat-icon>
+      Entfernen @if (selectedProjectMembers.length > 0) {
+      <span class="badge">({{ selectedProjectMembers.length }})</span>
+      }
+    </button>
+  </div>
+
+  <!-- Projektmitglieder -->
+  <div class="project-members">
+    <h3>Projektmitglieder</h3>
+    <app-members-table
+      #projectMembersTable
+      [projectId]="projectId"
+      [type]="'members'"
+      (selectionChange)="onProjectMembersSelectionChange($event)"
+    ></app-members-table>
+  </div>
+</div>

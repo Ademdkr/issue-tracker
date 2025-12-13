@@ -1,0 +1,146 @@
+<div class="create-ticket-dialog">
+  <h2 mat-dialog-title>
+    <mat-icon>confirmation_number</mat-icon>
+    Neues Ticket erstellen
+  </h2>
+
+  <mat-dialog-content>
+    <form [formGroup]="ticketForm" class="ticket-form">
+      <!-- Titel -->
+      <mat-form-field appearance="outline">
+        <mat-label>Titel</mat-label>
+        <input
+          matInput
+          formControlName="title"
+          placeholder="Kurze Beschreibung des Problems"
+          maxlength="200"
+        />
+        @if (ticketForm.get('title')?.hasError('required') &&
+        ticketForm.get('title')?.touched) {
+        <mat-error>Titel ist erforderlich</mat-error>
+        } @if (ticketForm.get('title')?.hasError('maxlength')) {
+        <mat-error>Titel darf maximal 200 Zeichen lang sein</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Beschreibung -->
+      <mat-form-field appearance="outline">
+        <mat-label>Beschreibung</mat-label>
+        <textarea
+          matInput
+          formControlName="description"
+          placeholder="Detaillierte Beschreibung des Problems"
+          rows="4"
+        ></textarea>
+        @if (ticketForm.get('description')?.hasError('required') &&
+        ticketForm.get('description')?.touched) {
+        <mat-error>Beschreibung ist erforderlich</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Projekt -->
+      <mat-form-field appearance="outline">
+        <mat-label>Projekt</mat-label>
+        <mat-select formControlName="projectId">
+          @for (project of projects; track project.id) {
+          <mat-option [value]="project.id">{{ project.name }}</mat-option>
+          }
+        </mat-select>
+        @if (isLoadingProjects) {
+        <mat-spinner diameter="20" style="margin-left: 8px"></mat-spinner>
+        }
+        <mat-hint>{{ data.projectName }}</mat-hint>
+      </mat-form-field>
+
+      <!-- Priorität -->
+      <mat-form-field appearance="outline">
+        <mat-label>Priorität</mat-label>
+        <mat-select formControlName="priority">
+          @for (option of priorityOptions; track option.value) {
+          <mat-option [value]="option.value">{{ option.label }}</mat-option>
+          }
+        </mat-select>
+        @if (isReporter) {
+        <mat-hint
+          >Reporter können keine Priorität setzen (default: Mittel)</mat-hint
+        >
+        }
+      </mat-form-field>
+
+      <!-- Assignee -->
+      <mat-form-field appearance="outline">
+        <mat-label>Assignee (optional)</mat-label>
+        <mat-select formControlName="assigneeId">
+          <mat-option [value]="null">Kein Assignee</mat-option>
+          @for (option of getAssigneeOptions(); track option.value) {
+          <mat-option [value]="option.value">{{ option.label }}</mat-option>
+          }
+        </mat-select>
+        @if (isReporter) {
+        <mat-hint>Reporter können keinen Assignee setzen</mat-hint>
+        } @else if (isDeveloper) {
+        <mat-hint>Developer können nur sich selbst zuweisen</mat-hint>
+        }
+      </mat-form-field>
+
+      <!-- Labels -->
+      <mat-form-field appearance="outline">
+        <mat-label>Labels (optional)</mat-label>
+        <mat-select formControlName="labelIds" multiple>
+          @for (label of labels; track label.id) {
+          <mat-option [value]="label.id">
+            <div class="label-option">
+              <span
+                class="label-color"
+                [style.background-color]="label.color"
+              ></span>
+              <span class="label-name">{{ label.name }}</span>
+            </div>
+          </mat-option>
+          }
+        </mat-select>
+        @if (isLoadingLabels) {
+        <mat-spinner diameter="20" style="margin-left: 8px"></mat-spinner>
+        }
+        <mat-hint>Auswahl aus vorhandenen Labels im Projekt</mat-hint>
+      </mat-form-field>
+
+      <!-- Info-Hinweise -->
+      <div class="info-section">
+        <p class="info-text">
+          <mat-icon>info</mat-icon>
+          <span>Status wird automatisch auf "Offen" gesetzt</span>
+        </p>
+        <p class="info-text">
+          <mat-icon>person</mat-icon>
+          <span
+            >Reporter: {{ currentUser?.name }} {{ currentUser?.surname }}</span
+          >
+        </p>
+        <p class="info-text">
+          <mat-icon>schedule</mat-icon>
+          <span>Erstellt am: {{ 'Jetzt' }}</span>
+        </p>
+      </div>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()" [disabled]="isSubmitting">
+      <mat-icon>close</mat-icon>
+      Abbrechen
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="onSubmit()"
+      [disabled]="ticketForm.invalid || isSubmitting"
+    >
+      @if (isSubmitting) {
+      <mat-spinner diameter="20"></mat-spinner>
+      } @else {
+      <mat-icon>check</mat-icon>
+      } Erstellen
+    </button>
+  </mat-dialog-actions>
+</div>

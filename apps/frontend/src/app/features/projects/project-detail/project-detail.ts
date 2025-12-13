@@ -15,6 +15,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ProjectsService } from '../../../core/services/projects.service';
 import { Project } from '@issue-tracker/shared-types';
 import { TicketsTab } from './components/tickets-tab/tickets-tab';
+import { ManagementTab } from './components/management-tab/management-tab';
 
 @Component({
   selector: 'app-project-detail',
@@ -27,6 +28,7 @@ import { TicketsTab } from './components/tickets-tab/tickets-tab';
     MatIconModule,
     MatSnackBarModule,
     TicketsTab,
+    ManagementTab,
   ],
   templateUrl: './project-detail.html',
   styleUrl: './project-detail.scss',

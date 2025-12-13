@@ -38,10 +38,25 @@
 
     <!-- Label Filter (Multi-Select) -->
     <mat-form-field appearance="outline">
-      <mat-label>Label</mat-label>
-      <mat-select formControlName="labelIds" multiple>
-        <mat-option *ngFor="let option of labelOptions" [value]="option.value">
-          {{ option.label }}
+      <mat-label>Labels</mat-label>
+      <mat-select
+        formControlName="labelIds"
+        multiple
+        [hideSingleSelectionIndicator]="true"
+      >
+        <mat-select-trigger>
+          @if ((filterForm.get('labelIds')?.value || []).length === 0) { Alle
+          Labels } @else { {{ (filterForm.get('labelIds')?.value || []).length
+          }} ausgewählt }
+        </mat-select-trigger>
+        <mat-option *ngFor="let label of labels" [value]="label.id">
+          <div class="label-filter-option">
+            <span
+              class="label-color-dot"
+              [style.background-color]="label.color"
+            ></span>
+            <span class="label-text">{{ label.name }}</span>
+          </div>
         </mat-option>
       </mat-select>
     </mat-form-field>

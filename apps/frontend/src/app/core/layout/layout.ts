@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../services/auth.service';
 import { ProjectsService } from '../services/projects.service';
 import { ProjectSettingsService } from '../services/project-settings.service';
+import { TicketDialogService } from '../services/ticket-dialog.service';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
@@ -73,6 +74,7 @@ export class Layout implements OnInit {
     private authService: AuthService,
     private projectsService: ProjectsService,
     private projectSettingsService: ProjectSettingsService,
+    private ticketDialogService: TicketDialogService,
     private snackBar: MatSnackBar
   ) {}
 
@@ -230,6 +232,11 @@ export class Layout implements OnInit {
         });
       },
     });
+  }
+
+  openCreateTicketDialog(event: Event): void {
+    event.stopPropagation();
+    this.ticketDialogService.openCreateTicketDialog();
   }
 
   logout(): void {

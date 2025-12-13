@@ -38,24 +38,27 @@ export class LabelsService {
       throw new NotFoundException('Project not found');
     }
 
-    // 2. Prüfe ob Label-Name bereits existiert im Projekt
+    // 2. Konvertiere Namen zu Lowercase
+    const normalizedName = createLabelDto.name.toLowerCase().trim();
+
+    // 3. Prüfe ob Label-Name bereits existiert im Projekt
     const existingLabel = await this.prisma.label.findFirst({
       where: {
         projectId,
-        name: createLabelDto.name,
+        name: normalizedName,
       },
     });
 
     if (existingLabel) {
       throw new ConflictException(
-        `Label "${createLabelDto.name}" already exists in this project`
+        `Label "${normalizedName}" already exists in this project`
       );
     }
 
-    // 3. Erstelle Label
+    // 4. Erstelle Label
     const label = await this.prisma.label.create({
       data: {
-        name: createLabelDto.name,
+        name: normalizedName,
         color: createLabelDto.color,
         projectId,
       },
@@ -115,32 +118,34 @@ export class LabelsService {
       throw new Error('Label not found in this project');
     }
 
-    // 2. Bei Namenänderung: Prüfe ob neuer Name bereits existiert
-    if (updateLabelDto.name && updateLabelDto.name !== label.name) {
+    // 2. Konvertiere Namen zu Lowercase wenn vorhanden
+    const normalizedName = updateLabelDto.name
+      ? updateLabelDto.name.toLowerCase().trim()
+      : undefined;
+
+    // 3. Bei Namenänderung: Prüfe ob neuer Name bereits existiert
+    if (normalizedName && normalizedName !== label.name) {
       const existingLabel = await this.prisma.label.findFirst({
         where: {
           projectId,
-          name: updateLabelDto.name,
+          name: normalizedName,
           NOT: { id: labelId },
         },
       });
 
       if (existingLabel) {
         throw new ConflictException(
-          `Label "${updateLabelDto.name}" already exists in this project`
+          `Label "${normalizedName}" already exists in this project`
         );
       }
     }
 
-    // 3. Update nur wenn es Änderungen gibt
+    // 4. Update nur wenn es Änderungen gibt
     const updateData: { name?: string; color?: string; updatedAt?: Date } = {};
     let hasChanges = false;
 
-    if (
-      updateLabelDto.name !== undefined &&
-      updateLabelDto.name !== label.name
-    ) {
-      updateData.name = updateLabelDto.name;
+    if (normalizedName !== undefined && normalizedName !== label.name) {
+      updateData.name = normalizedName;
       hasChanges = true;
     }
 
