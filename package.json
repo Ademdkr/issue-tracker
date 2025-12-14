@@ -2,7 +2,13 @@
   "name": "@issue-tracker/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "ci:lint": "nx affected -t lint --parallel=3",
+    "ci:test": "nx affected -t test --parallel=3",
+    "ci:build": "nx affected -t build --parallel=3",
+    "ci:e2e": "nx affected -t e2e --parallel=1",
+    "ci:check": "npm run ci:lint && npm run ci:build"
+  },
   "private": true,
   "prisma": {
     "seed": "ts-node prisma/seed.ts"

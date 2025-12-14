@@ -1,0 +1,84 @@
+name: Deploy to Production
+
+# DEPLOYMENT DEAKTIVIERT - Workflow wird nicht automatisch ausgeführt
+# Um zu aktivieren: Entferne die Kommentare bei 'on:'
+on:
+  # push:
+  #   branches:
+  #     - main
+  #   tags:
+  #     - 'v*.*.*'
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '20.x'
+  NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
+
+jobs:
+  deploy-production:
+    name: Deploy to Production Environment
+    runs-on: ubuntu-latest
+    # Environment configuration (to be configured in GitHub Settings)
+    # environment:
+    #   name: production
+    #   url: https://issue-tracker.example.com
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run all tests
+        run: npx nx run-many -t test --all --parallel=3
+
+      - name: Build frontend for production
+        run: npx nx build frontend --configuration=production
+        env:
+          API_URL: ${{ secrets.PRODUCTION_API_URL }}
+
+      - name: Build backend for production
+        run: npx nx build backend --configuration=production
+
+      - name: Run database migrations (with backup)
+        run: |
+          echo "Creating database backup..."
+          # Backup command hier
+          npx prisma migrate deploy
+        env:
+          DATABASE_URL: ${{ secrets.PRODUCTION_DATABASE_URL }}
+
+      # Deployment-Schritte
+      - name: Deploy frontend
+        run: |
+          echo "Deploying frontend to production..."
+          # Beispiel: aws s3 sync dist/apps/frontend s3://production-bucket
+          
+      - name: Deploy backend
+        run: |
+          echo "Deploying backend to production..."
+          # Beispiel: docker build & push, kubectl apply, etc.
+
+      - name: Health check
+        run: |
+          echo "Running health checks..."
+          # curl https://issue-tracker.example.com/api/health
+
+      - name: Notify deployment success
+        if: success()
+        run: |
+          echo "Production deployment successful!"
+          # Benachrichtigungen hier
+
+      - name: Rollback on failure
+        if: failure()
+        run: |
+          echo "Deployment failed, initiating rollback..."
+          # Rollback-Schritte hier

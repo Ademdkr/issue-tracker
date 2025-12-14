@@ -1,12 +1,15 @@
 <div class="projects-container">
   <!-- Loading State -->
-  <div *ngIf="isLoading" class="loading-container">
+  @if (isLoading) {
+  <div class="loading-container">
     <mat-spinner></mat-spinner>
     <p>Projekte werden geladen...</p>
   </div>
+  }
 
   <!-- Error State -->
-  <div *ngIf="error && !isLoading" class="error-container">
+  @if (error && !isLoading) {
+  <div class="error-container">
     <mat-icon class="error-icon">error_outline</mat-icon>
     <h3>{{ error }}</h3>
     <button mat-raised-button color="primary" (click)="loadProjects()">
@@ -14,9 +17,11 @@
       Erneut versuchen
     </button>
   </div>
+  }
 
   <!-- Projects Content -->
-  <div *ngIf="!isLoading && !error" class="projects-content">
+  @if (!isLoading && !error) {
+  <div class="projects-content">
     <!-- Filter and Search Section -->
     <div class="filter-search-container">
       <!-- Filter Buttons -->
@@ -57,8 +62,8 @@
           placeholder="Nach Name, Beschreibung oder Slug suchen..."
         />
         <mat-icon matPrefix>search</mat-icon>
+        @if (searchQuery) {
         <button
-          *ngIf="searchQuery"
           matSuffix
           mat-icon-button
           (click)="onSearchChange('')"
@@ -66,20 +71,19 @@
         >
           <mat-icon>close</mat-icon>
         </button>
+        }
       </mat-form-field>
     </div>
 
     <!-- Open Projects Section -->
-    <h3 *ngIf="activeFilter === 'ALL' || activeFilter === 'OPEN'">
+    @if (activeFilter === 'ALL' || activeFilter === 'OPEN') {
+    <h3>
       Offene Projekte
     </h3>
-    <div
-      class="project-cards-group"
-      *ngIf="activeFilter === 'ALL' || activeFilter === 'OPEN'"
-    >
-      <ng-container *ngFor="let project of projects; trackBy: trackByProjectId">
+    <div class="project-cards-group">
+      @for (project of projects; track trackByProjectId($index, project)) {
+        @if (project.status === 'OPEN') {
         <mat-card
-          *ngIf="project.status === 'OPEN'"
           class="project-card"
           role="group"
           tabindex="0"
@@ -100,7 +104,8 @@
           </mat-card-header>
           <mat-card-content>
             <!-- Ticket Statistics by Status -->
-            <div class="ticket-stats" *ngIf="project.ticketsByStatus">
+            @if (project.ticketsByStatus) {
+            <div class="ticket-stats">
               <div class="stat-item">
                 <mat-icon class="status-icon open"
                   >radio_button_unchecked</mat-icon
@@ -122,6 +127,7 @@
                 <span>{{ project.ticketsByStatus.closed }} Geschlossen</span>
               </div>
             </div>
+            }
 
             <mat-divider></mat-divider>
 
@@ -136,21 +142,16 @@
                 <span>{{ project.memberCount }} Mitglieder</span>
               </div>
               <!-- Creator Info -->
-              <div class="project-meta" *ngIf="project.createdBy">
+              @if (project.createdBy) {
+              <div class="project-meta">
                 <mat-icon>person</mat-icon>
                 <span
                   >Erstellt von {{ project.createdBy.name }} {{
                   project.createdBy.surname }}</span
                 >
               </div>
+              }
             </div>
-
-            <!-- Created Date -->
-            <!-- <div class="project-meta">
-            <mat-icon>schedule</mat-icon>
-            <span>{{ getRelativeTime(project.createdAt) }}</span>
-            </div>
-            </mat-card-content> -->
 
             <mat-card-actions align="end">
               <button mat-button [routerLink]="['/projects', project.id]">
@@ -159,25 +160,29 @@
             </mat-card-actions>
           </mat-card-content>
         </mat-card>
-      </ng-container>
+        }
+      }
     </div>
+    }
   </div>
+  }
 
+  @if (!isLoading && !error && activeFilter === 'ALL') {
   <mat-divider
-    *ngIf="!isLoading && !error && activeFilter === 'ALL'"
     style="padding-bottom: 24px"
   ></mat-divider>
+  }
 
   <!-- Closed Projects Section -->
+  @if (!isLoading && !error && (activeFilter === 'ALL' || activeFilter === 'CLOSED')) {
   <div
-    *ngIf="!isLoading && !error && (activeFilter === 'ALL' || activeFilter === 'CLOSED')"
     class="projects-content"
   >
     <h3>Geschlossene Projekte</h3>
     <div class="project-cards-group">
-      <ng-container *ngFor="let project of projects; trackBy: trackByProjectId">
+      @for (project of projects; track trackByProjectId($index, project)) {
+        @if (project.status === 'CLOSED') {
         <mat-card
-          *ngIf="project.status === 'CLOSED'"
           class="project-card"
           role="group"
           tabindex="0"
@@ -198,7 +203,8 @@
           </mat-card-header>
           <mat-card-content>
             <!-- Ticket Statistics by Status -->
-            <div class="ticket-stats" *ngIf="project.ticketsByStatus">
+            @if (project.ticketsByStatus) {
+            <div class="ticket-stats">
               <div class="stat-item">
                 <mat-icon class="status-icon open"
                   >radio_button_unchecked</mat-icon
@@ -220,6 +226,7 @@
                 <span>{{ project.ticketsByStatus.closed }} Geschlossen</span>
               </div>
             </div>
+            }
 
             <mat-divider></mat-divider>
 
@@ -236,13 +243,15 @@
                 <span>{{ project.memberCount }} Mitglieder</span>
               </div>
               <!-- Creator Info -->
-              <div class="project-meta" *ngIf="project.createdBy">
+              @if (project.createdBy) {
+              <div class="project-meta">
                 <mat-icon class="status-icon closed">person</mat-icon>
                 <span
                   >Erstellt von {{ project.createdBy.name }} {{
                   project.createdBy.surname }}</span
                 >
               </div>
+              }
             </div>
 
             <!-- Created Date -->
@@ -259,7 +268,9 @@
             </mat-card-actions>
           </mat-card-content>
         </mat-card>
-      </ng-container>
+        }
+      }
     </div>
   </div>
+  }
 </div>

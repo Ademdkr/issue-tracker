@@ -1,17 +1,19 @@
 <div class="layout-container">
+  @if (showCreateProjectForm) {
   <app-create-project-form
-    *ngIf="showCreateProjectForm"
     (closeForm)="onCloseCreateProjectForm()"
     (createProject)="onCreateProject($event)"
   ></app-create-project-form>
+  }
 
+  @if (showSettingsForm && selectedProject) {
   <app-general-settings-form
-    *ngIf="showSettingsForm && selectedProject"
     [project]="selectedProject"
     (closeForm)="onCloseSettings()"
     (saveForm)="onSaveSettings($event)"
     (deleteProject)="onDeleteProject($event)"
   ></app-general-settings-form>
+  }
 
   <mat-sidenav-container class="sidenav-container">
     <!--  -->
@@ -29,9 +31,9 @@
       </mat-toolbar>
 
       <mat-nav-list class="nav-list">
+        @for (item of navigationItems; track item.route) {
         <a
           mat-list-item
-          *ngFor="let item of navigationItems"
           [routerLink]="item.route"
           routerLinkActive="active"
           class="nav-item"
@@ -39,6 +41,7 @@
           <mat-icon matListItemIcon>{{ item.icon}}</mat-icon>
           <span matListItemTitle>{{ item.label }}</span>
         </a>
+        }
       </mat-nav-list>
     </mat-sidenav>
 
@@ -57,9 +60,9 @@
         </div>
 
         <div class="topbar-button-group">
+          @if (showNewProjectButton) {
           <button
             class="topbar-button"
-            *ngIf="showNewProjectButton"
             mat-raised-button
             type="button"
             (click)="openCreateProjectForm($event)"
@@ -68,9 +71,10 @@
             <mat-icon>assignment</mat-icon>
             Neues Projekt
           </button>
+          }
+          @if (showNewTicketButton) {
           <button
             class="topbar-button"
-            *ngIf="showNewTicketButton"
             mat-raised-button
             type="button"
             (click)="openCreateTicketDialog($event)"
@@ -79,6 +83,7 @@
             <mat-icon>confirmation_number</mat-icon>
             Neues Ticket
           </button>
+          }
         </div>
       </mat-toolbar>
 

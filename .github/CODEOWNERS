@@ -1,0 +1,27 @@
+# Code Owners für das Issue Tracker Projekt
+# Diese Datei definiert, wer für welche Teile des Codes verantwortlich ist
+# und automatisch als Reviewer für Pull Requests hinzugefügt wird
+
+# Default owners für alles im Repository
+* @Adem
+
+# Frontend
+/apps/frontend/ @Adem
+/apps/frontend-e2e/ @Adem
+
+# Backend
+/apps/backend/ @Adem
+/apps/backend-e2e/ @Adem
+
+# CI/CD Workflows
+/.github/ @Adem
+
+# Konfigurationsdateien
+*.json @Adem
+*.yml @Adem
+*.yaml @Adem
+*.config.* @Adem
+
+# Dokumentation
+*.md @Adem
+/docs/ @Adem
