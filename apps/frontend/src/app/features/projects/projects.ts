@@ -1,5 +1,5 @@
 // apps/frontend/src/app/features/projects/projects.ts
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subject } from 'rxjs';
@@ -26,6 +26,7 @@ import { ProjectSettingsService } from '../../core/services/project-settings.ser
 
 @Component({
   selector: 'app-projects',
+  standalone: true,
   imports: [
     CommonModule,
     FormsModule,
@@ -45,6 +46,11 @@ import { ProjectSettingsService } from '../../core/services/project-settings.ser
   styleUrl: './projects.scss',
 })
 export class Projects implements OnInit, OnDestroy {
+  private readonly projectsService = inject(ProjectsService);
+  private readonly authService = inject(AuthService);
+  private readonly snackBar = inject(MatSnackBar);
+  private readonly projectSettingsService = inject(ProjectSettingsService);
+
   projects: ProjectSummary[] = [];
   isLoading = false;
   error: string | null = null;
@@ -53,13 +59,6 @@ export class Projects implements OnInit, OnDestroy {
   private searchSubject = new Subject<string>();
   private destroy$ = new Subject<void>();
   private isSearching = false;
-
-  constructor(
-    private projectsService: ProjectsService,
-    private authService: AuthService,
-    private snackBar: MatSnackBar,
-    private projectSettingsService: ProjectSettingsService
-  ) {}
 
   ngOnInit(): void {
     this.loadProjects();

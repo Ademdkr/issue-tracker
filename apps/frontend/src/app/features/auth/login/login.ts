@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import {
@@ -42,16 +42,16 @@ import { LoginResponse } from '@issue-tracker/shared-types';
   styleUrl: './login.scss',
 })
 export class Login {
+  private readonly fb = inject(FormBuilder);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
+  private readonly snackBar = inject(MatSnackBar);
+
   loginForm: FormGroup;
   isLoading = false;
   hidePassword = true;
 
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router,
-    private snackBar: MatSnackBar
-  ) {
+  constructor() {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],

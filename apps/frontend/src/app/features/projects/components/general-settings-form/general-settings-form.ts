@@ -6,6 +6,7 @@ import {
   Output,
   EventEmitter,
   ViewEncapsulation,
+  inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -24,6 +25,7 @@ import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-general-settings-form',
+  standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -38,6 +40,9 @@ import { AuthService } from '../../../../core/services/auth.service';
   encapsulation: ViewEncapsulation.None,
 })
 export class GeneralSettingsForm implements OnInit {
+  private readonly fb = inject(FormBuilder);
+  private readonly authService = inject(AuthService);
+
   @Input() project!: ProjectSummary;
   @Output() closeForm = new EventEmitter<void>();
   @Output() saveForm = new EventEmitter<any>();
@@ -46,8 +51,6 @@ export class GeneralSettingsForm implements OnInit {
   settingsForm!: FormGroup;
   isAdmin = false;
   canEdit = false;
-
-  constructor(private fb: FormBuilder, private authService: AuthService) {}
 
   ngOnInit(): void {
     // Check if user is admin or manager

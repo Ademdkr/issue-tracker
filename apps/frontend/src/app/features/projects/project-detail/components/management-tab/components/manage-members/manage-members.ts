@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,6 +12,7 @@ import { ProjectsService } from 'apps/frontend/src/app/core/services/projects.se
 
 @Component({
   selector: 'app-manage-members',
+  standalone: true,
   imports: [
     CommonModule,
     MembersTable,
@@ -25,6 +26,8 @@ import { ProjectsService } from 'apps/frontend/src/app/core/services/projects.se
   styleUrl: './manage-members.scss',
 })
 export class ManageMembers {
+  private readonly projectsService = inject(ProjectsService);
+
   @Input() projectId!: string;
 
   @ViewChild('availableUsersTable') availableUsersTable!: MembersTable;
@@ -34,8 +37,6 @@ export class ManageMembers {
   selectedProjectMembers: User[] = [];
   isLoading = false;
   searchQuery = '';
-
-  constructor(private projectsService: ProjectsService) {}
 
   onAvailableUsersSelectionChange(users: User[]): void {
     this.selectedAvailableUsers = users;

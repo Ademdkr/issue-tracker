@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
@@ -25,6 +25,7 @@ interface DialogData {
 
 @Component({
   selector: 'app-label-dialog',
+  standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -37,6 +38,11 @@ interface DialogData {
   styleUrl: './label-dialog.scss',
 })
 export class LabelDialogComponent implements OnInit {
+  private readonly fb = inject(FormBuilder);
+  private readonly projectsService = inject(ProjectsService);
+  private readonly dialogRef = inject(MatDialogRef<LabelDialogComponent>);
+  readonly data = inject<DialogData>(MAT_DIALOG_DATA);
+
   labelForm!: FormGroup;
   isEditMode = false;
   isSubmitting = false;
@@ -59,13 +65,6 @@ export class LabelDialogComponent implements OnInit {
     '#ff9800', // Orange
     '#ff5722', // Deep Orange
   ];
-
-  constructor(
-    private fb: FormBuilder,
-    private projectsService: ProjectsService,
-    private dialogRef: MatDialogRef<LabelDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData
-  ) {}
 
   ngOnInit(): void {
     this.isEditMode = !!this.data.label;

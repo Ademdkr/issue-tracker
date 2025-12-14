@@ -10,7 +10,7 @@ on:
 
 env:
   NODE_VERSION: '20.x'
-  NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
+  # Optional: NX_CLOUD_ACCESS_TOKEN für Nx Cloud Caching (GitHub Settings > Secrets)
 
 jobs:
   deploy-staging:
@@ -36,16 +36,16 @@ jobs:
 
       - name: Build frontend for staging
         run: npx nx build frontend --configuration=production
-        env:
-          API_URL: ${{ secrets.STAGING_API_URL }}
+        # env:
+        #   API_URL: ${{ secrets.STAGING_API_URL }} # In GitHub Settings > Secrets konfigurieren
 
       - name: Build backend for staging
         run: npx nx build backend --configuration=production
 
       - name: Run database migrations
         run: npx prisma migrate deploy
-        env:
-          DATABASE_URL: ${{ secrets.STAGING_DATABASE_URL }}
+        # env:
+        #   DATABASE_URL: ${{ secrets.STAGING_DATABASE_URL }} # In GitHub Settings > Secrets konfigurieren
 
       # Hier würden Sie Ihre Deployment-Schritte hinzufügen
       # z.B. Deploy zu AWS, Azure, Vercel, etc.

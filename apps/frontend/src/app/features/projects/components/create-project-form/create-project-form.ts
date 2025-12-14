@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,6 +14,7 @@ import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-create-project-form',
+  standalone: true,
   imports: [
     CommonModule,
     MatIconModule,
@@ -26,6 +27,9 @@ import { AuthService } from '../../../../core/services/auth.service';
   styleUrl: './create-project-form.scss',
 })
 export class CreateProjectForm implements OnInit {
+  private readonly fb = inject(FormBuilder);
+  private readonly authService = inject(AuthService);
+
   @Output() closeForm = new EventEmitter<void>();
   @Output() createProject = new EventEmitter<{
     name: string;
@@ -36,8 +40,6 @@ export class CreateProjectForm implements OnInit {
   generatedKey = '';
   currentUserName = '';
   currentDate = new Date();
-
-  constructor(private fb: FormBuilder, private authService: AuthService) {}
 
   ngOnInit(): void {
     const currentUser = this.authService.getCurrentUser();

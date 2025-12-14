@@ -19,7 +19,7 @@ concurrency:
 
 env:
   NODE_VERSION: '20.x'
-  NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
+  # Optional: NX_CLOUD_ACCESS_TOKEN für Nx Cloud Caching (GitHub Settings > Secrets)
 
 jobs:
   # Job 1: Install dependencies and setup

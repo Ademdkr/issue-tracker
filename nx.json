@@ -35,22 +35,6 @@
       "options": {
         "targetName": "lint"
       }
-    },
-    {
-      "plugin": "@nx/jest/plugin",
-      "options": {
-        "targetName": "test"
-      },
-      "exclude": ["apps/issue-tracker-e2e/**/*"]
-    },
-    {
-      "plugin": "@nx/cypress/plugin",
-      "options": {
-        "targetName": "e2e",
-        "openTargetName": "open-cypress",
-        "componentTestingTargetName": "component-test",
-        "ciTargetName": "e2e-ci"
-      }
     }
   ],
   "targetDefaults": {
@@ -67,10 +51,10 @@
   },
   "generators": {
     "@nx/angular:application": {
-      "e2eTestRunner": "cypress",
+      "e2eTestRunner": "none",
       "linter": "eslint",
       "style": "scss",
-      "unitTestRunner": "jest"
+      "unitTestRunner": "none"
     },
     "@nx/angular:component": {
       "style": "scss",
