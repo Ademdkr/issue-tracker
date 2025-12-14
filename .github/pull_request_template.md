@@ -1,7 +1,9 @@
 ## Beschreibung
+
 <!-- Beschreibe die Änderungen in diesem Pull Request -->
 
 ## Art der Änderung
+
 <!-- Markiere die zutreffenden Optionen -->
 
 - [ ] 🐛 Bug Fix (nicht-breaking Änderung, die ein Problem behebt)
@@ -15,6 +17,7 @@
 - [ ] 🔧 Chore (Änderungen am Build-Prozess oder Hilfswerkzeuge)
 
 ## Wie wurde getestet?
+
 <!-- Beschreibe die Tests, die du durchgeführt hast -->
 
 - [ ] Unit Tests
@@ -23,6 +26,7 @@
 - [ ] Manuelles Testen
 
 ## Checklist
+
 <!-- Stelle sicher, dass alle Punkte erfüllt sind -->
 
 - [ ] Mein Code folgt den Style Guidelines des Projekts
@@ -35,12 +39,15 @@
 - [ ] Alle abhängigen Änderungen wurden gemerged und gepublished
 
 ## Screenshots (falls relevant)
+
 <!-- Füge Screenshots hinzu, wenn UI-Änderungen vorgenommen wurden -->
 
 ## Zusätzlicher Kontext
+
 <!-- Füge weitere relevante Informationen hinzu -->
 
 ## Verwandte Issues
+
 <!-- Verlinke verwandte Issues mit #issue_nummer -->
 
 Closes #

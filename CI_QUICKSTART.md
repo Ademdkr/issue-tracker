@@ -5,6 +5,7 @@
 ### 1. Code committen und pushen
 
 Die CI-Pipeline startet automatisch bei:
+
 - Push auf `main` oder `develop` Branch
 - Pull Requests zu `main` oder `develop`
 
@@ -20,6 +21,7 @@ git push origin main
 ### 2. Pipeline-Status überprüfen
 
 Nach dem Push:
+
 1. Gehe zu deinem GitHub Repository
 2. Klicke auf den Tab **"Actions"**
 3. Du siehst den laufenden Workflow "CI"
@@ -28,15 +30,15 @@ Nach dem Push:
 
 Die Pipeline führt folgende Checks durch:
 
-| Job | Beschreibung | Dauer |
-|-----|--------------|-------|
-| ✅ Setup | Installiert Dependencies | ~2-3 Min |
-| ✅ Lint | ESLint auf betroffene Projekte | ~30 Sek |
-| ✅ Test | Unit Tests mit Coverage | ~1-2 Min |
-| ✅ Build | Baut Frontend & Backend | ~2-3 Min |
-| ✅ TypeCheck | TypeScript Compiler Check | ~30 Sek |
-| ✅ Security | npm Security Audit | ~30 Sek |
-| ✅ E2E | End-to-End Tests (optional) | ~3-5 Min |
+| Job          | Beschreibung                   | Dauer    |
+| ------------ | ------------------------------ | -------- |
+| ✅ Setup     | Installiert Dependencies       | ~2-3 Min |
+| ✅ Lint      | ESLint auf betroffene Projekte | ~30 Sek  |
+| ✅ Test      | Unit Tests mit Coverage        | ~1-2 Min |
+| ✅ Build     | Baut Frontend & Backend        | ~2-3 Min |
+| ✅ TypeCheck | TypeScript Compiler Check      | ~30 Sek  |
+| ✅ Security  | npm Security Audit             | ~30 Sek  |
+| ✅ E2E       | End-to-End Tests (optional)    | ~3-5 Min |
 
 **Gesamtdauer:** ~8-12 Minuten beim ersten Mal, danach durch Caching schneller (~5-7 Min)
 
@@ -61,6 +63,7 @@ npm run ci:build   # Build-Check
 **Problem:** ESLint-Fehler im Code
 
 **Lösung:**
+
 ```bash
 # Fehler anzeigen
 npm run ci:lint
@@ -74,6 +77,7 @@ npx nx affected -t lint --fix
 **Problem:** Tests schlagen fehl oder fehlen
 
 **Lösung:**
+
 ```bash
 # Tests lokal ausführen
 npm run ci:test
@@ -88,6 +92,7 @@ npx nx test frontend
 **Problem:** TypeScript-Fehler oder fehlende Dependencies
 
 **Lösung:**
+
 ```bash
 # Build lokal testen
 npm run ci:build
@@ -101,6 +106,7 @@ npx tsc --noEmit
 **Problem:** TypeScript-Typfehler
 
 **Lösung:**
+
 ```bash
 # TypeScript prüfen
 npx tsc --noEmit
@@ -146,6 +152,7 @@ npx nx connect-to-nx-cloud
 ```
 
 Dann füge als GitHub Secret hinzu:
+
 ```
 NX_CLOUD_ACCESS_TOKEN=<dein-token>
 ```
@@ -184,6 +191,7 @@ Diese können auch manuell getriggert werden unter Actions → Workflow auswähl
 ## ⚠️ Deployment (aktuell deaktiviert)
 
 Die Deployment-Workflows sind deaktiviert:
+
 - `deploy-staging.yml` - Nur manuell über "Run workflow" Button
 - `deploy-production.yml` - Nur manuell über "Run workflow" Button
 
@@ -192,6 +200,7 @@ Um sie zu aktivieren, siehe `CI_CD_SETUP.md` → Abschnitt "Deployment aktiviere
 ## 🆘 Support
 
 Bei Problemen:
+
 1. Prüfe die Logs im Actions Tab
 2. Führe `npm run ci:check` lokal aus
 3. Konsultiere `CI_CD_SETUP.md` für Details
@@ -200,6 +209,7 @@ Bei Problemen:
 ## 🎉 Erfolg!
 
 Wenn alle Jobs grün sind ✅:
+
 - Dein Code entspricht den Style Guidelines
 - Alle Tests bestehen
 - Der Build funktioniert

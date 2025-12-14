@@ -4,9 +4,7 @@
     (closeForm)="onCloseCreateProjectForm()"
     (createProject)="onCreateProject($event)"
   ></app-create-project-form>
-  }
-
-  @if (showSettingsForm && selectedProject) {
+  } @if (showSettingsForm && selectedProject) {
   <app-general-settings-form
     [project]="selectedProject"
     (closeForm)="onCloseSettings()"
@@ -71,8 +69,7 @@
             <mat-icon>assignment</mat-icon>
             Neues Projekt
           </button>
-          }
-          @if (showNewTicketButton) {
+          } @if (showNewTicketButton) {
           <button
             class="topbar-button"
             mat-raised-button

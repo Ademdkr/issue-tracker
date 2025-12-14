@@ -20,7 +20,7 @@ jobs:
     # environment:
     #   name: staging
     #   url: https://staging.issue-tracker.example.com
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -53,7 +53,7 @@ jobs:
         run: |
           echo "Deploying frontend to staging..."
           # Beispiel: aws s3 sync dist/apps/frontend s3://staging-bucket
-          
+
       - name: Deploy backend
         run: |
           echo "Deploying backend to staging..."

@@ -22,7 +22,7 @@ jobs:
     # environment:
     #   name: production
     #   url: https://issue-tracker.example.com
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -60,7 +60,7 @@ jobs:
         run: |
           echo "Deploying frontend to production..."
           # Beispiel: aws s3 sync dist/apps/frontend s3://production-bucket
-          
+
       - name: Deploy backend
         run: |
           echo "Deploying backend to production..."

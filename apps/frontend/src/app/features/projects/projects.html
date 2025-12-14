@@ -77,199 +77,190 @@
 
     <!-- Open Projects Section -->
     @if (activeFilter === 'ALL' || activeFilter === 'OPEN') {
-    <h3>
-      Offene Projekte
-    </h3>
+    <h3>Offene Projekte</h3>
     <div class="project-cards-group">
-      @for (project of projects; track trackByProjectId($index, project)) {
-        @if (project.status === 'OPEN') {
-        <mat-card
-          class="project-card"
-          role="group"
-          tabindex="0"
-          MatCardAppearance="outlined"
-        >
-          <mat-card-header class="card-header">
-            <mat-card-title>{{project.name}}</mat-card-title>
-            <mat-card-subtitle> {{project.description}} </mat-card-subtitle>
-            <button
-              mat-icon-button
-              matTooltip="General-Einstellungen"
-              matTooltipPosition="below"
-              aria-label="General-Einstellungen öffnen"
-              (click)="openSettings(project, $event)"
-            >
-              <mat-icon>settings</mat-icon>
-            </button>
-          </mat-card-header>
-          <mat-card-content>
-            <!-- Ticket Statistics by Status -->
-            @if (project.ticketsByStatus) {
-            <div class="ticket-stats">
-              <div class="stat-item">
-                <mat-icon class="status-icon open"
-                  >radio_button_unchecked</mat-icon
-                >
-                <span>{{ project.ticketsByStatus.open }} Offen</span>
-              </div>
-              <div class="stat-item">
-                <mat-icon class="status-icon progress">pending</mat-icon>
-                <span>{{ project.ticketsByStatus.inProgress }} In Arbeit</span>
-              </div>
-              <div class="stat-item">
-                <mat-icon class="status-icon resolved"
-                  >check_circle_outline</mat-icon
-                >
-                <span>{{ project.ticketsByStatus.resolved }} Gelöst</span>
-              </div>
-              <div class="stat-item">
-                <mat-icon class="status-icon closed">check_circle</mat-icon>
-                <span>{{ project.ticketsByStatus.closed }} Geschlossen</span>
-              </div>
+      @for (project of projects; track trackByProjectId($index, project)) { @if
+      (project.status === 'OPEN') {
+      <mat-card
+        class="project-card"
+        role="group"
+        tabindex="0"
+        MatCardAppearance="outlined"
+      >
+        <mat-card-header class="card-header">
+          <mat-card-title>{{project.name}}</mat-card-title>
+          <mat-card-subtitle> {{project.description}} </mat-card-subtitle>
+          <button
+            mat-icon-button
+            matTooltip="General-Einstellungen"
+            matTooltipPosition="below"
+            aria-label="General-Einstellungen öffnen"
+            (click)="openSettings(project, $event)"
+          >
+            <mat-icon>settings</mat-icon>
+          </button>
+        </mat-card-header>
+        <mat-card-content>
+          <!-- Ticket Statistics by Status -->
+          @if (project.ticketsByStatus) {
+          <div class="ticket-stats">
+            <div class="stat-item">
+              <mat-icon class="status-icon open"
+                >radio_button_unchecked</mat-icon
+              >
+              <span>{{ project.ticketsByStatus.open }} Offen</span>
+            </div>
+            <div class="stat-item">
+              <mat-icon class="status-icon progress">pending</mat-icon>
+              <span>{{ project.ticketsByStatus.inProgress }} In Arbeit</span>
+            </div>
+            <div class="stat-item">
+              <mat-icon class="status-icon resolved"
+                >check_circle_outline</mat-icon
+              >
+              <span>{{ project.ticketsByStatus.resolved }} Gelöst</span>
+            </div>
+            <div class="stat-item">
+              <mat-icon class="status-icon closed">check_circle</mat-icon>
+              <span>{{ project.ticketsByStatus.closed }} Geschlossen</span>
+            </div>
+          </div>
+          }
+
+          <mat-divider></mat-divider>
+
+          <!-- General Stats -->
+          <div class="project-stats">
+            <div class="stat">
+              <mat-icon>confirmation_number</mat-icon>
+              <span>{{ project.ticketCount }} Tickets gesamt</span>
+            </div>
+            <div class="stat">
+              <mat-icon>group</mat-icon>
+              <span>{{ project.memberCount }} Mitglieder</span>
+            </div>
+            <!-- Creator Info -->
+            @if (project.createdBy) {
+            <div class="project-meta">
+              <mat-icon>person</mat-icon>
+              <span
+                >Erstellt von {{ project.createdBy.name }} {{
+                project.createdBy.surname }}</span
+              >
             </div>
             }
+          </div>
 
-            <mat-divider></mat-divider>
-
-            <!-- General Stats -->
-            <div class="project-stats">
-              <div class="stat">
-                <mat-icon>confirmation_number</mat-icon>
-                <span>{{ project.ticketCount }} Tickets gesamt</span>
-              </div>
-              <div class="stat">
-                <mat-icon>group</mat-icon>
-                <span>{{ project.memberCount }} Mitglieder</span>
-              </div>
-              <!-- Creator Info -->
-              @if (project.createdBy) {
-              <div class="project-meta">
-                <mat-icon>person</mat-icon>
-                <span
-                  >Erstellt von {{ project.createdBy.name }} {{
-                  project.createdBy.surname }}</span
-                >
-              </div>
-              }
-            </div>
-
-            <mat-card-actions align="end">
-              <button mat-button [routerLink]="['/projects', project.id]">
-                Details
-              </button>
-            </mat-card-actions>
-          </mat-card-content>
-        </mat-card>
-        }
-      }
+          <mat-card-actions align="end">
+            <button mat-button [routerLink]="['/projects', project.id]">
+              Details
+            </button>
+          </mat-card-actions>
+        </mat-card-content>
+      </mat-card>
+      } }
     </div>
     }
   </div>
-  }
-
-  @if (!isLoading && !error && activeFilter === 'ALL') {
-  <mat-divider
-    style="padding-bottom: 24px"
-  ></mat-divider>
+  } @if (!isLoading && !error && activeFilter === 'ALL') {
+  <mat-divider style="padding-bottom: 24px"></mat-divider>
   }
 
   <!-- Closed Projects Section -->
-  @if (!isLoading && !error && (activeFilter === 'ALL' || activeFilter === 'CLOSED')) {
-  <div
-    class="projects-content"
-  >
+  @if (!isLoading && !error && (activeFilter === 'ALL' || activeFilter ===
+  'CLOSED')) {
+  <div class="projects-content">
     <h3>Geschlossene Projekte</h3>
     <div class="project-cards-group">
-      @for (project of projects; track trackByProjectId($index, project)) {
-        @if (project.status === 'CLOSED') {
-        <mat-card
-          class="project-card"
-          role="group"
-          tabindex="0"
-          MatCardAppearance="outlined"
-        >
-          <mat-card-header class="card-header">
-            <mat-card-title>{{project.name}}</mat-card-title>
-            <mat-card-subtitle> {{project.description}} </mat-card-subtitle>
-            <button
-              mat-icon-button
-              matTooltip="General-Einstellungen"
-              matTooltipPosition="below"
-              aria-label="General-Einstellungen öffnen"
-              (click)="openSettings(project, $event)"
-            >
-              <mat-icon>settings</mat-icon>
-            </button>
-          </mat-card-header>
-          <mat-card-content>
-            <!-- Ticket Statistics by Status -->
-            @if (project.ticketsByStatus) {
-            <div class="ticket-stats">
-              <div class="stat-item">
-                <mat-icon class="status-icon open"
-                  >radio_button_unchecked</mat-icon
-                >
-                <span>{{ project.ticketsByStatus.open }} Offen</span>
-              </div>
-              <div class="stat-item">
-                <mat-icon class="status-icon progress">pending</mat-icon>
-                <span>{{ project.ticketsByStatus.inProgress }} In Arbeit</span>
-              </div>
-              <div class="stat-item">
-                <mat-icon class="status-icon resolved"
-                  >check_circle_outline</mat-icon
-                >
-                <span>{{ project.ticketsByStatus.resolved }} Gelöst</span>
-              </div>
-              <div class="stat-item">
-                <mat-icon class="status-icon closed">check_circle</mat-icon>
-                <span>{{ project.ticketsByStatus.closed }} Geschlossen</span>
-              </div>
+      @for (project of projects; track trackByProjectId($index, project)) { @if
+      (project.status === 'CLOSED') {
+      <mat-card
+        class="project-card"
+        role="group"
+        tabindex="0"
+        MatCardAppearance="outlined"
+      >
+        <mat-card-header class="card-header">
+          <mat-card-title>{{project.name}}</mat-card-title>
+          <mat-card-subtitle> {{project.description}} </mat-card-subtitle>
+          <button
+            mat-icon-button
+            matTooltip="General-Einstellungen"
+            matTooltipPosition="below"
+            aria-label="General-Einstellungen öffnen"
+            (click)="openSettings(project, $event)"
+          >
+            <mat-icon>settings</mat-icon>
+          </button>
+        </mat-card-header>
+        <mat-card-content>
+          <!-- Ticket Statistics by Status -->
+          @if (project.ticketsByStatus) {
+          <div class="ticket-stats">
+            <div class="stat-item">
+              <mat-icon class="status-icon open"
+                >radio_button_unchecked</mat-icon
+              >
+              <span>{{ project.ticketsByStatus.open }} Offen</span>
+            </div>
+            <div class="stat-item">
+              <mat-icon class="status-icon progress">pending</mat-icon>
+              <span>{{ project.ticketsByStatus.inProgress }} In Arbeit</span>
+            </div>
+            <div class="stat-item">
+              <mat-icon class="status-icon resolved"
+                >check_circle_outline</mat-icon
+              >
+              <span>{{ project.ticketsByStatus.resolved }} Gelöst</span>
+            </div>
+            <div class="stat-item">
+              <mat-icon class="status-icon closed">check_circle</mat-icon>
+              <span>{{ project.ticketsByStatus.closed }} Geschlossen</span>
+            </div>
+          </div>
+          }
+
+          <mat-divider></mat-divider>
+
+          <!-- General Stats -->
+          <div class="project-stats">
+            <div class="stat">
+              <mat-icon class="status-icon closed"
+                >confirmation_number</mat-icon
+              >
+              <span>{{ project.ticketCount }} Tickets gesamt</span>
+            </div>
+            <div class="stat">
+              <mat-icon class="status-icon closed">group</mat-icon>
+              <span>{{ project.memberCount }} Mitglieder</span>
+            </div>
+            <!-- Creator Info -->
+            @if (project.createdBy) {
+            <div class="project-meta">
+              <mat-icon class="status-icon closed">person</mat-icon>
+              <span
+                >Erstellt von {{ project.createdBy.name }} {{
+                project.createdBy.surname }}</span
+              >
             </div>
             }
+          </div>
 
-            <mat-divider></mat-divider>
-
-            <!-- General Stats -->
-            <div class="project-stats">
-              <div class="stat">
-                <mat-icon class="status-icon closed"
-                  >confirmation_number</mat-icon
-                >
-                <span>{{ project.ticketCount }} Tickets gesamt</span>
-              </div>
-              <div class="stat">
-                <mat-icon class="status-icon closed">group</mat-icon>
-                <span>{{ project.memberCount }} Mitglieder</span>
-              </div>
-              <!-- Creator Info -->
-              @if (project.createdBy) {
-              <div class="project-meta">
-                <mat-icon class="status-icon closed">person</mat-icon>
-                <span
-                  >Erstellt von {{ project.createdBy.name }} {{
-                  project.createdBy.surname }}</span
-                >
-              </div>
-              }
-            </div>
-
-            <!-- Created Date -->
-            <!-- <div class="project-meta">
+          <!-- Created Date -->
+          <!-- <div class="project-meta">
             <mat-icon>schedule</mat-icon>
             <span>{{ getRelativeTime(project.createdAt) }}</span>
             </div>
             </mat-card-content> -->
 
-            <mat-card-actions align="end">
-              <button mat-button [routerLink]="['/projects', project.id]">
-                Details
-              </button>
-            </mat-card-actions>
-          </mat-card-content>
-        </mat-card>
-        }
-      }
+          <mat-card-actions align="end">
+            <button mat-button [routerLink]="['/projects', project.id]">
+              Details
+            </button>
+          </mat-card-actions>
+        </mat-card-content>
+      </mat-card>
+      } }
     </div>
   </div>
   }
