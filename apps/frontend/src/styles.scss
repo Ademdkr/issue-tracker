@@ -89,3 +89,20 @@ body {
   --mat-toolbar-standard-height: 96px;
   --mat-toolbar-mobile-height: 64px; // Mobile Höhe
 }
+
+// ===================================================================
+// SnackBar Positioning
+// ===================================================================
+
+.mat-mdc-snack-bar-container {
+  &.mat-snack-bar-center {
+    margin: 0 auto !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+  }
+
+  &.mat-snack-bar-top {
+    top: 24px !important;
+  }
+}

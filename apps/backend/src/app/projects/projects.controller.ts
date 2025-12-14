@@ -26,6 +26,7 @@ import {
   UpdateLabelDto,
   Label,
   Ticket,
+  TicketWithDetails,
   CreateTicketDto,
   UpdateTicketDto,
   User,
@@ -364,7 +365,9 @@ export class ProjectsController {
 
   @Get(':id/tickets')
   @UseGuards(ProjectAccessGuard)
-  async getProjectTickets(@Param('id') projectId: string): Promise<Ticket[]> {
+  async getProjectTickets(
+    @Param('id') projectId: string
+  ): Promise<TicketWithDetails[]> {
     return await this.ticketsService.findAllByProject(projectId);
   }
 
@@ -384,7 +387,7 @@ export class ProjectsController {
   async getTicketDetails(
     @Param('id') projectId: string,
     @Param('ticketId') ticketId: string
-  ): Promise<Ticket> {
+  ): Promise<TicketWithDetails> {
     return await this.ticketsService.findOne(projectId, ticketId);
   }
 
@@ -414,7 +417,7 @@ export class ProjectsController {
     @Param('id') projectId: string,
     @Param('ticketId') ticketId: string,
     @Body(new ValidationPipe()) updateTicketDto: UpdateTicketDto
-  ): Promise<Ticket> {
+  ): Promise<TicketWithDetails> {
     return await this.ticketsService.update(
       user,
       projectId,

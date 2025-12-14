@@ -16,6 +16,7 @@ import {
 } from '@prisma/client';
 import {
   Ticket,
+  TicketWithDetails,
   CreateTicketDto,
   UpdateTicketDto,
   TicketStatus,
@@ -274,19 +275,71 @@ export class TicketsService {
    * Alle Tickets eines Projekts abrufen
    *
    * @param projectId - UUID des Projekts
-   * @returns Liste aller Tickets (sortiert nach Erstellungsdatum, neueste zuerst)
+   * @returns Liste aller Tickets mit Details (sortiert nach Erstellungsdatum, neueste zuerst)
    */
-  async findAllByProject(projectId: string): Promise<Ticket[]> {
+  async findAllByProject(projectId: string): Promise<TicketWithDetails[]> {
     const tickets = await this.prisma.ticket.findMany({
       where: { projectId },
       include: {
         ticketLabels: true,
+        reporter: {
+          select: {
+            id: true,
+            name: true,
+            surname: true,
+            email: true,
+          },
+        },
+        assignee: {
+          select: {
+            id: true,
+            name: true,
+            surname: true,
+            email: true,
+          },
+        },
+        project: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+          },
+        },
       },
       orderBy: { createdAt: 'desc' },
     });
 
-    // Konvertiere Prisma-Tickets zu Shared-Types-Tickets
-    return tickets.map((ticket) => this.mapPrismaToTicket(ticket));
+    // Konvertiere Prisma-Tickets zu TicketWithDetails
+    return tickets.map((ticket) => ({
+      ...this.mapPrismaToTicket(ticket),
+      reporter: ticket.reporter
+        ? {
+            id: ticket.reporter.id,
+            name: ticket.reporter.name,
+            surname: ticket.reporter.surname,
+            email: ticket.reporter.email,
+          }
+        : undefined,
+      assignee: ticket.assignee
+        ? {
+            id: ticket.assignee.id,
+            name: ticket.assignee.name,
+            surname: ticket.assignee.surname,
+            email: ticket.assignee.email,
+          }
+        : undefined,
+      project: ticket.project
+        ? {
+            id: ticket.project.id,
+            name: ticket.project.name,
+            slug: ticket.project.slug,
+          }
+        : undefined,
+      ticketLabels: ticket.ticketLabels.map((tl) => ({
+        labelId: tl.labelId,
+        ticketId: tl.ticketId,
+      })),
+    }));
   }
 
   /**
@@ -297,11 +350,37 @@ export class TicketsService {
    * @returns Ticket mit allen Details
    * @throws NotFoundException wenn Ticket nicht gefunden
    */
-  async findOne(projectId: string, ticketId: string): Promise<Ticket> {
+  async findOne(
+    projectId: string,
+    ticketId: string
+  ): Promise<TicketWithDetails> {
     const ticket = await this.prisma.ticket.findFirst({
       where: { id: ticketId, projectId },
       include: {
         ticketLabels: true,
+        reporter: {
+          select: {
+            id: true,
+            name: true,
+            surname: true,
+            email: true,
+          },
+        },
+        assignee: {
+          select: {
+            id: true,
+            name: true,
+            surname: true,
+            email: true,
+          },
+        },
+        project: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+          },
+        },
       },
     });
 
@@ -309,7 +388,36 @@ export class TicketsService {
       throw new NotFoundException('Ticket not found in this project');
     }
 
-    return this.mapPrismaToTicket(ticket);
+    return {
+      ...this.mapPrismaToTicket(ticket),
+      reporter: ticket.reporter
+        ? {
+            id: ticket.reporter.id,
+            name: ticket.reporter.name,
+            surname: ticket.reporter.surname,
+            email: ticket.reporter.email,
+          }
+        : undefined,
+      assignee: ticket.assignee
+        ? {
+            id: ticket.assignee.id,
+            name: ticket.assignee.name,
+            surname: ticket.assignee.surname,
+            email: ticket.assignee.email,
+          }
+        : undefined,
+      project: ticket.project
+        ? {
+            id: ticket.project.id,
+            name: ticket.project.name,
+            slug: ticket.project.slug,
+          }
+        : undefined,
+      ticketLabels: ticket.ticketLabels.map((tl) => ({
+        labelId: tl.labelId,
+        ticketId: tl.ticketId,
+      })),
+    };
   }
 
   /**
@@ -365,7 +473,7 @@ export class TicketsService {
     projectId: string,
     ticketId: string,
     updateTicketDto: UpdateTicketDto
-  ): Promise<Ticket> {
+  ): Promise<TicketWithDetails> {
     // 1. Ticket laden
     const ticket = await this.prisma.ticket.findFirst({
       where: { id: ticketId, projectId },
@@ -421,14 +529,35 @@ export class TicketsService {
         throw new ForbiddenException('You cannot set ticket status');
       }
 
-      // Developer-Einschränkung: Darf nicht auf "closed" setzen
-      if (
-        user.role === UserRole.DEVELOPER &&
-        updateTicketDto.status === TicketStatus.CLOSED
-      ) {
-        throw new ForbiddenException(
-          'Developers cannot set ticket status to closed'
-        );
+      // Developer: State Machine Validierung
+      if (user.role === UserRole.DEVELOPER) {
+        const currentStatus = ticket.status as TicketStatus;
+        const newStatus = updateTicketDto.status;
+
+        // Definiere erlaubte Übergänge für Developer
+        const allowedTransitions: Record<TicketStatus, TicketStatus[]> = {
+          [TicketStatus.OPEN]: [TicketStatus.OPEN, TicketStatus.IN_PROGRESS],
+          [TicketStatus.IN_PROGRESS]: [
+            TicketStatus.IN_PROGRESS,
+            TicketStatus.RESOLVED,
+          ],
+          [TicketStatus.RESOLVED]: [TicketStatus.RESOLVED],
+          [TicketStatus.CLOSED]: [TicketStatus.CLOSED],
+        };
+
+        const allowed = allowedTransitions[currentStatus] || [];
+        if (!allowed.includes(newStatus)) {
+          throw new ForbiddenException(
+            `Invalid status transition from ${currentStatus} to ${newStatus} for Developer`
+          );
+        }
+
+        // Developer kann nicht auf "closed" setzen
+        if (newStatus === TicketStatus.CLOSED) {
+          throw new ForbiddenException(
+            'Developers cannot set ticket status to closed'
+          );
+        }
       }
 
       updateData.status = updateTicketDto.status;
@@ -560,10 +689,62 @@ export class TicketsService {
       data: updateData,
       include: {
         ticketLabels: true,
+        reporter: {
+          select: {
+            id: true,
+            name: true,
+            surname: true,
+            email: true,
+          },
+        },
+        assignee: {
+          select: {
+            id: true,
+            name: true,
+            surname: true,
+            email: true,
+          },
+        },
+        project: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+          },
+        },
       },
     });
 
-    return this.mapPrismaToTicket(updatedTicket);
+    return {
+      ...this.mapPrismaToTicket(updatedTicket),
+      reporter: updatedTicket.reporter
+        ? {
+            id: updatedTicket.reporter.id,
+            name: updatedTicket.reporter.name,
+            surname: updatedTicket.reporter.surname,
+            email: updatedTicket.reporter.email,
+          }
+        : undefined,
+      assignee: updatedTicket.assignee
+        ? {
+            id: updatedTicket.assignee.id,
+            name: updatedTicket.assignee.name,
+            surname: updatedTicket.assignee.surname,
+            email: updatedTicket.assignee.email,
+          }
+        : undefined,
+      project: updatedTicket.project
+        ? {
+            id: updatedTicket.project.id,
+            name: updatedTicket.project.name,
+            slug: updatedTicket.project.slug,
+          }
+        : undefined,
+      ticketLabels: updatedTicket.ticketLabels.map((tl) => ({
+        labelId: tl.labelId,
+        ticketId: tl.ticketId,
+      })),
+    };
   }
 
   /**

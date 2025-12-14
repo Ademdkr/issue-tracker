@@ -41,7 +41,10 @@ export interface TicketWithDetails extends Ticket {
     surname: string;
     email: string;
   };
-  // labels?: Label[];
+  ticketLabels: Array<{
+    labelId: string;
+    ticketId: string;
+  }>;
   commentCount?: number;
 }
 

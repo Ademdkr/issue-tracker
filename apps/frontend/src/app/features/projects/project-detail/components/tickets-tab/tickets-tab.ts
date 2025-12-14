@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -54,6 +55,7 @@ export class TicketsTab implements OnInit, OnDestroy {
   private projectsService = inject(ProjectsService);
   private ticketDialogService = inject(TicketDialogService);
   private dialog = inject(MatDialog);
+  private router = inject(Router);
 
   constructor() {
     // Debounce filter changes
@@ -138,9 +140,7 @@ export class TicketsTab implements OnInit, OnDestroy {
   }
 
   onTicketClick(ticket: TicketWithDetails): void {
-    // Navigation zu Ticket-Detail
-    // Router-Navigation hier implementieren
-    console.log('Navigate to ticket:', ticket.id);
+    this.router.navigate(['/projects', this.projectId, 'tickets', ticket.id]);
   }
 
   openCreateTicketDialog(): void {

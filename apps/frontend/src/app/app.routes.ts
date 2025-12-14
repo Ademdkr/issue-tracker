@@ -52,6 +52,19 @@ export const appRoutes: Route[] = [
               showNewTicketButton: true,
             },
           },
+          {
+            path: ':id/tickets/:ticketId',
+            loadComponent: () =>
+              import('./features/tickets/ticket-detail/ticket-detail').then(
+                (m) => m.TicketDetail
+              ),
+            data: {
+              title: 'Ticket-Details',
+              subtitle: 'Detailansicht des ausgewählten Tickets',
+              icon: 'confirmation_number',
+              showNewTicketButton: false,
+            },
+          },
         ],
       },
       {
