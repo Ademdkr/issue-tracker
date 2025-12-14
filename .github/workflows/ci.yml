@@ -154,8 +154,11 @@ jobs:
       - name: Generate Prisma Client
         run: npx prisma generate --schema=apps/backend/prisma/schema.prisma
 
-      - name: Run TypeScript compiler
-        run: npx tsc --build
+      - name: Derive appropriate SHAs for base and head for nx affected commands
+        uses: nrwl/nx-set-shas@v4
+
+      - name: Run TypeScript type check on affected projects
+        run: npx nx run-many -t type-check --all --parallel=3
 
   # Job 5: Security Audit
   security:
