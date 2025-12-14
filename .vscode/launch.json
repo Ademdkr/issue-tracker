@@ -4,20 +4,33 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Debug issue-tracker with Nx",
+      "name": "Debug: Nx serve backend (inspect)",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["nx", "serve", "issue-tracker"],
-      "env": {
-        "NODE_OPTIONS": "--inspect=9229"
-      },
+      "runtimeArgs": ["nx", "serve", "backend", "--inspect"],
       "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen",
+      "cwd": "${workspaceFolder}",
+      "autoAttachChildProcesses": true,
       "skipFiles": ["<node_internals>/**"],
-      "sourceMaps": true,
-      "outFiles": [
-        "${workspaceFolder}/apps/issue-tracker/dist/**/*.(m|c|)js",
-        "!**/node_modules/**"
-      ]
+      "sourceMaps": true
+    },
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "Attach: Node 9229",
+      "port": 9229,
+      "restart": true,
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug: dist backend (nach Build)",
+      "program": "${workspaceFolder}/dist/apps/backend/main.js",
+      "runtimeArgs": ["--inspect"],
+      "cwd": "${workspaceFolder}",
+      "outFiles": ["${workspaceFolder}/dist/apps/backend/**/*.js"],
+      "skipFiles": ["<node_internals>/**"],
+      "preLaunchTask": "nx: build backend"
     }
   ]
 }

@@ -1,0 +1,133 @@
+.members-table-container {
+  width: 100%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch; // Smooth scrolling auf iOS
+
+  table {
+    width: 100%;
+    min-width: 500px; // Verhindert zu starkes Quetschen
+  }
+
+  .selected-row {
+    background-color: rgba(63, 81, 181, 0.1) !important;
+
+    &:hover {
+      background-color: rgba(63, 81, 181, 0.2) !important;
+    }
+  }
+
+  tr.mat-mdc-row:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+    cursor: pointer;
+  }
+
+  // Checkbox column width
+  .mat-column-select {
+    width: 60px;
+    padding-left: 16px;
+  }
+
+  // Name column - flexibel
+  .mat-column-name {
+    min-width: 150px;
+  }
+
+  // Email column - flexibel
+  .mat-column-email {
+    min-width: 180px;
+  }
+
+  // Role column
+  .mat-column-role {
+    min-width: 100px;
+  }
+}
+
+// Tablet - Kompaktere Tabelle
+@media (max-width: 1024px) {
+  .members-table-container {
+    table {
+      min-width: 450px;
+      font-size: 0.9rem;
+    }
+
+    .mat-column-select {
+      width: 50px;
+      padding-left: 12px;
+    }
+
+    .mat-column-name {
+      min-width: 120px;
+    }
+
+    .mat-column-email {
+      min-width: 150px;
+    }
+
+    .mat-column-role {
+      min-width: 90px;
+    }
+  }
+}
+
+// Mobile - Sehr kompakte Tabelle
+@media (max-width: 768px) {
+  .members-table-container {
+    table {
+      min-width: 400px;
+      font-size: 0.85rem;
+    }
+
+    .mat-column-select {
+      width: 45px;
+      padding-left: 8px;
+    }
+
+    .mat-column-name {
+      min-width: 100px;
+    }
+
+    .mat-column-email {
+      min-width: 130px;
+    }
+
+    .mat-column-role {
+      min-width: 80px;
+    }
+
+    th.mat-header-cell,
+    td.mat-cell {
+      padding: 8px 4px;
+    }
+  }
+}
+
+// Small Mobile - Minimale Tabelle mit Scroll
+@media (max-width: 480px) {
+  .members-table-container {
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 4px;
+
+    table {
+      min-width: 350px;
+      font-size: 0.8rem;
+    }
+
+    .mat-column-select {
+      width: 40px;
+      padding-left: 4px;
+    }
+
+    .mat-column-name {
+      min-width: 90px;
+    }
+
+    .mat-column-email {
+      min-width: 110px;
+    }
+
+    .mat-column-role {
+      min-width: 70px;
+    }
+  }
+}

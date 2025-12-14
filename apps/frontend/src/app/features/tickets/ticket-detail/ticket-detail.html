@@ -1,0 +1,59 @@
+<div class="ticket-detail-container">
+  <!-- Loading State -->
+  @if (isLoading) {
+  <div class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Ticket wird geladen...</p>
+  </div>
+  }
+
+  <!-- Error State -->
+  @if (error && !isLoading) {
+  <div class="error-container">
+    <p class="error-message">{{ error }}</p>
+    <button mat-raised-button color="primary" (click)="loadTicket()">
+      Erneut versuchen
+    </button>
+  </div>
+  }
+
+  <!-- Ticket Content -->
+  @if (ticket && !isLoading && !error) {
+  <div class="ticket-content">
+    <!-- Header -->
+    <div class="ticket-header">
+      <button mat-icon-button (click)="goBack()" class="back-button">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h1 class="ticket-title-header">
+        Ticket: {{ ticket.title }}
+        <span class="ticket-id">#{{ ticket.id.substring(0, 8) }}</span>
+      </h1>
+    </div>
+
+    <!-- Tabs -->
+    <mat-tab-group class="ticket-tabs">
+      <mat-tab label="Overview">
+        <app-ticket-overview-tab
+          [ticket]="ticket"
+          [projectId]="projectId!"
+          (ticketUpdated)="onTicketUpdated($event)"
+          (ticketDeleted)="onTicketDeleted()"
+        ></app-ticket-overview-tab>
+      </mat-tab>
+
+      <mat-tab label="Kommentare">
+        <div class="tab-content">
+          <p class="coming-soon">Kommentare - In Entwicklung</p>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Activity">
+        <div class="tab-content">
+          <p class="coming-soon">Activity Log - In Entwicklung</p>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+  }
+</div>

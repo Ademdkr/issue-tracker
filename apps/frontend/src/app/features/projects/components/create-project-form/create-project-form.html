@@ -1,0 +1,133 @@
+<div class="create-project-form-container" (click)="onBackdropClick($event)">
+  <!-- Form Card -->
+  <div class="create-project-form-card" (click)="$event.stopPropagation()">
+    <!-- Header -->
+    <div class="form-header">
+      <mat-icon>add_circle</mat-icon>
+      <h2>Neues Projekt erstellen</h2>
+
+      <!-- Close Button -->
+      <button
+        mat-icon-button
+        class="close-button"
+        type="button"
+        (click)="onClose()"
+        aria-label="Schließen"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <!-- Form Content -->
+    <form
+      [formGroup]="createProjectForm"
+      class="create-project-form"
+      (ngSubmit)="onSubmit()"
+    >
+      <!-- Projektname -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Projektname</mat-label>
+        <input
+          matInput
+          formControlName="name"
+          placeholder="z.B. E-Commerce Platform"
+         
+        />
+        <mat-icon matPrefix>label</mat-icon>
+        <mat-error *ngIf="createProjectForm.get('name')?.hasError('required')">
+          Projektname ist erforderlich
+        </mat-error>
+        <mat-error *ngIf="createProjectForm.get('name')?.hasError('minlength')">
+          Mindestens 3 Zeichen erforderlich
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Beschreibung -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Beschreibung</mat-label>
+        <textarea
+          matInput
+          formControlName="description"
+          rows="4"
+          placeholder="Beschreiben Sie das Projekt..."
+        ></textarea>
+        <mat-icon matPrefix>description</mat-icon>
+        <mat-error
+          *ngIf="createProjectForm.get('description')?.hasError('required')"
+        >
+          Beschreibung ist erforderlich
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Key (Auto-Generated, Read-only) -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Key (Automatisch generiert)</mat-label>
+        <input
+          matInput
+          [value]="generatedKey"
+          readonly
+          placeholder="Wird automatisch generiert..."
+        />
+        <mat-icon matPrefix>vpn_key</mat-icon>
+        <mat-hint>
+          Dieser Schlüssel wird automatisch aus dem Projektnamen generiert
+        </mat-hint>
+      </mat-form-field>
+
+      <!-- Read-only Information -->
+      <div class="readonly-section">
+        <h3 class="section-title">
+          <mat-icon>info</mat-icon>
+          Projekt-Informationen
+        </h3>
+
+        <!-- Erstellt von -->
+        <div class="info-field">
+          <label class="info-label">
+            <mat-icon>person</mat-icon>
+            Erstellt von
+          </label>
+          <div class="info-value">{{ currentUserName }}</div>
+        </div>
+
+        <!-- Erstellt am -->
+        <div class="info-field">
+          <label class="info-label">
+            <mat-icon>event</mat-icon>
+            Erstellt am
+          </label>
+          <div class="info-value">{{ getFormattedDate() }}</div>
+        </div>
+      </div>
+    </form>
+
+    <!-- Actions -->
+    <div class="form-actions">
+      <!-- Links: Abbrechen -->
+      <button
+        mat-button
+        type="button"
+        (click)="onClose()"
+        class="cancel-button"
+      >
+        <mat-icon>close</mat-icon>
+        Abbrechen
+      </button>
+
+      <span class="spacer"></span>
+
+      <!-- Rechts: Erstellen -->
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        (click)="onSubmit()"
+        [disabled]="!createProjectForm.valid"
+        class="create-button"
+      >
+        <mat-icon>add</mat-icon>
+        Projekt erstellen
+      </button>
+    </div>
+  </div>
+</div>

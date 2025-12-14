@@ -1,0 +1,63 @@
+<h2 mat-dialog-title>{{ title }}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="labelForm" class="label-form">
+    <!-- Name Input -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Name</mat-label>
+      <input
+        matInput
+        formControlName="name"
+        placeholder="z.B. Bug, Feature, Important"
+        maxlength="50"
+      />
+      @if (labelForm.get('name')?.hasError('required')) {
+      <mat-error>Name ist erforderlich</mat-error>
+      } @if (labelForm.get('name')?.hasError('maxlength')) {
+      <mat-error>Maximal 50 Zeichen erlaubt</mat-error>
+      }
+    </mat-form-field>
+
+    <!-- Color Picker -->
+    <div class="color-section">
+      <label class="color-label">Farbe</label>
+      <div class="color-grid">
+        @for (color of predefinedColors; track color) {
+        <button
+          type="button"
+          class="color-option"
+          [class.selected]="labelForm.get('color')?.value === color"
+          [style.background-color]="color"
+          (click)="onColorSelect(color)"
+          title="{{ color }}"
+        ></button>
+        }
+      </div>
+    </div>
+
+    <!-- Preview -->
+    <div class="preview-section">
+      <label class="preview-label">Vorschau</label>
+      <div
+        class="preview-chip"
+        [style.background-color]="labelForm.get('color')?.value"
+      >
+        {{ labelForm.get('name')?.value || 'Label Name' }}
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()" [disabled]="isSubmitting">
+    Abbrechen
+  </button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="onSubmit()"
+    [disabled]="labelForm.invalid || isSubmitting"
+  >
+    {{ isEditMode ? 'Speichern' : 'Erstellen' }}
+  </button>
+</mat-dialog-actions>

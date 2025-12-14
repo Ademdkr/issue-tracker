@@ -1,0 +1,227 @@
+<div class="overview-tab">
+  <form [formGroup]="ticketForm" (ngSubmit)="onSubmit()" class="ticket-form">
+    <!-- Ticket Information Section -->
+    <div class="form-section">
+      <h3 class="section-title">Ticket-Informationen</h3>
+
+      <!-- Title -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Titel</mat-label>
+        <input matInput formControlName="title" placeholder="Ticket-Titel" />
+        @if (ticketForm.get('title')?.hasError('required')) {
+        <mat-error>Titel ist erforderlich</mat-error>
+        } @if (ticketForm.get('title')?.hasError('maxlength')) {
+        <mat-error>Titel darf maximal 200 Zeichen lang sein</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Description -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Beschreibung</mat-label>
+        <textarea
+          matInput
+          formControlName="description"
+          placeholder="Beschreibung des Tickets"
+          rows="6"
+        ></textarea>
+        @if (ticketForm.get('description')?.hasError('required')) {
+        <mat-error>Beschreibung ist erforderlich</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <!-- Status & Priority Section -->
+    <div class="form-section">
+      <h3 class="section-title">Status & Priorität</h3>
+
+      <div class="form-row">
+        <!-- Status -->
+        <div class="status-container half-width">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Status</mat-label>
+            <mat-select formControlName="status">
+              @for (status of getAvailableStatusOptions(); track status) {
+              <mat-option [value]="status">
+                {{ getStatusLabel(status) }}
+              </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+
+          <!-- Quick Action Buttons für Developer -->
+          @if (currentUser.role === 'DEVELOPER') { @if (ticket.status ===
+          'OPEN') {
+          <button
+            mat-raised-button
+            color="primary"
+            type="button"
+            (click)="startWork()"
+            [disabled]="isLoading"
+            class="status-action-btn"
+          >
+            <mat-icon>play_arrow</mat-icon>
+            Bearbeitung starten
+          </button>
+          } @if (ticket.status === 'IN_PROGRESS') {
+          <button
+            mat-raised-button
+            color="accent"
+            type="button"
+            (click)="markAsResolved()"
+            [disabled]="isLoading"
+            class="status-action-btn"
+          >
+            <mat-icon>check_circle</mat-icon>
+            Als gelöst markieren
+          </button>
+          } }
+
+          <!-- Quick Action Button für Manager/Admin -->
+          @if ((currentUser.role === 'MANAGER' || currentUser.role === 'ADMIN')
+          && ticket.status === 'RESOLVED') {
+          <button
+            mat-raised-button
+            color="warn"
+            type="button"
+            (click)="closeTicket()"
+            [disabled]="isLoading"
+            class="status-action-btn"
+          >
+            <mat-icon>lock</mat-icon>
+            Ticket schließen
+          </button>
+          }
+        </div>
+
+        <!-- Priority -->
+        <mat-form-field appearance="outline" class="half-width">
+          <mat-label>Priorität</mat-label>
+          <mat-select formControlName="priority">
+            @for (priority of priorityOptions; track priority) {
+            <mat-option [value]="priority">
+              {{ getPriorityLabel(priority) }}
+            </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Assignment Section -->
+    <div class="form-section">
+      <h3 class="section-title">Zuweisung</h3>
+
+      <div class="form-row">
+        <!-- Assignee -->
+        <mat-form-field appearance="outline" class="half-width">
+          <mat-label>Zuständig</mat-label>
+          <mat-select formControlName="assigneeId">
+            @for (option of assigneeOptions; track option.value) {
+            <mat-option [value]="option.value"> {{ option.label }} </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <!-- Project -->
+        <mat-form-field appearance="outline" class="half-width">
+          <mat-label>Projekt</mat-label>
+          <mat-select formControlName="projectId">
+            @for (option of projectOptions; track option.value) {
+            <mat-option [value]="option.value"> {{ option.label }} </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Labels Section -->
+    <div class="form-section">
+      <h3 class="section-title">Labels</h3>
+
+      <div class="labels-container">
+        <!-- Ausgewählte Labels -->
+        <div class="label-group">
+          <h4 class="label-group-title">Ausgewählte Labels</h4>
+          @if (ticket.ticketLabels.length > 0) {
+          <div class="labels-row">
+            @for (ticketLabel of ticket.ticketLabels; track ticketLabel.labelId)
+            { @if (getLabelById(ticketLabel.labelId); as label) {
+            <div
+              class="label-badge selected"
+              [style.background-color]="label.color"
+              [class.clickable]="canEditLabels"
+              (click)="canEditLabels && removeLabel(label.id)"
+            >
+              <span class="label-name">{{ label.name }}</span>
+              @if (canEditLabels) {
+              <mat-icon class="label-icon">close</mat-icon>
+              }
+            </div>
+            } }
+          </div>
+          } @else {
+          <p class="no-labels">Keine Labels zugewiesen</p>
+          }
+        </div>
+
+        <!-- Verfügbare Labels -->
+        @if (canEditLabels && getAvailableLabelsToAdd().length > 0) {
+        <div class="label-group">
+          <h4 class="label-group-title">Verfügbare Labels</h4>
+          <div class="labels-row">
+            @for (label of getAvailableLabelsToAdd(); track label.id) {
+            <div
+              class="label-badge available"
+              [style.border-color]="label.color"
+              [style.color]="label.color"
+              (click)="addLabel(label.id)"
+            >
+              <span class="label-name">{{ label.name }}</span>
+              <mat-icon class="label-icon">add</mat-icon>
+            </div>
+            }
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="form-actions">
+      @if (canDeleteTicket) {
+      <button
+        mat-raised-button
+        color="warn"
+        type="button"
+        (click)="onDeleteTicket()"
+        [disabled]="isLoading"
+      >
+        <mat-icon>delete</mat-icon>
+        Ticket löschen
+      </button>
+      }
+
+      <div class="action-buttons-group">
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="isLoading || ticketForm.invalid || ticketForm.pristine"
+        >
+          @if (isLoading) {
+          <mat-icon class="spinning">hourglass_empty</mat-icon>
+          } @else {
+          <mat-icon>save</mat-icon>
+          } @if (isLoading) { Speichert... } @else { Änderungen speichern }
+        </button>
+
+        @if (ticketForm.dirty && !isLoading) {
+        <span class="unsaved-indicator">
+          <mat-icon>info</mat-icon>
+          Ungespeicherte Änderungen
+        </span>
+        }
+      </div>
+    </div>
+  </form>
+</div>

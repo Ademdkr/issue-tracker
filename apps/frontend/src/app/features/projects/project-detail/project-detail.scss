@@ -1,0 +1,78 @@
+.project-detail-container {
+  padding: 24px;
+  height: 100%;
+}
+
+// Loading/Error States (kopiere von projects.scss)
+.loading-container,
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: 16px;
+
+  mat-spinner {
+    margin-bottom: 16px;
+  }
+
+  .error-icon {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+    color: #f44336;
+  }
+
+  h3 {
+    color: rgba(0, 0, 0, 0.87);
+    margin: 0;
+  }
+
+  button {
+    margin-top: 8px;
+  }
+}
+
+// Project Header
+.project-header {
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+
+  h1 {
+    margin: 0 0 8px 0;
+    font-size: 28px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.87);
+  }
+
+  p {
+    margin: 0;
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 16px;
+  }
+}
+
+// Tab Styling
+.tab-content {
+  padding: 24px 0;
+  min-height: 400px;
+
+  .placeholder-info {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 14px;
+    margin-top: 8px;
+  }
+}
+
+// Material Tab Overrides (optional)
+::ng-deep {
+  .mat-mdc-tab-labels {
+    // padding: 0 24px;
+  }
+
+  .mat-mdc-tab {
+    min-width: 120px;
+  }
+}

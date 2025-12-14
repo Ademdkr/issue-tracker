@@ -1,0 +1,78 @@
+// tickets-tab.scss
+
+.tickets-tab-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+.filters-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+
+  // Mobile First: Stack everything vertically
+  .filters-left {
+    width: 100%;
+  }
+
+  .filters-right {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  // Tablet (768px+): Horizontal layout with wrapping
+  @media (min-width: 768px) {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+
+    .filters-left {
+      flex: 1 1 auto;
+      min-width: 0; // Wichtig für flex-shrink
+    }
+
+    .filters-right {
+      flex: 0 1 auto;
+      flex-direction: row;
+      align-items: center;
+      width: auto;
+    }
+  }
+
+  // Desktop (1200px+): Optimal spacing
+  @media (min-width: 1200px) {
+    gap: 3rem;
+  }
+}
+
+.loading-container,
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  text-align: center;
+
+  p {
+    margin-top: 1rem;
+    color: var(--md-sys-color-on-surface-variant);
+  }
+}
+
+.error-message {
+  color: var(--md-sys-color-error);
+  margin-bottom: 1rem;
+}
+
+.table-container {
+  background-color: var(--md-sys-color-surface);
+  border-radius: 12px;
+  overflow: hidden;
+}

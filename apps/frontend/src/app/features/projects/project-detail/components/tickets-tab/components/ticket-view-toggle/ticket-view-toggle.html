@@ -1,0 +1,26 @@
+<div class="view-controls">
+  <!-- Suchfeld -->
+  <mat-form-field appearance="outline" class="search-field">
+    <mat-label>Suche...</mat-label>
+    <input
+      matInput
+      [formControl]="searchControl"
+      placeholder="Titel oder Beschreibung..."
+    />
+    <mat-icon matPrefix>search</mat-icon>
+  </mat-form-field>
+
+  <!-- View Toggle Buttons -->
+  <mat-button-toggle-group
+    [value]="viewMode"
+    (change)="onViewModeChange($event.value)"
+    aria-label="Ansichtsmodus"
+  >
+    <mat-button-toggle value="list">
+      <mat-icon>view_list</mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle value="grid">
+      <mat-icon>view_module</mat-icon>
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+</div>

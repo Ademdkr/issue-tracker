@@ -1,0 +1,49 @@
+.view-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+
+  .search-field {
+    width: 100%;
+    min-width: 0;
+  }
+
+  mat-button-toggle-group {
+    box-shadow: none;
+    border: 1px solid var(--md-sys-color-outline);
+    flex-shrink: 0;
+    align-self: flex-start;
+
+    // Buttons minimal auf Mobile
+    ::ng-deep .mat-button-toggle-label-content {
+      padding: 0 8px;
+
+      @media (min-width: 768px) {
+        padding: 0 12px;
+      }
+    }
+  }
+
+  // Tablet (768px+): Horizontal mit Suchfeld links
+  @media (min-width: 768px) {
+    flex-direction: row;
+    align-items: center;
+    width: auto;
+    gap: 1rem;
+
+    .search-field {
+      width: 250px;
+      flex-shrink: 1;
+      min-width: 200px;
+    }
+  }
+
+  // Desktop (1024px+): Größeres Suchfeld
+  @media (min-width: 1024px) {
+    .search-field {
+      width: 300px;
+      min-width: 250px;
+    }
+  }
+}

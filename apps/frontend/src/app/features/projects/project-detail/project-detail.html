@@ -1,0 +1,49 @@
+<div class="project-detail-container">
+  <!-- Loading State (wie bei projects.html) -->
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-spinner></mat-spinner>
+    <p>Projekt wird geladen...</p>
+  </div>
+
+  <!-- Error State (wie bei projects.html) -->
+  <div *ngIf="!isLoading && error" class="error-container">
+    <mat-icon class="error-icon">error_outline</mat-icon>
+    <h3>{{ error }}</h3>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="loadProject(project?.id || '')"
+    >
+      <mat-icon>refresh</mat-icon>
+      Erneut versuchen
+    </button>
+  </div>
+
+  <!-- Content (nur wenn geladen) -->
+  <div *ngIf="!isLoading && !error && project" class="project-content">
+    <!-- Header Section -->
+    <div class="project-header">
+      <h1>Projekt: {{ project.name }}</h1>
+      <p>{{ project.description }}</p>
+    </div>
+
+    <!-- Tabs Navigation -->
+    <mat-tab-group animationDuration="300ms">
+      <!-- Tab 1: Tickets -->
+      <mat-tab label="Tickets">
+        <div class="tab-content">
+          <!-- Hier später: [projectId]="project.id" -->
+          <app-tickets-tab [projectId]="project.id"></app-tickets-tab>
+        </div>
+      </mat-tab>
+
+      <!-- Tab 2: Verwaltung -->
+      <mat-tab label="Verwaltung">
+        <div class="tab-content">
+          <!-- Hier später: [projectId]="project.id" -->
+          <app-management-tab [projectId]="project.id"></app-management-tab>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

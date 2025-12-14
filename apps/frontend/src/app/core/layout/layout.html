@@ -1,0 +1,92 @@
+<div class="layout-container">
+  @if (showCreateProjectForm) {
+  <app-create-project-form
+    (closeForm)="onCloseCreateProjectForm()"
+    (createProject)="onCreateProject($event)"
+  ></app-create-project-form>
+  } @if (showSettingsForm && selectedProject) {
+  <app-general-settings-form
+    [project]="selectedProject"
+    (closeForm)="onCloseSettings()"
+    (saveForm)="onSaveSettings($event)"
+    (deleteProject)="onDeleteProject($event)"
+  ></app-general-settings-form>
+  }
+
+  <mat-sidenav-container class="sidenav-container">
+    <!--  -->
+    <mat-sidenav
+      #drawer
+      class="sidenav"
+      mode="side"
+      fixedInViewport
+      disableClose
+      opened
+    >
+      <mat-toolbar class="sidebar-header">
+        <mat-icon class="app-icon">confirmation_number</mat-icon>
+        <span class="app-name">Issue Tracker</span>
+      </mat-toolbar>
+
+      <mat-nav-list class="nav-list">
+        @for (item of navigationItems; track item.route) {
+        <a
+          mat-list-item
+          [routerLink]="item.route"
+          routerLinkActive="active"
+          class="nav-item"
+        >
+          <mat-icon matListItemIcon>{{ item.icon}}</mat-icon>
+          <span matListItemTitle>{{ item.label }}</span>
+        </a>
+        }
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <mat-toolbar color="primary" class="topbar">
+        <!-- <button
+          type="button"
+          aria-label="Toggle sidenav"
+          mat-icon-button
+          (click)="drawer.toggle()"
+          class="menu-button"
+        ></button> -->
+        <div class="topbar-title-group">
+          <span class="topbar-title">{{pageTitle}}</span>
+          <p class="topbar-subtitle">{{pageSubtitle}}</p>
+        </div>
+
+        <div class="topbar-button-group">
+          @if (showNewProjectButton) {
+          <button
+            class="topbar-button"
+            mat-raised-button
+            type="button"
+            (click)="openCreateProjectForm($event)"
+          >
+            <mat-icon class="add-icon">add</mat-icon>
+            <mat-icon>assignment</mat-icon>
+            Neues Projekt
+          </button>
+          } @if (showNewTicketButton) {
+          <button
+            class="topbar-button"
+            mat-raised-button
+            type="button"
+            (click)="openCreateTicketDialog($event)"
+          >
+            <mat-icon class="add-icon">add</mat-icon>
+            <mat-icon>confirmation_number</mat-icon>
+            Neues Ticket
+          </button>
+          }
+        </div>
+      </mat-toolbar>
+
+      <main class="content-area">
+        <router-outlet></router-outlet>
+      </main>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

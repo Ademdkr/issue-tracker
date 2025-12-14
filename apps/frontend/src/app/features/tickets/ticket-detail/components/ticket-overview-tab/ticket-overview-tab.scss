@@ -1,0 +1,372 @@
+.overview-tab {
+  padding: 24px 0;
+
+  .ticket-form {
+    max-width: 1200px;
+    margin: 0 auto;
+
+    .form-section {
+      margin-bottom: 24px;
+      padding: 24px;
+      background: #fff;
+      border-radius: 12px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      transition: box-shadow 0.2s ease;
+
+      &:hover {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .section-title {
+        margin: 0 0 20px 0;
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: rgba(0, 0, 0, 0.87);
+        padding-bottom: 12px;
+        border-bottom: 2px solid rgba(0, 0, 0, 0.08);
+      }
+
+      .form-row {
+        display: flex;
+        gap: 16px;
+        align-items: flex-start;
+
+        .half-width {
+          flex: 1;
+          min-width: 0;
+        }
+
+        .status-container {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+
+          .status-action-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+            font-weight: 500;
+            padding: 10px 20px;
+
+            mat-icon {
+              font-size: 20px;
+              width: 20px;
+              height: 20px;
+            }
+          }
+        }
+      }
+
+      .full-width {
+        width: 100%;
+      }
+    }
+
+    .labels-container {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+
+      .label-group {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+
+        .label-group-title {
+          margin: 0;
+          font-size: 0.875rem;
+          font-weight: 500;
+          color: rgba(0, 0, 0, 0.6);
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+
+        .labels-row {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+
+        .label-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          padding: 8px 14px;
+          border-radius: 16px;
+          font-size: 0.875rem;
+          font-weight: 500;
+          transition: all 0.2s ease;
+          user-select: none;
+
+          .label-name {
+            text-transform: lowercase;
+          }
+
+          .label-icon {
+            font-size: 16px;
+            width: 16px;
+            height: 16px;
+            margin-left: 2px;
+          }
+
+          &.selected {
+            color: #fff;
+            border: none;
+
+            &.clickable {
+              cursor: pointer;
+
+              &:hover {
+                opacity: 0.85;
+                transform: translateY(-1px);
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+              }
+
+              &:active {
+                transform: translateY(0);
+              }
+            }
+
+            .label-icon {
+              color: rgba(255, 255, 255, 0.9);
+            }
+          }
+
+          &.available {
+            background-color: transparent;
+            border: 2px solid;
+            cursor: pointer;
+
+            &:hover {
+              transform: translateY(-1px);
+              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+            }
+
+            &:active {
+              transform: translateY(0);
+            }
+
+            .label-icon {
+              opacity: 0.8;
+            }
+          }
+        }
+
+        .no-labels {
+          color: rgba(0, 0, 0, 0.5);
+          font-style: italic;
+          margin: 0;
+          font-size: 0.875rem;
+        }
+      }
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      padding: 24px;
+      background: linear-gradient(to bottom, #fafafa, #f5f5f5);
+      border-radius: 12px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      margin-top: 32px;
+
+      .action-buttons-group {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .unsaved-indicator {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: #ff9800;
+        font-size: 0.875rem;
+        font-weight: 500;
+        animation: pulse 2s ease-in-out infinite;
+
+        mat-icon {
+          font-size: 18px;
+          width: 18px;
+          height: 18px;
+        }
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.6;
+        }
+      }
+
+      button {
+        font-weight: 500;
+        padding: 12px 24px;
+        border-radius: 8px;
+
+        mat-icon {
+          margin-right: 8px;
+
+          &.spinning {
+            animation: spin 1s linear infinite;
+          }
+        }
+      }
+
+      @keyframes spin {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 1024px) {
+  .overview-tab {
+    .ticket-form {
+      max-width: 100%;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .overview-tab {
+    padding: 16px 0;
+
+    .ticket-form {
+      .form-section {
+        padding: 20px 16px;
+        margin-bottom: 16px;
+        border-radius: 8px;
+
+        .section-title {
+          font-size: 1rem;
+          margin-bottom: 16px;
+        }
+
+        .form-row {
+          flex-direction: column;
+          gap: 12px;
+
+          .status-container {
+            .status-action-btn {
+              width: 100%;
+              padding: 12px 16px;
+            }
+          }
+        }
+      }
+
+      .form-actions {
+        flex-direction: column;
+        padding: 16px;
+        gap: 12px;
+        margin-top: 24px;
+
+        .action-buttons-group {
+          flex-direction: column;
+          width: 100%;
+          gap: 12px;
+
+          .unsaved-indicator {
+            justify-content: center;
+            padding: 8px;
+            background: rgba(255, 152, 0, 0.1);
+            border-radius: 6px;
+          }
+        }
+
+        button {
+          width: 100%;
+          padding: 14px 20px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .overview-tab {
+    padding: 12px 0;
+
+    .ticket-form {
+      .form-section {
+        padding: 16px 12px;
+        margin-bottom: 12px;
+
+        .section-title {
+          font-size: 0.938rem;
+          margin-bottom: 12px;
+          padding-bottom: 8px;
+        }
+
+        .labels-container {
+          .label-group {
+            gap: 8px;
+
+            .label-group-title {
+              font-size: 0.813rem;
+            }
+
+            .labels-row {
+              gap: 6px;
+            }
+
+            .label-badge {
+              padding: 6px 12px;
+              font-size: 0.813rem;
+
+              .label-icon {
+                font-size: 14px;
+                width: 14px;
+                height: 14px;
+              }
+            }
+          }
+        }
+      }
+
+      .form-actions {
+        padding: 12px;
+        margin-top: 16px;
+
+        .action-buttons-group {
+          .unsaved-indicator {
+            font-size: 0.813rem;
+            padding: 6px 8px;
+
+            mat-icon {
+              font-size: 16px;
+              width: 16px;
+              height: 16px;
+            }
+          }
+        }
+
+        button {
+          padding: 12px 16px;
+          font-size: 0.875rem;
+
+          mat-icon {
+            font-size: 18px;
+            width: 18px;
+            height: 18px;
+            margin-right: 6px;
+          }
+        }
+      }
+    }
+  }
+}
