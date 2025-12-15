@@ -18,6 +18,7 @@ import { TicketWithDetails } from '@issue-tracker/shared-types';
 
 // Components
 import { TicketOverviewTab } from './components/ticket-overview-tab/ticket-overview-tab';
+import { TicketCommentsTab } from './components/ticket-comments-tab/ticket-comments-tab';
 
 @Component({
   selector: 'app-ticket-detail',
@@ -29,6 +30,7 @@ import { TicketOverviewTab } from './components/ticket-overview-tab/ticket-overv
     MatIconModule,
     MatProgressSpinnerModule,
     TicketOverviewTab,
+    TicketCommentsTab,
   ],
   templateUrl: './ticket-detail.html',
   styleUrl: './ticket-detail.scss',

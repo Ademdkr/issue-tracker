@@ -16,5 +16,6 @@ export * from './label/update-label.policy';
 export * from './label/delete-label.policy';
 
 // Comment Policies
+export * from './comment/create-comment.policy';
 export * from './comment/update-comment.policy';
 export * from './comment/delete-comment.policy';

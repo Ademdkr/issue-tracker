@@ -1,0 +1,151 @@
+<div class="comments-tab-container">
+  <!-- Loading State -->
+  @if (isLoading) {
+  <div class="loading-container">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Kommentare werden geladen...</p>
+  </div>
+  }
+
+  <!-- Comments List -->
+  @if (!isLoading) {
+  <div class="comments-content">
+    <!-- No Comments -->
+    @if (comments.length === 0) {
+    <div class="no-comments">
+      <mat-icon>comment</mat-icon>
+      <p>Noch keine Kommentare vorhanden</p>
+      @if (canComment()) {
+      <p class="hint">Seien Sie der Erste, der einen Kommentar schreibt!</p>
+      }
+    </div>
+    }
+
+    <!-- Comments List -->
+    @if (comments.length > 0) {
+    <div class="comments-list">
+      @for (comment of comments; track comment.id) {
+      <div class="comment-card">
+        <div class="comment-header">
+          <div class="comment-author">
+            <span class="author-name">{{ getAuthorName(comment) }}</span>
+            @if (isOwnComment(comment)) {
+            <mat-chip class="self-badge">Selbst</mat-chip>
+            }
+          </div>
+          <div class="comment-actions">
+            <span class="comment-date"
+              >{{ formatDate(comment.createdAt) }}</span
+            >
+            @if (canEditComment(comment) || canDeleteComment(comment)) {
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              @if (canEditComment(comment)) {
+              <button mat-menu-item (click)="startEdit(comment)">
+                <mat-icon>edit</mat-icon>
+                <span>Bearbeiten</span>
+              </button>
+              } @if (canDeleteComment(comment)) {
+              <button
+                mat-menu-item
+                (click)="deleteComment(comment)"
+                class="delete-action"
+              >
+                <mat-icon>delete</mat-icon>
+                <span>Löschen</span>
+              </button>
+              }
+            </mat-menu>
+            }
+          </div>
+        </div>
+        <div class="comment-content">{{ comment.content }}</div>
+        @if (comment.updatedAt && comment.updatedAt !== comment.createdAt) {
+        <div class="comment-edited">
+          <mat-icon>edit</mat-icon>
+          <span>Bearbeitet am {{ formatDate(comment.updatedAt) }}</span>
+        </div>
+        }
+      </div>
+      }
+    </div>
+    }
+
+    <!-- New Comment Form -->
+    @if (canComment()) {
+    <div class="comment-form-container">
+      <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>
+            @if (editingCommentId) { Kommentar bearbeiten } @else { Neuen
+            Kommentar verfassen }
+          </mat-label>
+          <textarea
+            matInput
+            formControlName="content"
+            rows="3"
+            [maxlength]="maxLength"
+            placeholder="Schreiben Sie Ihren Kommentar..."
+          ></textarea>
+          <mat-hint align="end">
+            {{ commentForm.get('content')?.value?.length || 0 }} / {{ maxLength
+            }}
+          </mat-hint>
+          @if (commentForm.get('content')?.hasError('required') &&
+          commentForm.get('content')?.touched) {
+          <mat-error>Kommentar darf nicht leer sein</mat-error>
+          } @if (commentForm.get('content')?.hasError('maxlength')) {
+          <mat-error
+            >Kommentar ist zu lang (max. {{ maxLength }} Zeichen)</mat-error
+          >
+          }
+        </mat-form-field>
+
+        <div class="form-actions">
+          @if (editingCommentId) {
+          <button
+            mat-stroked-button
+            type="button"
+            (click)="cancelEdit()"
+            [disabled]="isSending"
+          >
+            Abbrechen
+          </button>
+          }
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="commentForm.invalid || isSending"
+          >
+            @if (isSending) {
+            <mat-spinner diameter="20" class="button-spinner"></mat-spinner>
+            } @if (!isSending) { @if (editingCommentId) { Aktualisieren } @else
+            { Senden } }
+          </button>
+        </div>
+      </form>
+    </div>
+    } @else {
+    <div class="no-permission-message">
+      <mat-icon>info</mat-icon>
+      <p>
+        Sie haben keine Berechtigung, Kommentare zu schreiben. @if
+        (currentUser.role === 'REPORTER') {
+        <span class="hint"
+          >Reporter können nur ihre eigenen Tickets kommentieren.</span
+        >
+        } @else if (currentUser.role === 'DEVELOPER') {
+        <span class="hint"
+          >Developer können nur eigene oder zugewiesene Tickets
+          kommentieren.</span
+        >
+        }
+      </p>
+    </div>
+    }
+  </div>
+  }
+</div>

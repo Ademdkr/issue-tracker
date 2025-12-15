@@ -43,9 +43,10 @@
       </mat-tab>
 
       <mat-tab label="Kommentare">
-        <div class="tab-content">
-          <p class="coming-soon">Kommentare - In Entwicklung</p>
-        </div>
+        <app-ticket-comments-tab
+          [ticket]="ticket"
+          [projectId]="projectId!"
+        ></app-ticket-comments-tab>
       </mat-tab>
 
       <mat-tab label="Activity">

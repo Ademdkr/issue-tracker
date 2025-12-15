@@ -15,6 +15,7 @@ import { CurrentUser } from '../auth';
 import {
   User,
   Comment,
+  CommentWithAuthor,
   CreateCommentDto,
   UpdateCommentDto,
 } from '@issue-tracker/shared-types';
@@ -48,7 +49,7 @@ export class CommentsController {
   async findAll(
     @Param('projectId', ParseUUIDPipe) projectId: string,
     @Param('ticketId', ParseUUIDPipe) ticketId: string
-  ): Promise<Comment[]> {
+  ): Promise<CommentWithAuthor[]> {
     return await this.commentsService.findAllByTicket(projectId, ticketId);
   }
 
@@ -65,7 +66,7 @@ export class CommentsController {
     @Param('projectId', ParseUUIDPipe) projectId: string,
     @Param('ticketId', ParseUUIDPipe) ticketId: string,
     @Body() createCommentDto: CreateCommentDto
-  ): Promise<Comment> {
+  ): Promise<CommentWithAuthor> {
     return await this.commentsService.create(
       user,
       projectId,
@@ -90,7 +91,7 @@ export class CommentsController {
     @Param('ticketId', ParseUUIDPipe) ticketId: string,
     @Param('commentId', ParseUUIDPipe) commentId: string,
     @Body() updateCommentDto: UpdateCommentDto
-  ): Promise<Comment> {
+  ): Promise<CommentWithAuthor> {
     return await this.commentsService.update(
       user,
       projectId,

@@ -5,12 +5,14 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../database';
 import {
+  CreateCommentPolicyHandler,
   UpdateCommentPolicyHandler,
   DeleteCommentPolicyHandler,
 } from '../auth/policies';
 import { Comment as PrismaComment } from '@prisma/client';
 import {
   Comment,
+  CommentWithAuthor,
   CreateCommentDto,
   UpdateCommentDto,
   User,
@@ -20,6 +22,7 @@ import {
 export class CommentsService {
   constructor(
     private prisma: PrismaService,
+    private createCommentPolicy: CreateCommentPolicyHandler,
     private updateCommentPolicy: UpdateCommentPolicyHandler,
     private deleteCommentPolicy: DeleteCommentPolicyHandler
   ) {}
@@ -47,12 +50,12 @@ export class CommentsService {
    *
    * @param projectId - UUID des Projekts
    * @param ticketId - UUID des Tickets
-   * @returns Array von Kommentaren
+   * @returns Array von Kommentaren mit Author-Informationen
    */
   async findAllByTicket(
     projectId: string,
     ticketId: string
-  ): Promise<Comment[]> {
+  ): Promise<CommentWithAuthor[]> {
     // 1. Prüfe ob Ticket existiert und zum Projekt gehört
     const ticket = await this.prisma.ticket.findFirst({
       where: {
@@ -65,13 +68,26 @@ export class CommentsService {
       throw new NotFoundException('Ticket not found in this project');
     }
 
-    // 2. Lade alle Kommentare des Tickets
+    // 2. Lade alle Kommentare des Tickets mit Author-Informationen
     const comments = await this.prisma.comment.findMany({
       where: { ticketId },
       orderBy: { createdAt: 'asc' },
+      include: {
+        author: {
+          select: {
+            id: true,
+            name: true,
+            surname: true,
+            email: true,
+          },
+        },
+      },
     });
 
-    return comments.map((c) => this.mapPrismaToComment(c));
+    return comments.map((c) => ({
+      ...this.mapPrismaToComment(c),
+      author: c.author,
+    }));
   }
 
   /**
@@ -95,7 +111,7 @@ export class CommentsService {
     projectId: string,
     ticketId: string,
     createCommentDto: CreateCommentDto
-  ): Promise<Comment> {
+  ): Promise<CommentWithAuthor> {
     // 1. Prüfe ob Ticket existiert und zum Projekt gehört
     const ticket = await this.prisma.ticket.findFirst({
       where: {
@@ -108,16 +124,49 @@ export class CommentsService {
       throw new NotFoundException('Ticket not found in this project');
     }
 
-    // 2. Erstelle Kommentar
+    // 2. Berechtigungsprüfung: Darf User auf diesem Ticket kommentieren?
+    const canComment = this.createCommentPolicy.handle(user, {
+      id: ticket.id,
+      projectId: ticket.projectId,
+      reporterId: ticket.reporterId,
+      assigneeId: ticket.assigneeId ?? undefined,
+      title: ticket.title,
+      description: ticket.description,
+      status: ticket.status as any,
+      priority: ticket.priority as any,
+      createdAt: ticket.createdAt,
+      updatedAt: ticket.updatedAt ?? null,
+    });
+
+    if (!canComment) {
+      throw new ForbiddenException(
+        'You are not allowed to comment on this ticket'
+      );
+    }
+
+    // 3. Erstelle Kommentar
     const comment = await this.prisma.comment.create({
       data: {
         ticketId,
         authorId: user.id,
         content: createCommentDto.content,
       },
+      include: {
+        author: {
+          select: {
+            id: true,
+            name: true,
+            surname: true,
+            email: true,
+          },
+        },
+      },
     });
 
-    return this.mapPrismaToComment(comment);
+    return {
+      ...this.mapPrismaToComment(comment),
+      author: comment.author,
+    };
   }
 
   /**
@@ -145,7 +194,7 @@ export class CommentsService {
     ticketId: string,
     commentId: string,
     updateCommentDto: UpdateCommentDto
-  ): Promise<Comment> {
+  ): Promise<CommentWithAuthor> {
     // 1. Lade Kommentar mit Ticket-Informationen
     const comment = await this.prisma.comment.findFirst({
       where: { id: commentId },
@@ -181,9 +230,22 @@ export class CommentsService {
         content: updateCommentDto.content,
         updatedAt: new Date(),
       },
+      include: {
+        author: {
+          select: {
+            id: true,
+            name: true,
+            surname: true,
+            email: true,
+          },
+        },
+      },
     });
 
-    return this.mapPrismaToComment(updatedComment);
+    return {
+      ...this.mapPrismaToComment(updatedComment),
+      author: updatedComment.author,
+    };
   }
 
   /**

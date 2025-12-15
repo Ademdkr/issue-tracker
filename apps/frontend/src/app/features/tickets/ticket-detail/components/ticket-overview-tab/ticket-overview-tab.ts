@@ -128,7 +128,7 @@ export class TicketOverviewTab implements OnInit, OnDestroy {
   }
 
   loadOptions(): void {
-    // Load assignees
+    // Load assignees (exclude Reporters)
     this.projectsService
       .findProjectMembers(this.projectId)
       .pipe(takeUntil(this.destroy$))
@@ -136,7 +136,10 @@ export class TicketOverviewTab implements OnInit, OnDestroy {
         this.assigneeOptions = [
           { value: '', label: 'Nicht zugewiesen' },
           ...members
-            .filter((m: ProjectMemberWithUser) => m.user)
+            .filter(
+              (m: ProjectMemberWithUser) =>
+                m.user && m.user.role !== UserRole.REPORTER
+            )
             .map((m: ProjectMemberWithUser) => ({
               value: m.user!.id,
               label: `${m.user!.name} ${m.user!.surname}`,
@@ -178,13 +181,8 @@ export class TicketOverviewTab implements OnInit, OnDestroy {
     // Status: Rollenbasiert mit State Machine
     this.canEditStatus = isDeveloper || isManager || isAdmin;
 
-    // Priority: Not Reporter (unless creator/assignee) or Manager/Admin
-    this.canEditPriority =
-      role !== UserRole.REPORTER ||
-      isCreator ||
-      isAssignee ||
-      isManager ||
-      isAdmin;
+    // Priority: Only Developer, Manager, Admin (Reporter cannot edit)
+    this.canEditPriority = isDeveloper || isManager || isAdmin;
 
     // Assignee: Developer can self-assign, Manager/Admin can assign anyone
     if (role === UserRole.DEVELOPER) {
@@ -215,19 +213,23 @@ export class TicketOverviewTab implements OnInit, OnDestroy {
   onSubmit(): void {
     if (this.ticketForm.invalid || this.isLoading) return;
 
-    // Get only changed values
+    // Get only changed values from enabled fields
     const formValue = this.ticketForm.getRawValue();
     const updateData: UpdateTicketDto = {};
 
-    if (formValue.title !== this.ticket.title)
+    // Only include fields that are enabled and changed
+    if (this.canEditTitle && formValue.title !== this.ticket.title)
       updateData.title = formValue.title;
-    if (formValue.description !== this.ticket.description)
+    if (
+      this.canEditDescription &&
+      formValue.description !== this.ticket.description
+    )
       updateData.description = formValue.description;
-    if (formValue.status !== this.ticket.status)
+    if (this.canEditStatus && formValue.status !== this.ticket.status)
       updateData.status = formValue.status;
-    if (formValue.priority !== this.ticket.priority)
+    if (this.canEditPriority && formValue.priority !== this.ticket.priority)
       updateData.priority = formValue.priority;
-    if (formValue.assigneeId !== this.ticket.assigneeId)
+    if (this.canEditAssignee && formValue.assigneeId !== this.ticket.assigneeId)
       updateData.assigneeId = formValue.assigneeId || null;
     // Note: projectId is not editable via API, requires ticket recreation
 
