@@ -14,6 +14,7 @@ import { TicketGridView } from './components/ticket-grid-view/ticket-grid-view';
 export class TicketTable {
   @Input() tickets: TicketWithDetails[] = [];
   @Input() viewMode: 'list' | 'grid' = 'list';
+  @Input() showProjectColumn = false;
   @Output() ticketClick = new EventEmitter<TicketWithDetails>();
 
   onTicketClick(ticket: TicketWithDetails): void {

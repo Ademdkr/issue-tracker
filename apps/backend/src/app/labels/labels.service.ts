@@ -169,6 +169,76 @@ export class LabelsService {
   }
 
   /**
+   * Alle Labels für die Projekte eines Benutzers abrufen
+   * 
+   * Basierend auf der Rolle des Benutzers:
+   * - Admin/Manager: Alle Labels aller Projekte
+   * - Reporter: Labels nur der Projekte, die er erstellt hat
+   * - Developer: Labels der Projekte, in denen er Mitglied ist + eigene
+   *
+   * @param user - Benutzer-Objekt mit id und role
+   * @returns Array aller Labels, auf die der Benutzer Zugriff hat
+   */
+  async findAllByUserRole(user: { id: string; role: string }): Promise<any[]> {
+    if (user.role === 'ADMIN' || user.role === 'MANAGER') {
+      // Admin und Manager sehen alle Labels
+      return await this.prisma.label.findMany({
+        orderBy: { name: 'asc' },
+        include: {
+          project: {
+            select: { name: true, slug: true },
+          },
+        },
+      });
+    } else if (user.role === 'REPORTER') {
+      // Reporter sieht nur Labels seiner eigenen Projekte
+      return await this.prisma.label.findMany({
+        where: {
+          project: {
+            createdBy: user.id,
+          },
+        },
+        orderBy: { name: 'asc' },
+        include: {
+          project: {
+            select: { name: true, slug: true },
+          },
+        },
+      });
+    } else if (user.role === 'DEVELOPER') {
+      // Developer sieht Labels der Projekte, in denen er Mitglied ist
+      return await this.prisma.label.findMany({
+        where: {
+          OR: [
+            {
+              project: {
+                createdBy: user.id,
+              },
+            },
+            {
+              project: {
+                members: {
+                  some: {
+                    userId: user.id,
+                  },
+                },
+              },
+            },
+          ],
+        },
+        orderBy: { name: 'asc' },
+        include: {
+          project: {
+            select: { name: true, slug: true },
+          },
+        },
+      });
+    }
+
+    return [];
+  }
+
+  /**
    * Label löschen
    *
    * Validierung:

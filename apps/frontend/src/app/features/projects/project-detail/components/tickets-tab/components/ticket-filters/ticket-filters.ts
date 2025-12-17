@@ -30,6 +30,8 @@ import {
   TicketFilters as TicketFiltersType,
   ProjectMemberWithUser,
   Label,
+  LabelWithProject,
+  GroupedLabel,
 } from '@issue-tracker/shared-types';
 
 @Component({
@@ -48,7 +50,7 @@ import {
   styleUrl: './ticket-filters.scss',
 })
 export class TicketFilters implements OnInit, OnDestroy {
-  @Input() projectId!: string;
+  @Input() projectId?: string;
   @Output() filtersChange = new EventEmitter<TicketFiltersType>();
 
   private destroy$ = new Subject<void>();
@@ -78,10 +80,11 @@ export class TicketFilters implements OnInit, OnDestroy {
   ];
 
   assigneeOptions: { value: string; label: string }[] = [
-    { value: '', label: 'Alle Zuständigen' },
+    { value: '', label: 'Alle Assignees' },
   ];
 
-  labels: Label[] = [];
+  labels: LabelWithProject[] = [];
+  groupedLabels: GroupedLabel[] = [];
 
   private projectsService = inject(ProjectsService);
 
@@ -126,14 +129,35 @@ export class TicketFilters implements OnInit, OnDestroy {
   }
 
   loadLabels(): void {
-    if (!this.projectId) return;
+    // Wenn keine projectId vorhanden ist (z.B. auf /tickets-Seite), lade alle Labels
+    if (!this.projectId) {
+      this.projectsService
+        .findAllLabelsForUser()
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: (labels: LabelWithProject[]) => {
+            this.labels = labels;
+            this.groupLabels(labels);
+          },
+          error: (err: Error) => {
+            console.error('Error loading all labels:', err);
+          },
+        });
+      return;
+    }
 
+    // Sonst lade nur Labels des spezifischen Projekts
     this.projectsService
       .findProjectLabels(this.projectId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (labels: Label[]) => {
           this.labels = labels;
+          this.groupedLabels = labels.map(label => ({
+            name: label.name,
+            color: label.color,
+            ids: [label.id],
+          }));
         },
         error: (err: Error) => {
           console.error('Error loading labels:', err);
@@ -141,17 +165,52 @@ export class TicketFilters implements OnInit, OnDestroy {
       });
   }
 
+  private groupLabels(labels: LabelWithProject[]): void {
+    const labelMap = new Map<string, GroupedLabel>();
+
+    labels.forEach(label => {
+      const existing = labelMap.get(label.name);
+      if (existing) {
+        existing.ids.push(label.id);
+        if (label.project?.slug && !existing.projectSlugs?.includes(label.project.slug)) {
+          existing.projectSlugs?.push(label.project.slug);
+        }
+      } else {
+        labelMap.set(label.name, {
+          name: label.name,
+          color: label.color,
+          ids: [label.id],
+          projectSlugs: label.project ? [label.project.slug] : undefined,
+        });
+      }
+    });
+
+    this.groupedLabels = Array.from(labelMap.values());
+  }
+
   emitFilters(): void {
     const formValue = this.filterForm.value;
+
+    // Expandiere ausgewählte Label-Namen zu allen zugehörigen IDs
+    let expandedLabelIds: string[] | undefined = undefined;
+    if (formValue.labelIds && formValue.labelIds.length > 0) {
+      expandedLabelIds = [];
+      formValue.labelIds.forEach((selectedName: string) => {
+        const grouped = this.groupedLabels.find(g => g.name === selectedName);
+        if (grouped) {
+          expandedLabelIds!.push(...grouped.ids);
+        }
+      });
+      if (expandedLabelIds.length === 0) {
+        expandedLabelIds = undefined;
+      }
+    }
 
     const filters: TicketFiltersType = {
       status: formValue.status || undefined,
       priority: formValue.priority || undefined,
       assigneeId: formValue.assigneeId || undefined,
-      labelIds:
-        formValue.labelIds && formValue.labelIds.length > 0
-          ? formValue.labelIds
-          : undefined,
+      labelIds: expandedLabelIds,
       search: formValue.search || undefined,
     };
 

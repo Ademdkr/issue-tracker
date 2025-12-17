@@ -78,4 +78,35 @@ export class TicketsService {
       `${this.projectsApiUrl}/${projectId}/tickets/${ticketId}`
     );
   }
+
+  /**
+   * Get all tickets across all projects (role-based filtered)
+   * Used for global tickets overview page
+   */
+  findAll(filters?: TicketFilters & { projectId?: string }): Observable<TicketWithDetails[]> {
+    let params = new HttpParams();
+
+    if (filters) {
+      if (filters.projectId) {
+        params = params.set('projectId', filters.projectId);
+      }
+      if (filters.status) {
+        params = params.set('status', filters.status);
+      }
+      if (filters.priority) {
+        params = params.set('priority', filters.priority);
+      }
+      if (filters.assigneeId) {
+        params = params.set('assigneeId', filters.assigneeId);
+      }
+      if (filters.labelIds && filters.labelIds.length > 0) {
+        params = params.set('labelId', filters.labelIds[0]);
+      }
+      if (filters.search) {
+        params = params.set('search', filters.search);
+      }
+    }
+
+    return this.http.get<TicketWithDetails[]>(this.apiUrl, { params });
+  }
 }

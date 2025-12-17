@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { TicketActivitiesService } from './ticket-activities.service';
 import { RoleGuard, ProjectAccessGuard } from '../auth';
-import { TicketActivity } from '@issue-tracker/shared-types';
+import { TicketActivityWithActor } from '@issue-tracker/shared-types';
 
 /**
  * Ticket Activities Controller
@@ -39,7 +39,7 @@ export class TicketActivitiesController {
   @Get()
   async findAll(
     @Param('ticketId', ParseUUIDPipe) ticketId: string
-  ): Promise<TicketActivity[]> {
+  ): Promise<TicketActivityWithActor[]> {
     return await this.activityService.findAllByTicket(ticketId);
   }
 }

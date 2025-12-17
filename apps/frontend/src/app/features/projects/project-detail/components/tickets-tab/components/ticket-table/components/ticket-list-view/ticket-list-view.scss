@@ -3,6 +3,17 @@
   overflow-x: auto;
 }
 
+.project-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  .project-slug {
+    font-size: 0.75rem;
+    color: rgba(0, 0, 0, 0.6);
+  }
+}
+
 .tickets-table {
   width: 100%;
 

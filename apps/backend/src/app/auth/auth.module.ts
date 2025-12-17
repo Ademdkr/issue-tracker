@@ -21,6 +21,7 @@ import {
   CreateLabelPolicyHandler,
   UpdateLabelPolicyHandler,
   DeleteLabelPolicyHandler,
+  CreateCommentPolicyHandler,
   UpdateCommentPolicyHandler,
   DeleteCommentPolicyHandler,
 } from './policies';
@@ -62,6 +63,7 @@ import {
     DeleteLabelPolicyHandler,
 
     // Comment Policy Handlers
+    CreateCommentPolicyHandler,
     UpdateCommentPolicyHandler,
     DeleteCommentPolicyHandler,
   ],
@@ -86,6 +88,7 @@ import {
     DeleteLabelPolicyHandler,
 
     // Comment Policy Handlers exportieren
+    CreateCommentPolicyHandler,
     UpdateCommentPolicyHandler,
     DeleteCommentPolicyHandler,
   ],

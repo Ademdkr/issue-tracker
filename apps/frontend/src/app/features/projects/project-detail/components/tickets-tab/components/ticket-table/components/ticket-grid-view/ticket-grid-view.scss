@@ -92,6 +92,17 @@
         color: var(--md-sys-color-on-surface-variant);
       }
 
+      .project-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.125rem;
+
+        .project-slug {
+          font-size: 0.75rem;
+          color: rgba(0, 0, 0, 0.6);
+        }
+      }
+
       &.labels-field {
         align-items: flex-start;
 

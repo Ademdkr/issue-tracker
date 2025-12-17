@@ -70,10 +70,11 @@ export const appRoutes: Route[] = [
       {
         path: 'tickets',
         loadComponent: () =>
-          import('./features/tickets/tickets').then((m) => m.Tickets),
+          import('./features/tickets/tickets-overview/tickets-overview').then((m) => m.TicketsOverview),
         data: {
           title: 'Tickets',
-          subtitle: 'Übersicht der Tickets',
+          subtitle: 'Übersicht aller Tickets',
+          icon: 'confirmation_number',
           showNewTicketButton: true,
         },
       },

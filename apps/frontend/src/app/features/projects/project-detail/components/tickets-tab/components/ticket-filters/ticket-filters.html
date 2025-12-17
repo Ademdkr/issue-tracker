@@ -3,7 +3,7 @@
     <!-- Status Filter -->
     <mat-form-field appearance="outline">
       <mat-label>Status</mat-label>
-      <mat-select formControlName="status">
+      <mat-select formControlName="status" placeholder="Alle Status">
         <mat-option *ngFor="let option of statusOptions" [value]="option.value">
           {{ option.label }}
         </mat-option>
@@ -13,7 +13,7 @@
     <!-- Priority Filter -->
     <mat-form-field appearance="outline">
       <mat-label>Priorität</mat-label>
-      <mat-select formControlName="priority">
+      <mat-select formControlName="priority" placeholder="Alle Prioritäten">
         <mat-option
           *ngFor="let option of priorityOptions"
           [value]="option.value"
@@ -25,8 +25,8 @@
 
     <!-- Assignee Filter -->
     <mat-form-field appearance="outline">
-      <mat-label>Assignee</mat-label>
-      <mat-select formControlName="assigneeId">
+      <mat-label>Assignees</mat-label>
+      <mat-select formControlName="assigneeId" placeholder="Alle Assignees">
         <mat-option
           *ngFor="let option of assigneeOptions"
           [value]="option.value"
@@ -37,25 +37,31 @@
     </mat-form-field>
 
     <!-- Label Filter (Multi-Select) -->
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" floatLabel="always">
       <mat-label>Labels</mat-label>
       <mat-select
         formControlName="labelIds"
         multiple
+        placeholder="Alle Labels"
         [hideSingleSelectionIndicator]="true"
       >
         <mat-select-trigger>
-          @if ((filterForm.get('labelIds')?.value || []).length === 0) { Alle
-          Labels } @else { {{ (filterForm.get('labelIds')?.value || []).length
-          }} ausgewählt }
+          {{ (filterForm.get('labelIds')?.value || []).length === 0 ? 'Alle Labels' : (filterForm.get('labelIds')?.value || []).length + ' ausgewählt' }}
         </mat-select-trigger>
-        <mat-option *ngFor="let label of labels" [value]="label.id">
+        <mat-option *ngFor="let label of groupedLabels" [value]="label.name">
           <div class="label-filter-option">
             <span
               class="label-color-dot"
               [style.background-color]="label.color"
             ></span>
-            <span class="label-text">{{ label.name }}</span>
+            <span class="label-text">
+              {{ label.name }}
+              @if (!projectId && label.projectSlugs && label.projectSlugs.length > 1) {
+                <span class="label-project">({{ label.projectSlugs.length }} Projekte)</span>
+              } @else if (!projectId && label.projectSlugs && label.projectSlugs.length === 1) {
+                <span class="label-project">({{ label.projectSlugs[0] }})</span>
+              }
+            </span>
           </div>
         </mat-option>
       </mat-select>
