@@ -497,7 +497,9 @@ export class TicketsService {
 
     // 3. Update-Daten vorbereiten
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const updateData: any = {};
+    const updateData: any = {
+      updatedAt: new Date(), // Setze immer den Zeitstempel
+    };
 
     // Title & Description: Alle berechtigten User können ändern
     if (updateTicketDto.title !== undefined) {

@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../database';
 import {
-  TicketActivity,
+  TicketActivityWithActor,
   TicketActivityType,
   TicketStatus,
 } from '@issue-tracker/shared-types';
-import { TicketActivity as PrismaTicketActivity } from '@prisma/client';
+import { TicketActivity as PrismaTicketActivity, User } from '@prisma/client';
 
 /**
  * TicketActivitiesService
@@ -16,11 +16,13 @@ export class TicketActivitiesService {
   constructor(private prisma: PrismaService) {}
 
   /**
-   * Mapper: Prisma TicketActivity → Shared-Types TicketActivity
+   * Mapper: Prisma TicketActivity → Shared-Types TicketActivityWithActor
    */
   private mapPrismaToActivity(
-    prismaActivity: PrismaTicketActivity
-  ): TicketActivity {
+    prismaActivity: PrismaTicketActivity & {
+      actor?: Pick<User, 'id' | 'name' | 'surname' | 'email'>;
+    }
+  ): TicketActivityWithActor {
     return {
       id: prismaActivity.id,
       ticketId: prismaActivity.ticketId,
@@ -32,6 +34,14 @@ export class TicketActivitiesService {
         [key: string]: unknown;
       },
       createdAt: prismaActivity.createdAt,
+      actor: prismaActivity.actor
+        ? {
+            id: prismaActivity.actor.id,
+            name: prismaActivity.actor.name,
+            surname: prismaActivity.actor.surname,
+            email: prismaActivity.actor.email,
+          }
+        : undefined,
     };
   }
 
@@ -39,11 +49,21 @@ export class TicketActivitiesService {
    * Alle Aktivitäten eines Tickets abrufen
    *
    * @param ticketId - UUID des Tickets
-   * @returns Array von Aktivitäten (sortiert nach Erstellungsdatum, neueste zuerst)
+   * @returns Array von Aktivitäten mit Actor-Informationen (sortiert nach Erstellungsdatum, neueste zuerst)
    */
-  async findAllByTicket(ticketId: string): Promise<TicketActivity[]> {
+  async findAllByTicket(ticketId: string): Promise<TicketActivityWithActor[]> {
     const activities = await this.prisma.ticketActivity.findMany({
       where: { ticketId },
+      include: {
+        actor: {
+          select: {
+            id: true,
+            name: true,
+            surname: true,
+            email: true,
+          },
+        },
+      },
       orderBy: { createdAt: 'desc' },
     });
 
@@ -69,7 +89,7 @@ export class TicketActivitiesService {
     actorId: string,
     oldStatus: TicketStatus | null,
     newStatus: TicketStatus
-  ): Promise<TicketActivity> {
+  ): Promise<TicketActivityWithActor> {
     const activity = await this.prisma.ticketActivity.create({
       data: {
         ticketId,
@@ -78,6 +98,16 @@ export class TicketActivitiesService {
         detail: {
           oldValue: oldStatus,
           newValue: newStatus,
+        },
+      },
+      include: {
+        actor: {
+          select: {
+            id: true,
+            name: true,
+            surname: true,
+            email: true,
+          },
         },
       },
     });
@@ -110,7 +140,7 @@ export class TicketActivitiesService {
     newAssigneeId: string | null,
     oldAssigneeName?: string,
     newAssigneeName?: string
-  ): Promise<TicketActivity> {
+  ): Promise<TicketActivityWithActor> {
     const detail: Record<string, unknown> = {
       oldValue: oldAssigneeId,
       newValue: newAssigneeId,
@@ -131,6 +161,16 @@ export class TicketActivitiesService {
         activityType: TicketActivityType.ASSIGNEE_CHANGE,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         detail: detail as any,
+      },
+      include: {
+        actor: {
+          select: {
+            id: true,
+            name: true,
+            surname: true,
+            email: true,
+          },
+        },
       },
     });
 
@@ -159,7 +199,7 @@ export class TicketActivitiesService {
     labelId: string,
     labelName: string,
     labelColor?: string
-  ): Promise<TicketActivity> {
+  ): Promise<TicketActivityWithActor> {
     const detail: Record<string, unknown> = {
       labelId,
       labelName,
@@ -176,6 +216,16 @@ export class TicketActivitiesService {
         activityType: TicketActivityType.LABEL_ADDED,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         detail: detail as any,
+      },
+      include: {
+        actor: {
+          select: {
+            id: true,
+            name: true,
+            surname: true,
+            email: true,
+          },
+        },
       },
     });
 
@@ -204,7 +254,7 @@ export class TicketActivitiesService {
     labelId: string,
     labelName: string,
     labelColor?: string
-  ): Promise<TicketActivity> {
+  ): Promise<TicketActivityWithActor> {
     const detail: Record<string, unknown> = {
       labelId,
       labelName,
@@ -221,6 +271,16 @@ export class TicketActivitiesService {
         activityType: TicketActivityType.LABEL_REMOVED,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         detail: detail as any,
+      },
+      include: {
+        actor: {
+          select: {
+            id: true,
+            name: true,
+            surname: true,
+            email: true,
+          },
+        },
       },
     });
 
