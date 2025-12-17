@@ -7,6 +7,7 @@ import { UsersModule } from '../users/users.module';
 import { ProjectsModule } from '../projects/projects.module';
 import { CommentsModule } from '../comments/comments.module';
 import { TicketsModule } from '../tickets/tickets.module';
+import { DashboardModule } from '../dashboard';
 import { JwtAuthGuard } from '../auth';
 import { PrismaModule } from '../database';
 
@@ -18,6 +19,7 @@ import { PrismaModule } from '../database';
     ProjectsModule,
     TicketsModule,
     CommentsModule,
+    DashboardModule,
   ],
   controllers: [AppController],
   providers: [

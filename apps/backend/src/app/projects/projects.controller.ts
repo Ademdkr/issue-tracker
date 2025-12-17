@@ -112,7 +112,9 @@ export class ProjectsController {
    * @returns Promise<LabelWithProject[]> - Gefilterte Label-Liste
    */
   @Get('labels/all')
-  async getAllLabelsForUser(@CurrentUser() user: User): Promise<LabelWithProject[]> {
+  async getAllLabelsForUser(
+    @CurrentUser() user: User
+  ): Promise<LabelWithProject[]> {
     return await this.labelsService.findAllByUserRole(user);
   }
 
@@ -145,10 +147,14 @@ export class ProjectsController {
   @CheckPolicies(UpdateProjectPolicyHandler)
   async update(
     @CurrentUser() user: User,
-    @Param('id') id: string,
+    @Param('id') idOrSlug: string,
     @Body(new ValidationPipe()) updateProjectDto: UpdateProjectDto
   ): Promise<Project> {
-    return await this.projectsService.update(id, updateProjectDto);
+    const project = await this.projectsService.findOne(idOrSlug);
+    if (!project) {
+      throw new NotFoundException('Project not found');
+    }
+    return await this.projectsService.update(project.id, updateProjectDto);
   }
 
   /**
@@ -166,10 +172,14 @@ export class ProjectsController {
   @UseGuards(RoleGuard)
   @Roles(UserRole.ADMIN)
   async adminUpdate(
-    @Param('id') id: string,
+    @Param('id') idOrSlug: string,
     @Body(new ValidationPipe()) adminUpdateDto: AdminUpdateProjectDto
   ): Promise<Project> {
-    return await this.projectsService.adminUpdate(id, adminUpdateDto);
+    const project = await this.projectsService.findOne(idOrSlug);
+    if (!project) {
+      throw new NotFoundException('Project not found');
+    }
+    return await this.projectsService.adminUpdate(project.id, adminUpdateDto);
   }
 
   @Delete(':id')
@@ -177,9 +187,13 @@ export class ProjectsController {
   @CheckPolicies(DeleteProjectPolicyHandler)
   async remove(
     @CurrentUser() user: User,
-    @Param('id') id: string
+    @Param('id') idOrSlug: string
   ): Promise<Project> {
-    return await this.projectsService.remove(id);
+    const project = await this.projectsService.findOne(idOrSlug);
+    if (!project) {
+      throw new NotFoundException('Project not found');
+    }
+    return await this.projectsService.remove(project.id);
   }
 
   /**
@@ -189,8 +203,12 @@ export class ProjectsController {
   @Get(':id/members')
   @UseGuards(PoliciesGuard)
   @CheckPolicies(ManageProjectMembersPolicyHandler)
-  async getMembers(@CurrentUser() user: User, @Param('id') id: string) {
-    return await this.projectsService.getProjectMembers(id);
+  async getMembers(@CurrentUser() user: User, @Param('id') idOrSlug: string) {
+    const project = await this.projectsService.findOne(idOrSlug);
+    if (!project) {
+      throw new NotFoundException('Project not found');
+    }
+    return await this.projectsService.getProjectMembers(project.id);
   }
 
   /**
@@ -203,9 +221,13 @@ export class ProjectsController {
   @CheckPolicies(ManageProjectMembersPolicyHandler)
   async getAvailableMembers(
     @CurrentUser() user: User,
-    @Param('id') id: string
+    @Param('id') idOrSlug: string
   ) {
-    return await this.projectsService.getAvailableMembers(id);
+    const project = await this.projectsService.findOne(idOrSlug);
+    if (!project) {
+      throw new NotFoundException('Project not found');
+    }
+    return await this.projectsService.getAvailableMembers(project.id);
   }
 
   /**
@@ -219,13 +241,20 @@ export class ProjectsController {
   @CheckPolicies(ManageProjectMembersPolicyHandler)
   async searchAvailableMembers(
     @CurrentUser() user: User,
-    @Param('id') id: string,
+    @Param('id') idOrSlug: string,
     @Query('search') searchQuery: string
   ) {
     if (!searchQuery) {
       throw new BadRequestException('Search query is required');
     }
-    return await this.projectsService.searchAvailableMembers(id, searchQuery);
+    const project = await this.projectsService.findOne(idOrSlug);
+    if (!project) {
+      throw new NotFoundException('Project not found');
+    }
+    return await this.projectsService.searchAvailableMembers(
+      project.id,
+      searchQuery
+    );
   }
 
   /**
@@ -244,10 +273,14 @@ export class ProjectsController {
   @CheckPolicies(ManageProjectMembersPolicyHandler)
   async addMember(
     @CurrentUser() user: User,
-    @Param('id') id: string,
+    @Param('id') idOrSlug: string,
     @Body(new ValidationPipe()) addMemberDto: AddProjectMemberDto
   ): Promise<MessageResponse> {
-    return await this.projectsService.addMember(id, {
+    const project = await this.projectsService.findOne(idOrSlug);
+    if (!project) {
+      throw new NotFoundException('Project not found');
+    }
+    return await this.projectsService.addMember(project.id, {
       ...addMemberDto,
       addedBy: user.id,
     });
@@ -262,10 +295,14 @@ export class ProjectsController {
   @CheckPolicies(ManageProjectMembersPolicyHandler)
   async removeMember(
     @CurrentUser() user: User,
-    @Param('id') id: string,
+    @Param('id') idOrSlug: string,
     @Param('userId') userId: string
   ): Promise<MessageResponse> {
-    return await this.projectsService.removeMember(id, userId);
+    const project = await this.projectsService.findOne(idOrSlug);
+    if (!project) {
+      throw new NotFoundException('Project not found');
+    }
+    return await this.projectsService.removeMember(project.id, userId);
   }
 
   // ==================== LABELS ====================
@@ -287,10 +324,14 @@ export class ProjectsController {
   @CheckPolicies(CreateLabelPolicyHandler)
   async createLabel(
     @CurrentUser() user: User,
-    @Param('id') projectId: string,
+    @Param('id') projectIdOrSlug: string,
     @Body(new ValidationPipe()) createLabelDto: CreateLabelDto
   ): Promise<Label> {
-    return await this.labelsService.create(projectId, createLabelDto);
+    const project = await this.projectsService.findOne(projectIdOrSlug);
+    if (!project) {
+      throw new NotFoundException('Project not found');
+    }
+    return await this.labelsService.create(project.id, createLabelDto);
   }
 
   /**
@@ -303,8 +344,14 @@ export class ProjectsController {
    */
   @Get(':id/labels')
   @UseGuards(ProjectAccessGuard)
-  async getProjectLabels(@Param('id') projectId: string): Promise<Label[]> {
-    return await this.labelsService.findAllByProject(projectId);
+  async getProjectLabels(
+    @Param('id') projectIdOrSlug: string
+  ): Promise<Label[]> {
+    const project = await this.projectsService.findOne(projectIdOrSlug);
+    if (!project) {
+      throw new NotFoundException('Project not found');
+    }
+    return await this.labelsService.findAllByProject(project.id);
   }
 
   /**
@@ -324,11 +371,15 @@ export class ProjectsController {
   @CheckPolicies(UpdateLabelPolicyHandler)
   async updateLabel(
     @CurrentUser() user: User,
-    @Param('id') projectId: string,
+    @Param('id') projectIdOrSlug: string,
     @Param('labelId') labelId: string,
     @Body(new ValidationPipe()) updateLabelDto: UpdateLabelDto
   ): Promise<Label> {
-    return await this.labelsService.update(projectId, labelId, updateLabelDto);
+    const project = await this.projectsService.findOne(projectIdOrSlug);
+    if (!project) {
+      throw new NotFoundException('Project not found');
+    }
+    return await this.labelsService.update(project.id, labelId, updateLabelDto);
   }
 
   /**
@@ -344,10 +395,14 @@ export class ProjectsController {
   @CheckPolicies(DeleteLabelPolicyHandler)
   async deleteLabel(
     @CurrentUser() user: User,
-    @Param('id') projectId: string,
+    @Param('id') projectIdOrSlug: string,
     @Param('labelId') labelId: string
   ): Promise<Label> {
-    return await this.labelsService.remove(projectId, labelId);
+    const project = await this.projectsService.findOne(projectIdOrSlug);
+    if (!project) {
+      throw new NotFoundException('Project not found');
+    }
+    return await this.labelsService.remove(project.id, labelId);
   }
 
   // ==================== TICKETS ====================
@@ -374,19 +429,29 @@ export class ProjectsController {
   @Post(':id/tickets')
   @UseGuards(ProjectAccessGuard)
   async createTicket(
-    @Param('id') projectId: string,
+    @Param('id') projectIdOrSlug: string,
     @Body() createTicketDto: CreateTicketDto,
     @CurrentUser() user: User
   ) {
-    return this.ticketsService.create(projectId, user.id, createTicketDto);
+    // Resolve project ID from slug or ID
+    const project = await this.projectsService.findOne(projectIdOrSlug);
+    if (!project) {
+      throw new NotFoundException('Project not found');
+    }
+    return this.ticketsService.create(project.id, user.id, createTicketDto);
   }
 
   @Get(':id/tickets')
   @UseGuards(ProjectAccessGuard)
   async getProjectTickets(
-    @Param('id') projectId: string
+    @Param('id') projectIdOrSlug: string
   ): Promise<TicketWithDetails[]> {
-    return await this.ticketsService.findAllByProject(projectId);
+    // Resolve project ID from slug or ID
+    const project = await this.projectsService.findOne(projectIdOrSlug);
+    if (!project) {
+      throw new NotFoundException('Project not found');
+    }
+    return await this.ticketsService.findAllByProject(project.id);
   }
 
   /**
@@ -403,10 +468,15 @@ export class ProjectsController {
   @Get(':id/tickets/:ticketId')
   @UseGuards(ProjectAccessGuard)
   async getTicketDetails(
-    @Param('id') projectId: string,
+    @Param('id') projectIdOrSlug: string,
     @Param('ticketId') ticketId: string
   ): Promise<TicketWithDetails> {
-    return await this.ticketsService.findOne(projectId, ticketId);
+    // Resolve project ID from slug or ID
+    const project = await this.projectsService.findOne(projectIdOrSlug);
+    if (!project) {
+      throw new NotFoundException('Project not found');
+    }
+    return await this.ticketsService.findOne(project.id, ticketId);
   }
 
   /**
@@ -432,13 +502,18 @@ export class ProjectsController {
   @CheckPolicies(UpdateTicketPolicyHandler)
   async updateTicket(
     @CurrentUser() user: User,
-    @Param('id') projectId: string,
+    @Param('id') projectIdOrSlug: string,
     @Param('ticketId') ticketId: string,
     @Body(new ValidationPipe()) updateTicketDto: UpdateTicketDto
   ): Promise<TicketWithDetails> {
+    // Resolve project ID from slug or ID
+    const project = await this.projectsService.findOne(projectIdOrSlug);
+    if (!project) {
+      throw new NotFoundException('Project not found');
+    }
     return await this.ticketsService.update(
       user,
-      projectId,
+      project.id,
       ticketId,
       updateTicketDto
     );
@@ -458,9 +533,14 @@ export class ProjectsController {
   @CheckPolicies(DeleteTicketPolicyHandler)
   async deleteTicket(
     @CurrentUser() user: User,
-    @Param('id') projectId: string,
+    @Param('id') projectIdOrSlug: string,
     @Param('ticketId') ticketId: string
   ): Promise<Ticket> {
-    return await this.ticketsService.remove(user, projectId, ticketId);
+    // Resolve project ID from slug or ID
+    const project = await this.projectsService.findOne(projectIdOrSlug);
+    if (!project) {
+      throw new NotFoundException('Project not found');
+    }
+    return await this.ticketsService.remove(user, project.id, ticketId);
   }
 }

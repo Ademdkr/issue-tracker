@@ -27,7 +27,7 @@
       </button>
       <h1 class="ticket-title-header">
         Ticket: {{ ticket.title }}
-        <span class="ticket-id">#{{ ticket.id.substring(0, 8) }}</span>
+        <span class="ticket-id">{{ ticket.project?.slug }}</span>
       </h1>
     </div>
 

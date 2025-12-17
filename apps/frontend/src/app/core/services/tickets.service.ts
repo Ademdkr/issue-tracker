@@ -83,7 +83,9 @@ export class TicketsService {
    * Get all tickets across all projects (role-based filtered)
    * Used for global tickets overview page
    */
-  findAll(filters?: TicketFilters & { projectId?: string }): Observable<TicketWithDetails[]> {
+  findAll(
+    filters?: TicketFilters & { projectId?: string }
+  ): Observable<TicketWithDetails[]> {
     let params = new HttpParams();
 
     if (filters) {

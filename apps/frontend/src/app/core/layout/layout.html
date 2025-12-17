@@ -23,24 +23,35 @@
       disableClose
       opened
     >
-      <mat-toolbar class="sidebar-header">
-        <mat-icon class="app-icon">confirmation_number</mat-icon>
-        <span class="app-name">Issue Tracker</span>
-      </mat-toolbar>
+      <div class="sidenav-content">
+        <mat-toolbar class="sidebar-header">
+          <mat-icon class="app-icon">confirmation_number</mat-icon>
+          <span class="app-name">Issue Tracker</span>
+        </mat-toolbar>
 
-      <mat-nav-list class="nav-list">
-        @for (item of navigationItems; track item.route) {
-        <a
-          mat-list-item
-          [routerLink]="item.route"
-          routerLinkActive="active"
-          class="nav-item"
-        >
-          <mat-icon matListItemIcon>{{ item.icon}}</mat-icon>
-          <span matListItemTitle>{{ item.label }}</span>
-        </a>
-        }
-      </mat-nav-list>
+        <mat-nav-list class="nav-list">
+          @for (item of navigationItems; track item.route) {
+          <a
+            mat-list-item
+            [routerLink]="item.route"
+            routerLinkActive="active"
+            class="nav-item"
+          >
+            <mat-icon matListItemIcon>{{ item.icon}}</mat-icon>
+            <span matListItemTitle>{{ item.label }}</span>
+          </a>
+          }
+        </mat-nav-list>
+
+        <div class="logout-container">
+          <mat-nav-list>
+            <button mat-list-item (click)="logout()" class="logout-button">
+              <mat-icon matListItemIcon>logout</mat-icon>
+              <span matListItemTitle>Abmelden</span>
+            </button>
+          </mat-nav-list>
+        </div>
+      </div>
     </mat-sidenav>
 
     <mat-sidenav-content>

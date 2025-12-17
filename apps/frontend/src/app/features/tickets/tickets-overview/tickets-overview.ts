@@ -134,7 +134,12 @@ export class TicketsOverview implements OnInit, OnDestroy {
 
   onTicketClick(ticket: TicketWithDetails): void {
     if (ticket.project) {
-      this.router.navigate(['/projects', ticket.project.id, 'tickets', ticket.id]);
+      this.router.navigate([
+        '/projects',
+        ticket.project.id,
+        'tickets',
+        ticket.id,
+      ]);
     }
   }
 }

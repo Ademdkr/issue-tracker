@@ -46,7 +46,9 @@
         [hideSingleSelectionIndicator]="true"
       >
         <mat-select-trigger>
-          {{ (filterForm.get('labelIds')?.value || []).length === 0 ? 'Alle Labels' : (filterForm.get('labelIds')?.value || []).length + ' ausgewählt' }}
+          {{ (filterForm.get('labelIds')?.value || []).length === 0 ? 'Alle
+          Labels' : (filterForm.get('labelIds')?.value || []).length + '
+          ausgewählt' }}
         </mat-select-trigger>
         <mat-option *ngFor="let label of groupedLabels" [value]="label.name">
           <div class="label-filter-option">
@@ -55,11 +57,14 @@
               [style.background-color]="label.color"
             ></span>
             <span class="label-text">
-              {{ label.name }}
-              @if (!projectId && label.projectSlugs && label.projectSlugs.length > 1) {
-                <span class="label-project">({{ label.projectSlugs.length }} Projekte)</span>
-              } @else if (!projectId && label.projectSlugs && label.projectSlugs.length === 1) {
-                <span class="label-project">({{ label.projectSlugs[0] }})</span>
+              {{ label.name }} @if (!projectId && label.projectSlugs &&
+              label.projectSlugs.length > 1) {
+              <span class="label-project"
+                >({{ label.projectSlugs.length }} Projekte)</span
+              >
+              } @else if (!projectId && label.projectSlugs &&
+              label.projectSlugs.length === 1) {
+              <span class="label-project">({{ label.projectSlugs[0] }})</span>
               }
             </span>
           </div>

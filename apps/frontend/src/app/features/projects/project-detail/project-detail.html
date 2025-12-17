@@ -1,12 +1,15 @@
 <div class="project-detail-container">
   <!-- Loading State (wie bei projects.html) -->
-  <div *ngIf="isLoading" class="loading-container">
+  @if (isLoading) {
+  <div class="loading-container">
     <mat-spinner></mat-spinner>
     <p>Projekt wird geladen...</p>
   </div>
+  }
 
   <!-- Error State (wie bei projects.html) -->
-  <div *ngIf="!isLoading && error" class="error-container">
+  @if (!isLoading && error) {
+  <div class="error-container">
     <mat-icon class="error-icon">error_outline</mat-icon>
     <h3>{{ error }}</h3>
     <button
@@ -18,12 +21,17 @@
       Erneut versuchen
     </button>
   </div>
+  }
 
   <!-- Content (nur wenn geladen) -->
-  <div *ngIf="!isLoading && !error && project" class="project-content">
+  @if (!isLoading && !error && project) {
+  <div class="project-content">
     <!-- Header Section -->
     <div class="project-header">
-      <h1>Projekt: {{ project.name }}</h1>
+      <h1>
+        Projekt: {{ project.name }}
+        <span class="project-slug">({{ project.slug }})</span>
+      </h1>
       <p>{{ project.description }}</p>
     </div>
 
@@ -46,4 +54,5 @@
       </mat-tab>
     </mat-tab-group>
   </div>
+  }
 </div>

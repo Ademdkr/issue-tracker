@@ -70,7 +70,9 @@ export const appRoutes: Route[] = [
       {
         path: 'tickets',
         loadComponent: () =>
-          import('./features/tickets/tickets-overview/tickets-overview').then((m) => m.TicketsOverview),
+          import('./features/tickets/tickets-overview/tickets-overview').then(
+            (m) => m.TicketsOverview
+          ),
         data: {
           title: 'Tickets',
           subtitle: 'Übersicht aller Tickets',

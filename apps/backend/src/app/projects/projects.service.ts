@@ -231,14 +231,20 @@ export class ProjectsService {
   }
 
   /**
-   * Ruft ein einzelnes Projekt anhand der ID ab
+   * Ruft ein einzelnes Projekt anhand der ID oder des Slugs ab
    *
-   * @param id - UUID des Projekts
+   * @param idOrSlug - UUID oder Slug des Projekts
    * @returns Projekt-Objekt oder null falls nicht gefunden
    */
-  async findOne(id: string): Promise<Project | null> {
-    const project = await this.prisma.project.findUnique({
-      where: { id },
+  async findOne(idOrSlug: string): Promise<Project | null> {
+    // Versuche zuerst, ob es eine UUID ist
+    const isUuid =
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+        idOrSlug
+      );
+
+    const project = await this.prisma.project.findFirst({
+      where: isUuid ? { id: idOrSlug } : { slug: idOrSlug },
     });
 
     // Null-Check und Type-Conversion

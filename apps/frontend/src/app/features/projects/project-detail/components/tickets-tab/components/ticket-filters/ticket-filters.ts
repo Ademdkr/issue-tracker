@@ -153,7 +153,7 @@ export class TicketFilters implements OnInit, OnDestroy {
       .subscribe({
         next: (labels: Label[]) => {
           this.labels = labels;
-          this.groupedLabels = labels.map(label => ({
+          this.groupedLabels = labels.map((label) => ({
             name: label.name,
             color: label.color,
             ids: [label.id],
@@ -168,11 +168,14 @@ export class TicketFilters implements OnInit, OnDestroy {
   private groupLabels(labels: LabelWithProject[]): void {
     const labelMap = new Map<string, GroupedLabel>();
 
-    labels.forEach(label => {
+    labels.forEach((label) => {
       const existing = labelMap.get(label.name);
       if (existing) {
         existing.ids.push(label.id);
-        if (label.project?.slug && !existing.projectSlugs?.includes(label.project.slug)) {
+        if (
+          label.project?.slug &&
+          !existing.projectSlugs?.includes(label.project.slug)
+        ) {
           existing.projectSlugs?.push(label.project.slug);
         }
       } else {
@@ -196,7 +199,7 @@ export class TicketFilters implements OnInit, OnDestroy {
     if (formValue.labelIds && formValue.labelIds.length > 0) {
       expandedLabelIds = [];
       formValue.labelIds.forEach((selectedName: string) => {
-        const grouped = this.groupedLabels.find(g => g.name === selectedName);
+        const grouped = this.groupedLabels.find((g) => g.name === selectedName);
         if (grouped) {
           expandedLabelIds!.push(...grouped.ids);
         }
