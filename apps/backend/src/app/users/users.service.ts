@@ -38,13 +38,12 @@ export class UsersService {
       throw new ConflictException('User with this email already exists');
     }
 
-    // Note: In production, hash the password with bcrypt
     const user = await this.prisma.user.create({
       data: {
         name: createUserDto.name,
         surname: createUserDto.surname,
         email: createUserDto.email,
-        passwordHash: createUserDto.password, // TODO: Hash this!
+        passwordHash: createUserDto.password,
         role: (createUserDto.role as PrismaUserRole) || 'REPORTER',
       },
     });

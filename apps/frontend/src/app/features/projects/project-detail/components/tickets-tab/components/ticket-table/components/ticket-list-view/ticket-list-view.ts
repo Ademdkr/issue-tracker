@@ -144,8 +144,12 @@ export class TicketListView implements OnInit, OnChanges, AfterViewInit {
     return 'isEmpty' in ticket && ticket.isEmpty === true;
   }
 
-  onRowClick(ticket: TicketWithDetails): void {
-    this.ticketClick.emit(ticket);
+  onRowClick(ticket: TableTicket): void {
+    // Ignoriere Klicks auf leere Zeilen
+    if (this.isEmptyRow(ticket)) {
+      return;
+    }
+    this.ticketClick.emit(ticket as TicketWithDetails);
   }
 
   getStatusColor(status: string): string {

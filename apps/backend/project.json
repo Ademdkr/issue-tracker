@@ -18,45 +18,20 @@
         }
       }
     },
-    "prune-lockfile": {
-      "dependsOn": ["build"],
-      "cache": true,
-      "executor": "@nx/js:prune-lockfile",
-      "outputs": [
-        "{workspaceRoot}/dist/apps/backend/package.json",
-        "{workspaceRoot}/dist/apps/backend/package-lock.json"
-      ],
-      "options": {
-        "buildTarget": "build"
-      }
-    },
-    "copy-workspace-modules": {
-      "dependsOn": ["build"],
-      "cache": true,
-      "outputs": ["{workspaceRoot}/dist/apps/backend/workspace_modules"],
-      "executor": "@nx/js:copy-workspace-modules",
-      "options": {
-        "buildTarget": "build"
-      }
-    },
-    "prune": {
-      "dependsOn": ["prune-lockfile", "copy-workspace-modules"],
-      "executor": "nx:noop"
-    },
     "serve": {
       "executor": "nx:run-commands",
       "defaultConfiguration": "development",
-      "dependsOn": ["build"],
       "options": {
-        "command": "node dist/apps/backend/main.js",
-        "cwd": "."
+        "commands": [
+          "cd apps/backend && webpack-cli --watch --node-env=development",
+          "nodemon --watch dist/apps/backend --delay 1000ms dist/apps/backend/main.js"
+        ],
+        "parallel": true
       },
       "configurations": {
-        "development": {
-          "command": "node dist/apps/backend/main.js"
-        },
         "production": {
-          "command": "node dist/apps/backend/main.js"
+          "commands": ["node dist/apps/backend/main.js"],
+          "parallel": false
         }
       }
     }

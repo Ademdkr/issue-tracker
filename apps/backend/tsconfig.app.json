@@ -8,7 +8,21 @@
     "emitDecoratorMetadata": true,
     "target": "es2021",
     "sourceMap": true,
-    "inlineSources": true
+    "inlineSources": true,
+    // TypeScript Strict Mode für Production-Qualität
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "noUnusedLocals": true,
+    // noUnusedParameters deaktiviert wegen NestJS Decorators (@CurrentUser, etc.)
+    // "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true
   },
   "include": ["src/**/*.ts", "prisma/prisma.service.ts"],
   "exclude": [

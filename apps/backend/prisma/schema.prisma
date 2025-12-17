@@ -40,6 +40,10 @@ model Project {
   creator     User            @relation("ProjectCreator", fields: [createdBy], references: [id])
   tickets     Ticket[]
 
+  @@index([slug])
+  @@index([createdBy])
+  @@index([status])
+  @@index([createdAt])
   @@map("projects")
 }
 
@@ -75,6 +79,12 @@ model Ticket {
   project      Project          @relation(fields: [projectId], references: [id])
   reporter     User             @relation("TicketReporter", fields: [reporterId], references: [id])
 
+  @@index([projectId])
+  @@index([status])
+  @@index([priority])
+  @@index([assigneeId])
+  @@index([reporterId])
+  @@index([createdAt])
   @@map("tickets")
 }
 
@@ -99,6 +109,8 @@ model ProjectMember {
   user      User     @relation("ProjectMemberUser", fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([projectId, userId])
+  @@index([userId])
+  @@index([addedBy])
   @@map("project_members")
 }
 
@@ -112,6 +124,9 @@ model Comment {
   author    User      @relation(fields: [authorId], references: [id])
   ticket    Ticket    @relation(fields: [ticketId], references: [id], onDelete: Cascade)
 
+  @@index([ticketId])
+  @@index([authorId])
+  @@index([createdAt])
   @@map("comments")
 }
 

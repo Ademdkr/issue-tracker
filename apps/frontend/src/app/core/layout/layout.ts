@@ -238,31 +238,34 @@ export class Layout implements OnInit {
 
   openCreateTicketDialog(event: Event): void {
     event.stopPropagation();
-    
+
     // Prüfe, ob wir in einem Projekt-Kontext sind
     const route = this.activatedRoute.firstChild;
     const projectId = route?.snapshot.paramMap.get('id');
-    
+
     if (projectId) {
       // Wenn wir in einem Projekt sind, trigger Event für TicketsTab
       this.ticketDialogService.openCreateTicketDialog();
     } else {
       // Sonst öffne Dialog direkt hier (z.B. auf /tickets oder /dashboard)
-      import('../../features/projects/project-detail/components/tickets-tab/components/create-ticket-dialog/create-ticket-dialog').then(
-        (m) => {
-          this.dialog.open(m.CreateTicketDialog, {
-            width: '600px',
-            data: {
-              // Kein vorausgewähltes Projekt
-            },
-          });
-        }
-      );
+      import(
+        '../../features/projects/project-detail/components/tickets-tab/components/create-ticket-dialog/create-ticket-dialog'
+      ).then((m) => {
+        this.dialog.open(m.CreateTicketDialog, {
+          width: '600px',
+          data: {
+            // Kein vorausgewähltes Projekt
+          },
+        });
+      });
     }
   }
 
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);
+    this.snackBar.open('Erfolgreich abgemeldet', 'Schließen', {
+      duration: 3000,
+    });
   }
 }

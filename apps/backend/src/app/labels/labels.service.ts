@@ -170,7 +170,7 @@ export class LabelsService {
 
   /**
    * Alle Labels für die Projekte eines Benutzers abrufen
-   * 
+   *
    * Basierend auf der Rolle des Benutzers:
    * - Admin/Manager: Alle Labels aller Projekte
    * - Reporter: Labels nur der Projekte, die er erstellt hat

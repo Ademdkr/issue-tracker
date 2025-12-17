@@ -1,1 +1,196 @@
-<p>dashboard works!</p>
+<div class="dashboard-container">
+  @if (stats) {
+  <!-- Charts Section -->
+  <div class="charts-container">
+    <!-- Pie Chart: Projekte -->
+    <mat-card class="chart-card">
+      <mat-card-content>
+        <div class="chart-wrapper">
+          <canvas
+            baseChart
+            [data]="pieChartData"
+            [type]="'pie'"
+            [options]="pieChartOptions"
+          >
+          </canvas>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Bar Chart: Tickets nach Status -->
+    <mat-card class="chart-card">
+      <mat-card-content>
+        <div class="chart-wrapper">
+          <canvas
+            baseChart
+            [data]="barChartData"
+            [type]="'bar'"
+            [options]="barChartOptions"
+          >
+          </canvas>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Recent Tickets Section -->
+  <div class="recent-tickets-section">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>confirmation_number</mat-icon>
+          Neueste Tickets
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        @if (stats.recentTickets.length > 0) {
+        <table
+          mat-table
+          [dataSource]="stats.recentTickets"
+          class="tickets-table"
+        >
+          <!-- Project Column -->
+          <ng-container matColumnDef="project">
+            <th mat-header-cell *matHeaderCellDef>Projekt</th>
+            <td mat-cell *matCellDef="let ticket">{{ ticket.project.name }}</td>
+          </ng-container>
+
+          <!-- Title Column -->
+          <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef>Titel</th>
+            <td mat-cell *matCellDef="let ticket">{{ ticket.title }}</td>
+          </ng-container>
+
+          <!-- Status Column -->
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let ticket">
+              <mat-chip [color]="getStatusColor(ticket.status)">
+                {{ getStatusLabel(ticket.status) }}
+              </mat-chip>
+            </td>
+          </ng-container>
+
+          <!-- Priority Column -->
+          <ng-container matColumnDef="priority">
+            <th mat-header-cell *matHeaderCellDef>Priorität</th>
+            <td mat-cell *matCellDef="let ticket">
+              <mat-chip [color]="getPriorityColor(ticket.priority)">
+                {{ getPriorityLabel(ticket.priority) }}
+              </mat-chip>
+            </td>
+          </ng-container>
+
+          <!-- Assignee Column -->
+          <ng-container matColumnDef="assignee">
+            <th mat-header-cell *matHeaderCellDef>Zugewiesen an</th>
+            <td mat-cell *matCellDef="let ticket">
+              @if (ticket.assignee) { {{ ticket.assignee.name }} {{
+              ticket.assignee.surname }} } @else {
+              <span class="not-assigned">Nicht zugewiesen</span>
+              }
+            </td>
+          </ng-container>
+
+          <!-- Reporter Column -->
+          <ng-container matColumnDef="reporter">
+            <th mat-header-cell *matHeaderCellDef>Ersteller</th>
+            <td mat-cell *matCellDef="let ticket">
+              {{ ticket.reporter.name }} {{ ticket.reporter.surname }}
+            </td>
+          </ng-container>
+
+          <!-- Created At Column -->
+          <ng-container matColumnDef="createdAt">
+            <th mat-header-cell *matHeaderCellDef>Erstellt am</th>
+            <td mat-cell *matCellDef="let ticket">
+              {{ ticket.createdAt | date: 'short' }}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr
+            mat-row
+            *matRowDef="let ticket; columns: displayedColumns"
+            (click)="onTicketClick(ticket)"
+            class="clickable-row"
+          ></tr>
+        </table>
+        } @else {
+        <p class="no-data">Keine Tickets vorhanden</p>
+        }
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Projects Section -->
+  <div class="projects-section">
+    <h2>
+      <mat-icon>folder</mat-icon>
+      Projekte mit offenen Tickets
+    </h2>
+    @if (stats.projectsWithOpenTickets.length > 0) {
+    <div class="projects-grid">
+      @for (project of stats.projectsWithOpenTickets; track project.id) {
+      <mat-card class="project-card" (click)="onProjectClick(project)">
+        <mat-card-header>
+          <mat-card-title>{{ project.name }}</mat-card-title>
+          <mat-card-subtitle>{{ project.slug }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p class="project-description">{{ project.description }}</p>
+          <div class="ticket-counts">
+            <div class="count-item">
+              <span class="count-label">Offen:</span>
+              <span class="count-value open"
+                >{{ project.ticketCounts.open }}</span
+              >
+            </div>
+            <div class="count-item">
+              <span class="count-label">In Bearbeitung:</span>
+              <span class="count-value in-progress"
+                >{{ project.ticketCounts.inProgress }}</span
+              >
+            </div>
+            <div class="count-item">
+              <span class="count-label">Gelöst:</span>
+              <span class="count-value resolved"
+                >{{ project.ticketCounts.resolved }}</span
+              >
+            </div>
+            <div class="count-item">
+              <span class="count-label">Abgeschlossen:</span>
+              <span class="count-value closed"
+                >{{ project.ticketCounts.closed }}</span
+              >
+            </div>
+            <div class="count-item total">
+              <span class="count-label">Gesamt:</span>
+              <span class="count-value">{{ project.ticketCounts.total }}</span>
+            </div>
+          </div>
+          <div class="project-meta">
+            <span>
+              <mat-icon>people</mat-icon>
+              {{ project.memberCount }} Mitglieder
+            </span>
+            <span>
+              <mat-icon>person</mat-icon>
+              {{ project.createdBy.name }} {{ project.createdBy.surname }}
+            </span>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      }
+    </div>
+    } @else {
+    <p class="no-data">Keine Projekte mit offenen Tickets vorhanden</p>
+    }
+  </div>
+  } @else {
+  <div class="loading">
+    <mat-icon>hourglass_empty</mat-icon>
+    <p>Lade Dashboard-Daten...</p>
+  </div>
+  }
+</div>

@@ -109,6 +109,7 @@
       *matRowDef="let row; columns: displayedColumns;"
       [class.ticket-row]="!isEmptyRow(row)"
       [class.empty-row]="isEmptyRow(row)"
+      [class.clickable]="!isEmptyRow(row)"
       (click)="onRowClick(row)"
     ></tr>
   </table>
