@@ -35,10 +35,6 @@ export class TicketsService {
       if (filters.assigneeId) {
         params = params.set('assigneeId', filters.assigneeId);
       }
-      // TODO: Backend unterstützt aktuell nur einzelne labelId, nicht mehrere
-      // if (filters.labelIds && filters.labelIds.length > 0) {
-      //   params = params.set('labelId', filters.labelIds[0]);
-      // }
       if (filters.search) {
         params = params.set('search', filters.search);
       }

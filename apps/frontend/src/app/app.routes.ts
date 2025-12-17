@@ -82,7 +82,7 @@ export const appRoutes: Route[] = [
       },
       {
         path: '',
-        redirectTo: 'projects',
+        redirectTo: 'dashboard',
         pathMatch: 'full',
       },
     ],

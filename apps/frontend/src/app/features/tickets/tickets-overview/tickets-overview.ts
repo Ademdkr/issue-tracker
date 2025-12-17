@@ -1,4 +1,11 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  inject,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -36,13 +43,15 @@ import { MatInputModule } from '@angular/material/input';
     TicketTable,
   ],
   templateUrl: './tickets-overview.html',
-  styleUrl: './tickets-overview.scss',
+  styleUrls: ['./tickets-overview.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TicketsOverview implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   private ticketsService = inject(TicketsService);
   private projectsService = inject(ProjectsService);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
   tickets: TicketWithDetails[] = [];
   filteredTickets: TicketWithDetails[] = [];
@@ -51,7 +60,7 @@ export class TicketsOverview implements OnInit, OnDestroy {
   error: string | null = null;
   viewMode: 'list' | 'grid' = 'list';
 
-  selectedProjectId: string = '';
+  selectedProjectId = '';
   currentFilters: TicketFiltersType = {
     status: undefined,
     priority: undefined,
@@ -77,9 +86,11 @@ export class TicketsOverview implements OnInit, OnDestroy {
       .subscribe({
         next: (projects: ProjectSummary[]) => {
           this.projects = projects;
+          this.cdr.markForCheck();
         },
         error: (err: Error) => {
           console.error('Error loading projects:', err);
+          this.cdr.markForCheck();
         },
       });
   }
@@ -98,16 +109,16 @@ export class TicketsOverview implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (tickets) => {
-          console.log('Loaded tickets:', tickets);
-          console.log('First ticket project:', tickets[0]?.project);
           this.tickets = tickets;
           this.filteredTickets = tickets;
           this.isLoading = false;
+          this.cdr.markForCheck();
         },
         error: (err) => {
           this.error = 'Fehler beim Laden der Tickets.';
           console.error('Error loading tickets:', err);
           this.isLoading = false;
+          this.cdr.markForCheck();
         },
       });
   }

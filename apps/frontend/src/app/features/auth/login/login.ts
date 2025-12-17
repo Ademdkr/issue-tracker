@@ -81,7 +81,7 @@ export class Login {
             verticalPosition: 'top',
           }
         );
-        this.router.navigate(['/projects']);
+        this.router.navigate(['/dashboard']);
       },
       error: () => {
         // Error wird vom Error Interceptor behandelt

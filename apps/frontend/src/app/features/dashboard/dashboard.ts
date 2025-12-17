@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
@@ -29,6 +34,7 @@ Chart.register(...registerables);
   ],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Dashboard implements OnInit {
   stats: DashboardStats | null = null;
@@ -119,7 +125,8 @@ export class Dashboard implements OnInit {
 
   constructor(
     private readonly dashboardService: DashboardService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -131,6 +138,7 @@ export class Dashboard implements OnInit {
       next: (stats) => {
         this.stats = stats;
         this.updateCharts();
+        this.cdr.markForCheck();
       },
       error: (error) => {
         console.error('Fehler beim Laden der Dashboard-Daten:', error);

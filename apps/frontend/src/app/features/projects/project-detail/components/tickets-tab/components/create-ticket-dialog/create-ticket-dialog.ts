@@ -276,7 +276,6 @@ export class CreateTicketDialog implements OnInit, OnDestroy {
         error: (err: Error) => {
           console.error('Error creating ticket:', err);
           this.isSubmitting = false;
-          // TODO: Error-Handling mit Snackbar
         },
       });
   }

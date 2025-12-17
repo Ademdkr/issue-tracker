@@ -117,6 +117,10 @@ export class ProjectsService {
     // });
 
     // 4. Projekt in Datenbank erstellen
+    if (!createProjectDto.createdBy) {
+      throw new Error('createdBy is required');
+    }
+
     const project = await this.prisma.project.create({
       data: {
         name: createProjectDto.name,
@@ -501,6 +505,10 @@ export class ProjectsService {
     }
 
     // 4. Mitglied hinzufügen
+    if (!addMemberDto.addedBy) {
+      throw new Error('addedBy is required');
+    }
+
     await this.prisma.projectMember.create({
       data: {
         projectId,
