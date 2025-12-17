@@ -25,6 +25,7 @@ import {
   CreateLabelDto,
   UpdateLabelDto,
   Label,
+  LabelWithProject,
   Ticket,
   TicketWithDetails,
   CreateTicketDto,
@@ -96,6 +97,23 @@ export class ProjectsController {
     @Query('search') search?: string
   ): Promise<ProjectSummary[]> {
     return await this.projectsService.findAllByRole(user.id, user.role, search);
+  }
+
+  /**
+   * Alle Labels für die Projekte des Benutzers abrufen
+   * GET /api/projects/labels/all
+   *
+   * Berechtigungen:
+   * - Admin/Manager: Alle Labels aller Projekte
+   * - Reporter: Labels nur der eigenen Projekte
+   * - Developer: Labels der Projekte, in denen er Mitglied ist
+   *
+   * @param user - Angemeldeter User (via CurrentUserGuard)
+   * @returns Promise<LabelWithProject[]> - Gefilterte Label-Liste
+   */
+  @Get('labels/all')
+  async getAllLabelsForUser(@CurrentUser() user: User): Promise<LabelWithProject[]> {
+    return await this.labelsService.findAllByUserRole(user);
   }
 
   /**

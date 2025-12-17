@@ -5,17 +5,27 @@
     <mat-card-header>
       <mat-card-title>
         <div class="card-title-row">
-          <span class="ticket-id">#{{ ticket.id }}</span>
+          <span class="ticket-title-text">{{ ticket.title }}</span>
           <mat-chip [color]="getStatusColor(ticket.status)">
             {{ ticket.status }}
           </mat-chip>
         </div>
       </mat-card-title>
-      <mat-card-subtitle>{{ ticket.title }}</mat-card-subtitle>
     </mat-card-header>
 
     <!-- Card Content -->
     <mat-card-content>
+      <!-- Project (optional) -->
+      @if (showProjectColumn && ticket.project) {
+      <div class="card-field">
+        <mat-icon class="field-icon">folder</mat-icon>
+        <div class="project-info">
+          <strong>{{ ticket.project.name }}</strong>
+          <span class="project-slug">({{ ticket.project.slug }})</span>
+        </div>
+      </div>
+      }
+
       <!-- Priority -->
       <div class="card-field">
         <mat-icon class="field-icon">flag</mat-icon>
@@ -35,13 +45,13 @@
         <div class="timestamp">
           <mat-icon>schedule</mat-icon>
           <span class="timestamp-label">Erstellt:</span>
-          <span>{{ ticket.createdAt | date:'short' }}</span>
+          <span>{{ ticket.createdAt | date:'dd.MM.yyyy HH:mm' }}</span>
         </div>
         @if (ticket.updatedAt) {
         <div class="timestamp">
           <mat-icon>update</mat-icon>
           <span class="timestamp-label">Aktualisiert:</span>
-          <span>{{ ticket.updatedAt | date:'short' }}</span>
+          <span>{{ ticket.updatedAt | date:'dd.MM.yyyy HH:mm' }}</span>
         </div>
         }
       </div>

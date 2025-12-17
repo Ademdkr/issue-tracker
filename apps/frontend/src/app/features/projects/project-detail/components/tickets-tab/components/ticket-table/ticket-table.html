@@ -3,6 +3,7 @@
   @if (viewMode === 'list') {
   <app-ticket-list-view
     [tickets]="tickets"
+    [showProjectColumn]="showProjectColumn"
     (ticketClick)="onTicketClick($event)"
   ></app-ticket-list-view>
   }
@@ -11,6 +12,7 @@
   @if (viewMode === 'grid') {
   <app-ticket-grid-view
     [tickets]="tickets"
+    [showProjectColumn]="showProjectColumn"
     (ticketClick)="onTicketClick($event)"
   ></app-ticket-grid-view>
   }

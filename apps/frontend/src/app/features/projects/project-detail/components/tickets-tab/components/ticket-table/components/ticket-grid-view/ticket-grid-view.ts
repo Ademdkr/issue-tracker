@@ -14,6 +14,7 @@ import { TicketWithDetails } from '@issue-tracker/shared-types';
 })
 export class TicketGridView {
   @Input() tickets: TicketWithDetails[] = [];
+  @Input() showProjectColumn = false;
   @Output() ticketClick = new EventEmitter<TicketWithDetails>();
 
   onCardClick(ticket: TicketWithDetails): void {

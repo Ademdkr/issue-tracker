@@ -5,7 +5,7 @@ https://docs.nestjs.com/controllers#controllers
 import { Controller, Get, Query } from '@nestjs/common';
 import { TicketsService } from '../tickets/tickets.service';
 import { CurrentUser } from '../auth';
-import { User, Ticket } from '@issue-tracker/shared-types';
+import { User, TicketWithDetails } from '@issue-tracker/shared-types';
 
 @Controller('tickets')
 export class TicketsController {
@@ -37,7 +37,7 @@ export class TicketsController {
     @Query('assigneeId') assigneeId?: string,
     @Query('labelId') labelId?: string,
     @Query('search') search?: string
-  ): Promise<Ticket[]> {
+  ): Promise<TicketWithDetails[]> {
     return await this.ticketsService.findAllByRole(user, {
       projectId,
       status,

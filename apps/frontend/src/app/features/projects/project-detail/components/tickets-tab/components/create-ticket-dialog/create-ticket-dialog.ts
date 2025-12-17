@@ -43,8 +43,8 @@ import {
 } from '@issue-tracker/shared-types';
 
 interface CreateTicketDialogData {
-  projectId: string;
-  projectName: string;
+  projectId?: string;
+  projectName?: string;
 }
 
 @Component({
@@ -120,8 +120,10 @@ export class CreateTicketDialog implements OnInit, OnDestroy {
       this.isAdmin = this.currentUser.role === UserRole.ADMIN;
     }
 
-    // Projekt vorauswählen
-    this.ticketForm.patchValue({ projectId: this.data.projectId });
+    // Projekt vorauswählen (falls übergeben)
+    if (this.data?.projectId) {
+      this.ticketForm.patchValue({ projectId: this.data.projectId });
+    }
 
     // Felder je nach Rolle deaktivieren
     if (this.isReporter) {
@@ -132,8 +134,10 @@ export class CreateTicketDialog implements OnInit, OnDestroy {
 
     // Daten laden
     this.loadProjects();
-    this.loadMembersForProject(this.data.projectId);
-    this.loadLabelsForProject(this.data.projectId);
+    if (this.data?.projectId) {
+      this.loadMembersForProject(this.data.projectId);
+      this.loadLabelsForProject(this.data.projectId);
+    }
 
     // Bei Projekt-Wechsel: Members und Labels neu laden
     this.ticketForm
@@ -225,7 +229,14 @@ export class CreateTicketDialog implements OnInit, OnDestroy {
     this.isSubmitting = true;
 
     const formValue = this.ticketForm.getRawValue();
-    const projectId = formValue.projectId || this.data.projectId;
+    const projectId = formValue.projectId || this.data?.projectId;
+
+    // Validierung: projectId muss vorhanden sein
+    if (!projectId) {
+      console.error('Kein Projekt ausgewählt');
+      this.isSubmitting = false;
+      return;
+    }
 
     // DTO vorbereiten
     const createTicketDto: CreateTicketDto = {

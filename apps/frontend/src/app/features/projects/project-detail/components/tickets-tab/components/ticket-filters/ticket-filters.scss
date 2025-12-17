@@ -61,6 +61,15 @@
 
     .label-text {
       text-transform: lowercase;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      .label-project {
+        font-size: 0.85em;
+        color: rgba(0, 0, 0, 0.54);
+        font-weight: normal;
+      }
     }
   }
 }

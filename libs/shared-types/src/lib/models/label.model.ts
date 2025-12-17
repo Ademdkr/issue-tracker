@@ -6,3 +6,17 @@ export interface Label {
   createdAt: Date;
   updatedAt: Date | null;
 }
+
+export interface LabelWithProject extends Label {
+  project?: {
+    name: string;
+    slug: string;
+  };
+}
+
+export interface GroupedLabel {
+  name: string;
+  color: string;
+  ids: string[];
+  projectSlugs?: string[];
+}

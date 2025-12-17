@@ -18,6 +18,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
 import { filter, map } from 'rxjs';
 import { CreateProjectForm } from '../../features/projects/components/create-project-form/create-project-form';
 import { GeneralSettingsForm } from '../../features/projects/components/general-settings-form/general-settings-form';
@@ -75,7 +76,8 @@ export class Layout implements OnInit {
     private projectsService: ProjectsService,
     private projectSettingsService: ProjectSettingsService,
     private ticketDialogService: TicketDialogService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -236,7 +238,27 @@ export class Layout implements OnInit {
 
   openCreateTicketDialog(event: Event): void {
     event.stopPropagation();
-    this.ticketDialogService.openCreateTicketDialog();
+    
+    // Prüfe, ob wir in einem Projekt-Kontext sind
+    const route = this.activatedRoute.firstChild;
+    const projectId = route?.snapshot.paramMap.get('id');
+    
+    if (projectId) {
+      // Wenn wir in einem Projekt sind, trigger Event für TicketsTab
+      this.ticketDialogService.openCreateTicketDialog();
+    } else {
+      // Sonst öffne Dialog direkt hier (z.B. auf /tickets oder /dashboard)
+      import('../../features/projects/project-detail/components/tickets-tab/components/create-ticket-dialog/create-ticket-dialog').then(
+        (m) => {
+          this.dialog.open(m.CreateTicketDialog, {
+            width: '600px',
+            data: {
+              // Kein vorausgewähltes Projekt
+            },
+          });
+        }
+      );
+    }
   }
 
   logout(): void {

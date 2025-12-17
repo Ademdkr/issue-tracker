@@ -191,7 +191,7 @@ export class TicketsService {
       labelId?: string;
       search?: string;
     }
-  ): Promise<Ticket[]> {
+  ): Promise<TicketWithDetails[]> {
     const isAdmin = user.role === UserRole.ADMIN;
     const isManager = user.role === UserRole.MANAGER;
     const isReporter = user.role === UserRole.REPORTER;
@@ -264,11 +264,64 @@ export class TicketsService {
       where: whereCondition,
       include: {
         ticketLabels: true,
+        reporter: {
+          select: {
+            id: true,
+            name: true,
+            surname: true,
+            email: true,
+          },
+        },
+        assignee: {
+          select: {
+            id: true,
+            name: true,
+            surname: true,
+            email: true,
+          },
+        },
+        project: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+          },
+        },
       },
       orderBy: { createdAt: 'desc' },
     });
 
-    return tickets.map((ticket) => this.mapPrismaToTicket(ticket));
+    // Konvertiere Prisma-Tickets zu TicketWithDetails
+    return tickets.map((ticket) => ({
+      ...this.mapPrismaToTicket(ticket),
+      reporter: ticket.reporter
+        ? {
+            id: ticket.reporter.id,
+            name: ticket.reporter.name,
+            surname: ticket.reporter.surname,
+            email: ticket.reporter.email,
+          }
+        : undefined,
+      assignee: ticket.assignee
+        ? {
+            id: ticket.assignee.id,
+            name: ticket.assignee.name,
+            surname: ticket.assignee.surname,
+            email: ticket.assignee.email,
+          }
+        : undefined,
+      project: ticket.project
+        ? {
+            id: ticket.project.id,
+            name: ticket.project.name,
+            slug: ticket.project.slug,
+          }
+        : undefined,
+      ticketLabels: ticket.ticketLabels.map((tl) => ({
+        labelId: tl.labelId,
+        ticketId: tl.ticketId,
+      })),
+    }));
   }
 
   /**

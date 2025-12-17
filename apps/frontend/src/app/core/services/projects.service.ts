@@ -6,6 +6,7 @@ import {
   Project,
   ProjectMemberWithUser,
   Label,
+  LabelWithProject,
 } from '@issue-tracker/shared-types';
 import { environment } from '../../../environments/environment';
 @Injectable({
@@ -102,6 +103,14 @@ export class ProjectsService {
   // Labels
   findProjectLabels(projectId: string): Observable<Label[]> {
     return this.http.get<Label[]>(`${this.apiUrl}/${projectId}/labels`);
+  }
+
+  /**
+   * Alle Labels für die Projekte des Benutzers abrufen
+   * Rollenbasiert: Admin/Manager sehen alle, Developer/Reporter nur ihre Projekte
+   */
+  findAllLabelsForUser(): Observable<LabelWithProject[]> {
+    return this.http.get<LabelWithProject[]>(`${this.apiUrl}/labels/all`);
   }
 
   createLabel(

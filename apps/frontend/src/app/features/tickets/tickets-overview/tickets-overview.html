@@ -1,0 +1,81 @@
+<div class="tickets-overview-container">
+  <div class="header">
+    <h1>Alle Tickets</h1>
+  </div>
+
+  <div class="filters-section">
+    <!-- Toolbar: Suche und Ansicht -->
+    <div class="toolbar">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Suche</mat-label>
+        <input
+          matInput
+          placeholder="Titel oder Beschreibung..."
+          (input)="onSearchChange($event)"
+        />
+        <mat-icon matPrefix>search</mat-icon>
+      </mat-form-field>
+
+      <mat-button-toggle-group
+        [value]="viewMode"
+        (change)="onViewModeChange($event.value)"
+        aria-label="Ansichtsmodus"
+        class="view-toggle"
+      >
+        <mat-button-toggle value="list">
+          <mat-icon>view_list</mat-icon>
+        </mat-button-toggle>
+        <mat-button-toggle value="grid">
+          <mat-icon>view_module</mat-icon>
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+
+    <!-- Filter Grid -->
+    <div class="filters-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>Projekte</mat-label>
+        <mat-select
+          [(value)]="selectedProjectId"
+          (selectionChange)="onProjectChange($event.value)"
+          placeholder="Alle Projekte"
+        >
+          <mat-option [value]="''">Alle Projekte</mat-option>
+          <mat-option *ngFor="let project of projects" [value]="project.id">
+            {{ project.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <app-ticket-filters
+        (filtersChange)="onFiltersChange($event)"
+      ></app-ticket-filters>
+    </div>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Tickets werden geladen...</p>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="error && !isLoading" class="error-message">
+    <mat-icon>error_outline</mat-icon>
+    <p>{{ error }}</p>
+    <button mat-raised-button color="primary" (click)="loadTickets()">
+      <mat-icon>refresh</mat-icon>
+      Erneut versuchen
+    </button>
+  </div>
+
+  <!-- Tickets Table -->
+  <div *ngIf="!isLoading && !error" class="tickets-section">
+    <app-ticket-table
+      [tickets]="filteredTickets"
+      [viewMode]="viewMode"
+      [showProjectColumn]="true"
+      (ticketClick)="onTicketClick($event)"
+    ></app-ticket-table>
+  </div>
+</div>

@@ -4,6 +4,7 @@ import {
   Output,
   EventEmitter,
   ViewChild,
+  OnInit,
   OnChanges,
   SimpleChanges,
   AfterViewInit,
@@ -49,27 +50,30 @@ interface EmptyTicketRow {
   templateUrl: './ticket-list-view.html',
   styleUrl: './ticket-list-view.scss',
 })
-export class TicketListView implements OnChanges, AfterViewInit {
+export class TicketListView implements OnInit, OnChanges, AfterViewInit {
   @Input() tickets: TicketWithDetails[] = [];
+  @Input() showProjectColumn = false;
   @Output() ticketClick = new EventEmitter<TicketWithDetails>();
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   dataSource = new MatTableDataSource<TableTicket>([]);
-  displayedColumns: string[] = [
-    'title',
-    'status',
-    'priority',
-    'assignee',
-    'reporterId',
-    'createdAt',
-    'updatedAt',
-  ];
+  displayedColumns: string[] = [];
 
   private readonly FIXED_ROW_COUNT = 10;
 
+  ngOnInit(): void {
+    this.updateDisplayedColumns();
+    const paddedTickets = this.padTicketsToFixedCount(this.tickets);
+    this.dataSource.data = paddedTickets;
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
+    if (changes['showProjectColumn']) {
+      this.updateDisplayedColumns();
+    }
+
     if (changes['tickets']) {
       const paddedTickets = this.padTicketsToFixedCount(this.tickets);
       this.dataSource.data = paddedTickets;
@@ -80,6 +84,24 @@ export class TicketListView implements OnChanges, AfterViewInit {
       if (this.paginator) {
         this.dataSource.paginator = this.paginator;
       }
+    }
+  }
+
+  private updateDisplayedColumns(): void {
+    const baseColumns = [
+      'title',
+      'status',
+      'priority',
+      'assignee',
+      'reporterId',
+      'createdAt',
+      'updatedAt',
+    ];
+
+    if (this.showProjectColumn) {
+      this.displayedColumns = ['project', ...baseColumns];
+    } else {
+      this.displayedColumns = baseColumns;
     }
   }
 
