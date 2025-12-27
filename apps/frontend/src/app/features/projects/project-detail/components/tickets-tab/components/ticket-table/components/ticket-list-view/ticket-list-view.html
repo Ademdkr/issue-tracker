@@ -37,7 +37,7 @@
         <span class="empty-cell">-</span>
         } @else {
         <mat-chip [class]="'status-' + ticket.status.toLowerCase()">
-          {{ticket.status}}
+          {{ getStatusLabel(ticket.status) }}
         </mat-chip>
         }
       </td>
@@ -51,7 +51,7 @@
         <span class="empty-cell">-</span>
         } @else {
         <mat-chip [class]="'priority-' + ticket.priority.toLowerCase()">
-          {{ticket.priority}}
+          {{ getPriorityLabel(ticket.priority) }}
         </mat-chip>
         }
       </td>
