@@ -24,6 +24,7 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
 
 // Services
 import { ProjectsService } from '../../../../../../../core/services/projects.service';
+import { UsersService } from '../../../../../../../core/services/users.service';
 import { ErrorService } from '../../../../../../../core/services/error.service';
 
 // Shared Types
@@ -88,6 +89,7 @@ export class TicketFilters implements OnInit, OnDestroy {
   groupedLabels: GroupedLabel[] = [];
 
   private projectsService = inject(ProjectsService);
+  private usersService = inject(UsersService);
 
   constructor() {
     this.filterForm.valueChanges
@@ -106,8 +108,32 @@ export class TicketFilters implements OnInit, OnDestroy {
   }
 
   loadAssignees(): void {
-    if (!this.projectId) return;
+    // Wenn keine projectId vorhanden ist (z.B. auf /tickets-Seite), lade alle Benutzer
+    if (!this.projectId) {
+      this.usersService
+        .findAll()
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: (users) => {
+            this.assigneeOptions = [
+              { value: '', label: 'Alle Zuständigen' },
+              ...users.map((user) => ({
+                value: user.id,
+                label: `${user.name} ${user.surname}`,
+              })),
+            ];
+          },
+          error: (err) => {
+            inject(ErrorService).handleHttpError(
+              err,
+              'Fehler beim Laden der Benutzer'
+            );
+          },
+        });
+      return;
+    }
 
+    // Lade nur Projekt-Mitglieder wenn projectId vorhanden
     this.projectsService
       .findProjectMembers(this.projectId)
       .pipe(takeUntil(this.destroy$))
