@@ -39,7 +39,6 @@ Dieses Projekt demonstriert Best Practices für moderne Full-Stack-Entwicklung m
   </tr>
 </table>
 
-> � **Hinweis:** Live-Demo und Screenshots werden nach dem Deployment hinzugefügt
 
 ---
 
@@ -84,7 +83,7 @@ Dieses Projekt demonstriert Best Practices für moderne Full-Stack-Entwicklung m
 ```
 issue-tracker/
 ├── apps/
-│   ├── frontend/           # Angular 20.3 SPA
+│   ├── frontend/           # Angular 20.3 SPA → [README](./apps/frontend/README.md)
 │   │   ├── src/app/
 │   │   │   ├── auth/       # Authentication Module
 │   │   │   ├── dashboard/  # Dashboard & Analytics
@@ -93,7 +92,7 @@ issue-tracker/
 │   │   │   └── shared/     # Shared Components & Services
 │   │   └── proxy.conf.json # Development Proxy
 │   │
-│   └── backend/            # NestJS 11 API
+│   └── backend/            # NestJS 11 API → [README](./apps/backend/README.md)
 │       ├── src/app/
 │       │   ├── auth/       # JWT Auth + Guards
 │       │   ├── users/      # User Management
@@ -104,7 +103,7 @@ issue-tracker/
 │       └── prisma/         # Database Schema & Migrations
 │
 ├── libs/
-│   └── shared-types/       # Shared DTOs, Enums, Constants
+│   └── shared-types/       # Shared DTOs, Enums, Constants → [README](./libs/shared-types/README.md)
 │       ├── auth/           # Auth DTOs
 │       ├── projects/       # Project DTOs
 │       ├── tickets/        # Ticket DTOs
@@ -448,37 +447,42 @@ npx nx reset
 
 ### Setup-Anleitungen
 
-- 📘 [Setup-Anleitung (Deutsch)](./docs/setup/SETUP_ANLEITUNG.md)
-- 📘 [Prisma Setup](./docs/setup/PRISMA_SETUP_ANLEITUNG.md)
-- 📘 [Docker Setup](./docs/setup/DOCKER_SETUP_ANLEITUNG.md)
-- 📘 [GitHub Setup](./docs/setup/GITHUB_ANLEITUNG.md)
+- 📘 [Setup-Anleitung (Deutsch)](./docs/guides/setup/SETUP_ANLEITUNG.md)
+- 📘 [Prisma Setup](./docs/guides/setup/PRISMA_SETUP_ANLEITUNG.md)
+- 📘 [Docker Setup](./docs/guides/setup/DOCKER_SETUP_ANLEITUNG.md)
+- 📘 [GitHub Setup](./docs/guides/setup/GITHUB_ANLEITUNG.md)
 
 ### Architektur & Design
 
-- 🏗️ [System-Architektur](./docs/ARCHITECTURE.md) _(wird erstellt)_
-- 🏗️ [Backend-Mapping-Strategie](./docs/backend/MAPPING_STRATEGY.md)
-- 🏗️ [Policy-System](./docs/backend/policy/policy-system-implementation.md)
-- 🏗️ [Frontend-Struktur](./docs/frontend/folder-structure.md)
+- 🏗️ [Backend Architecture](./docs/guides/backend/architecture.md) - System-Übersicht, Datenbank-Schema, Security
+- 🏗️ [Backend README](./apps/backend/README.md) - Quick Start, API-Docs, Development Guide
+- 🏗️ [Backend-Mapping-Strategie](./docs/guides/backend/MAPPING_STRATEGY.md)
+- 🏗️ [Policy-System](./docs/guides/backend/policy/policy-system-implementation.md)
+- 🏗️ [Frontend-Struktur](./docs/guides/frontend/folder-structure.md)
 
 ### Feature-Dokumentation
 
-- 🔐 [JWT-Authentifizierung](./docs/backend/auth/jwt-implementation-guide.md)
-- 🔐 [Authorization & Guards](./docs/backend/auth/authentication-guards.md)
-- 🎫 [Ticket-Management](./docs/TICKET_TABLE_IMPLEMENTATION_GUIDE.md)
-- 📊 [Dashboard-Implementierung](./docs/PROJECT_DETAIL_IMPLEMENTATION_GUIDE.md)
+- 🔐 [JWT-Authentifizierung](./docs/guides/backend/auth/jwt-implementation-guide.md)
+- 🔐 [Authorization & Guards](./docs/guides/backend/auth/authentication-guards.md)
+- 🎫 [Ticket-Management](./docs/guides/TICKET_TABLE_IMPLEMENTATION_GUIDE.md)
+- 📊 [Dashboard-Implementierung](./docs/guides/PROJECT_DETAIL_IMPLEMENTATION_GUIDE.md)
 
 ### CI/CD & Deployment
 
 - 🚀 [CI/CD Setup](./docs/setup/ci-cd-setup.md)
 - 🚀 [CI Quickstart](./docs/setup/ci-quickstart.md)
-- 🚀 [Production Readiness](./docs/production-readiness.md)
-- 🚀 [Performance-Optimierungen](./docs/performance-optimizations.md)
+- 🚀 [Production Readiness](./docs/project/production-readiness.md)
+- 🚀 [Performance-Optimierungen](./docs/project/performance-optimizations.md)
 
 ---
 
 ## 🤝 Contributing
 
-Contributions sind willkommen! Bitte lies die [CONTRIBUTING.md](./CONTRIBUTING.md) _(wird erstellt)_ für Details zum Code of Conduct und Pull Request Prozess.
+Contributions sind willkommen! Bitte lies die folgenden Dokumente:
+
+- [CONTRIBUTING.md](./CONTRIBUTING.md) - Contribution Guidelines
+- [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md) - Code of Conduct
+- [SECURITY.md](./SECURITY.md) - Security Policy
 
 ### Development Workflow
 
