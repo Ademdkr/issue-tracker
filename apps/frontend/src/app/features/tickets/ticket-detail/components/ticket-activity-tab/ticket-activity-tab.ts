@@ -77,7 +77,7 @@ export class TicketActivityTab implements OnInit, OnChanges, OnDestroy {
           this.activities = activities;
           this.isLoading = false;
         },
-        error: (err: Error) => {
+        error: (err) => {
           this.error = 'Fehler beim Laden der Aktivitäten.';
           inject(ErrorService).handleHttpError(
             err,

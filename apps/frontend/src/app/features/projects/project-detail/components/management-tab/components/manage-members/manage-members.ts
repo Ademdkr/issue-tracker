@@ -79,7 +79,7 @@ export class ManageMembers {
       this.availableUsersTable.clearSelection();
       this.selectedAvailableUsers = [];
     } catch (error) {
-      inject(ErrorService).handleError('Fehler beim Hinzufügen der Mitglieder');
+      inject(ErrorService).handleError(error, 'Fehler beim Hinzufügen der Mitglieder');
     } finally {
       this.isLoading = false;
     }
@@ -107,7 +107,7 @@ export class ManageMembers {
       this.projectMembersTable.clearSelection();
       this.selectedProjectMembers = [];
     } catch (error) {
-      inject(ErrorService).handleError('Fehler beim Entfernen der Mitglieder');
+      inject(ErrorService).handleError(error, 'Fehler beim Entfernen der Mitglieder');
     } finally {
       this.isLoading = false;
     }

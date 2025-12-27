@@ -79,7 +79,7 @@ export class TicketDetail implements OnInit, OnDestroy {
           this.ticket = ticket;
           this.isLoading = false;
         },
-        error: (err: Error) => {
+        error: (err) => {
           this.error = 'Fehler beim Laden des Tickets.';
           inject(ErrorService).handleHttpError(
             err,

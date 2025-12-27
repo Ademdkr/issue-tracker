@@ -123,7 +123,7 @@ export class TicketFilters implements OnInit, OnDestroy {
               })),
           ];
         },
-        error: (err: Error) => {
+        error: (err) => {
           inject(ErrorService).handleHttpError(
             err,
             'Fehler beim Laden der Zuständigen'
@@ -143,7 +143,7 @@ export class TicketFilters implements OnInit, OnDestroy {
             this.labels = labels;
             this.groupLabels(labels);
           },
-          error: (err: Error) => {
+          error: (err) => {
             inject(ErrorService).handleHttpError(
               err,
               'Fehler beim Laden aller Labels'
@@ -166,7 +166,7 @@ export class TicketFilters implements OnInit, OnDestroy {
             ids: [label.id],
           }));
         },
-        error: (err: Error) => {
+        error: (err) => {
           inject(ErrorService).handleHttpError(
             err,
             'Fehler beim Laden der Labels'

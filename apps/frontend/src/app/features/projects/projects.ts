@@ -115,9 +115,6 @@ export class Projects implements OnInit, OnDestroy {
         this.cdr.markForCheck();
       },
     });
-        });
-      },
-    });
   }
 
   openSettings(project: ProjectSummary, event: Event): void {

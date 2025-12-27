@@ -269,7 +269,7 @@ export class TicketOverviewTab implements OnInit, OnDestroy {
           this.ticketUpdated.emit(updatedTicket);
           this.isLoading = false;
         },
-        error: (err: Error) => {
+        error: (err) => {
           this.snackBar.open(
             'Fehler beim Aktualisieren des Tickets',
             'Schließen',
@@ -321,7 +321,7 @@ export class TicketOverviewTab implements OnInit, OnDestroy {
           this.ticketDeleted.emit();
           this.isLoading = false;
         },
-        error: (err: Error) => {
+        error: (err) => {
           this.snackBar.open('Fehler beim Löschen des Tickets', 'Schließen', {
             duration: 5000,
             verticalPosition: 'top',
@@ -382,7 +382,7 @@ export class TicketOverviewTab implements OnInit, OnDestroy {
           this.ticketUpdated.emit(updatedTicket);
           this.isLoading = false;
         },
-        error: (err: Error) => {
+        error: (err) => {
           this.snackBar.open(
             'Fehler beim Aktualisieren der Labels',
             'Schließen',

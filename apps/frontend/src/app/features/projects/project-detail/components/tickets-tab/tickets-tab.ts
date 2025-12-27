@@ -95,7 +95,7 @@ export class TicketsTab implements OnInit, OnDestroy {
         next: (project: Project) => {
           this.project = project;
         },
-        error: (err: Error) => {
+        error: (err) => {
           inject(ErrorService).handleHttpError(
             err,
             'Fehler beim Laden des Projekts'

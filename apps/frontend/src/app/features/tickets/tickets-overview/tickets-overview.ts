@@ -89,7 +89,7 @@ export class TicketsOverview implements OnInit, OnDestroy {
           this.projects = projects;
           this.cdr.markForCheck();
         },
-        error: (err: Error) => {
+        error: (err) => {
           inject(ErrorService).handleError(
             err,
             'Fehler beim Laden der Projekte'
