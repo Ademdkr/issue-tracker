@@ -12,6 +12,7 @@ import { AuthService } from '../services/auth.service';
 import { ProjectsService } from '../services/projects.service';
 import { ProjectSettingsService } from '../services/project-settings.service';
 import { TicketDialogService } from '../services/ticket-dialog.service';
+import { ErrorService } from '../services/error.service';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
@@ -77,6 +78,7 @@ export class Layout implements OnInit {
     private projectSettingsService: ProjectSettingsService,
     private ticketDialogService: TicketDialogService,
     private snackBar: MatSnackBar,
+    private errorService: ErrorService,
     private dialog: MatDialog
   ) {}
 
@@ -167,11 +169,11 @@ export class Layout implements OnInit {
           this.router.navigate(['/projects']);
         }
       },
-      error: (error: Error) => {
-        console.error('Fehler beim Erstellen:', error);
-        this.snackBar.open('Fehler beim Erstellen des Projekts', 'Schließen', {
-          duration: 3000,
-        });
+      error: (error) => {
+        this.errorService.handleHttpError(
+          error,
+          'Fehler beim Erstellen des Projekts'
+        );
       },
     });
   }
@@ -205,14 +207,10 @@ export class Layout implements OnInit {
         this.onCloseSettings();
         this.projectsService.notifyProjectCreated(); // Trigger reload
       },
-      error: (error: Error) => {
-        console.error('Fehler beim Aktualisieren:', error);
-        this.snackBar.open(
-          'Fehler beim Aktualisieren des Projekts',
-          'Schließen',
-          {
-            duration: 3000,
-          }
+      error: (error) => {
+        this.errorService.handleHttpError(
+          error,
+          'Fehler beim Aktualisieren des Projekts'
         );
       },
     });
@@ -227,11 +225,11 @@ export class Layout implements OnInit {
         this.onCloseSettings();
         this.projectsService.notifyProjectCreated(); // Trigger reload
       },
-      error: (error: Error) => {
-        console.error('Fehler beim Löschen:', error);
-        this.snackBar.open('Fehler beim Löschen des Projekts', 'Schließen', {
-          duration: 3000,
-        });
+      error: (error) => {
+        this.errorService.handleHttpError(
+          error,
+          'Fehler beim Löschen des Projekts'
+        );
       },
     });
   }

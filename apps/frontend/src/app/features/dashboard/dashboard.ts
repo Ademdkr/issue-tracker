@@ -13,6 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { BaseChartDirective } from 'ng2-charts';
 import { Chart, ChartData, ChartOptions, registerables } from 'chart.js';
 import { DashboardService } from '../../core/services/dashboard.service';
+import { ErrorService } from '../../core/services/error.service';
 import {
   DashboardStats,
   ProjectWithOpenTickets,
@@ -141,7 +142,10 @@ export class Dashboard implements OnInit {
         this.cdr.markForCheck();
       },
       error: (error) => {
-        console.error('Fehler beim Laden der Dashboard-Daten:', error);
+        inject(ErrorService).handleHttpError(
+          error,
+          'Fehler beim Laden der Dashboard-Daten'
+        );
       },
     });
   }

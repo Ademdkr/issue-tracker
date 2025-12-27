@@ -1,5 +1,5 @@
 // Angular Modules
-import { Component, Inject, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormControl,
@@ -30,6 +30,7 @@ import { takeUntil } from 'rxjs/operators';
 import { TicketsService } from '../../../../../../../core/services/tickets.service';
 import { ProjectsService } from '../../../../../../../core/services/projects.service';
 import { AuthService } from '../../../../../../../core/services/auth.service';
+import { ErrorService } from '../../../../../../../core/services/error.service';
 
 // Shared Types
 import {
@@ -70,6 +71,8 @@ export class CreateTicketDialog implements OnInit, OnDestroy {
   private ticketsService = inject(TicketsService);
   private projectsService = inject(ProjectsService);
   private authService = inject(AuthService);
+  public dialogRef = inject(MatDialogRef<CreateTicketDialog>);
+  public data = inject<CreateTicketDialogData>(MAT_DIALOG_DATA);
 
   ticketForm = new FormGroup({
     title: new FormControl('', [
@@ -104,11 +107,6 @@ export class CreateTicketDialog implements OnInit, OnDestroy {
     { value: TicketPriority.HIGH, label: 'Hoch' },
     { value: TicketPriority.CRITICAL, label: 'Kritisch' },
   ];
-
-  constructor(
-    public dialogRef: MatDialogRef<CreateTicketDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: CreateTicketDialogData
-  ) {}
 
   ngOnInit(): void {
     // Current User laden
@@ -168,8 +166,11 @@ export class CreateTicketDialog implements OnInit, OnDestroy {
           this.projects = projects;
           this.isLoadingProjects = false;
         },
-        error: (err: Error) => {
-          console.error('Error loading projects:', err);
+        error: (err) => {
+          inject(ErrorService).handleHttpError(
+            err,
+            'Fehler beim Laden der Projekte'
+          );
           this.isLoadingProjects = false;
         },
       });
@@ -187,8 +188,11 @@ export class CreateTicketDialog implements OnInit, OnDestroy {
           this.members = members;
           this.isLoadingMembers = false;
         },
-        error: (err: Error) => {
-          console.error('Error loading members:', err);
+        error: (err) => {
+          inject(ErrorService).handleHttpError(
+            err,
+            'Fehler beim Laden der Projektmitglieder'
+          );
           this.isLoadingMembers = false;
         },
       });
@@ -206,8 +210,11 @@ export class CreateTicketDialog implements OnInit, OnDestroy {
           this.labels = labels;
           this.isLoadingLabels = false;
         },
-        error: (err: Error) => {
-          console.error('Error loading labels:', err);
+        error: (err) => {
+          inject(ErrorService).handleHttpError(
+            err,
+            'Fehler beim Laden der Labels'
+          );
           this.isLoadingLabels = false;
         },
       });
@@ -233,7 +240,10 @@ export class CreateTicketDialog implements OnInit, OnDestroy {
 
     // Validierung: projectId muss vorhanden sein
     if (!projectId) {
-      console.error('Kein Projekt ausgewählt');
+      inject(ErrorService).handleError(
+        new Error('Kein Projekt ausgewählt'),
+        'Validierung'
+      );
       this.isSubmitting = false;
       return;
     }
@@ -273,8 +283,11 @@ export class CreateTicketDialog implements OnInit, OnDestroy {
         next: (ticket) => {
           this.dialogRef.close(ticket);
         },
-        error: (err: Error) => {
-          console.error('Error creating ticket:', err);
+        error: (err) => {
+          inject(ErrorService).handleHttpError(
+            err,
+            'Fehler beim Erstellen des Tickets'
+          );
           this.isSubmitting = false;
         },
       });
@@ -298,10 +311,12 @@ export class CreateTicketDialog implements OnInit, OnDestroy {
       this.members
         .filter((member) => member.user)
         .forEach((member) => {
-          options.push({
-            value: member.user!.id,
-            label: `${member.user!.name} ${member.user!.surname}`,
-          });
+          if (member.user) {
+            options.push({
+              value: member.user.id,
+              label: `${member.user.name} ${member.user.surname}`,
+            });
+          }
         });
     }
 

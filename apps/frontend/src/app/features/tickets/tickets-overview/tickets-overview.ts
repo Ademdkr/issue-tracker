@@ -17,6 +17,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TicketsService } from '../../../core/services/tickets.service';
 import { ProjectsService } from '../../../core/services/projects.service';
+import { ErrorService } from '../../../core/services/error.service';
 import {
   TicketWithDetails,
   TicketFilters as TicketFiltersType,
@@ -89,7 +90,10 @@ export class TicketsOverview implements OnInit, OnDestroy {
           this.cdr.markForCheck();
         },
         error: (err: Error) => {
-          console.error('Error loading projects:', err);
+          inject(ErrorService).handleError(
+            err,
+            'Fehler beim Laden der Projekte'
+          );
           this.cdr.markForCheck();
         },
       });
@@ -116,7 +120,10 @@ export class TicketsOverview implements OnInit, OnDestroy {
         },
         error: (err) => {
           this.error = 'Fehler beim Laden der Tickets.';
-          console.error('Error loading tickets:', err);
+          inject(ErrorService).handleHttpError(
+            err,
+            'Fehler beim Laden der Tickets'
+          );
           this.isLoading = false;
           this.cdr.markForCheck();
         },

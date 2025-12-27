@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { Logger } from './logger';
 
 const prisma = new PrismaClient({
   datasources: {
@@ -8,16 +9,18 @@ const prisma = new PrismaClient({
   },
 });
 
+const logger = new Logger('Export');
+
 async function exportData() {
-  console.log('📊 Exporting current database state...\n');
+  logger.log('📊 Exporting current database state...\n');
 
   // Users
   const users = await prisma.user.findMany({
     orderBy: { createdAt: 'asc' },
   });
-  console.log('=== USERS ===');
+  logger.log('=== USERS ===');
   users.forEach((u) => {
-    console.log(`{
+    logger.log(`{
   email: '${u.email}',
   name: '${u.name}',
   surname: '${u.surname}',
@@ -31,9 +34,9 @@ async function exportData() {
     include: { members: true },
     orderBy: { createdAt: 'asc' },
   });
-  console.log('\n=== PROJECTS ===');
+  logger.log('\n=== PROJECTS ===');
   projects.forEach((p) => {
-    console.log(`{
+    logger.log(`{
   name: '${p.name}',
   description: '${p.description}',
   slug: '${p.slug}',
@@ -52,9 +55,9 @@ async function exportData() {
   const labels = await prisma.label.findMany({
     orderBy: { createdAt: 'asc' },
   });
-  console.log('\n=== LABELS ===');
+  logger.log('\n=== LABELS ===');
   labels.forEach((l) => {
-    console.log(`{
+    logger.log(`{
   name: '${l.name}',
   color: '${l.color}',
   projectId: '${l.projectId}', // ${
@@ -69,9 +72,9 @@ async function exportData() {
     include: { ticketLabels: true },
     orderBy: { createdAt: 'asc' },
   });
-  console.log('\n=== TICKETS ===');
+  logger.log('\n=== TICKETS ===');
   tickets.forEach((t) => {
-    console.log(`{
+    logger.log(`{
   title: '${t.title}',
   description: '${t.description}',
   status: TicketStatus.${t.status},
@@ -94,9 +97,9 @@ async function exportData() {
   const comments = await prisma.comment.findMany({
     orderBy: { createdAt: 'asc' },
   });
-  console.log('\n=== COMMENTS ===');
+  logger.log('\n=== COMMENTS ===');
   comments.forEach((c) => {
-    console.log(`{
+    logger.log(`{
   content: '${c.content.replace(/'/g, "\\'")}',
   ticketId: '${c.ticketId}',
   authorId: '${c.authorId}', // ${users.find((u) => u.id === c.authorId)?.email}
@@ -108,9 +111,9 @@ async function exportData() {
   const activities = await prisma.ticketActivity.findMany({
     orderBy: { createdAt: 'asc' },
   });
-  console.log('\n=== TICKET ACTIVITIES ===');
+  logger.log('\n=== TICKET ACTIVITIES ===');
   activities.forEach((a) => {
-    console.log(`{
+    logger.log(`{
   ticketId: '${a.ticketId}',
   actorId: '${a.actorId}', // ${users.find((u) => u.id === a.actorId)?.email}
   activityType: TicketActivityType.${a.activityType},
@@ -119,7 +122,7 @@ async function exportData() {
 }`);
   });
 
-  console.log('\n✅ Export complete!');
+  logger.success('Export complete! \n');
   await prisma.$disconnect();
 }
 

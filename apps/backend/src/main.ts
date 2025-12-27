@@ -43,6 +43,10 @@ async function bootstrap() {
   // Validiere Environment vor App-Erstellung
   validateEnvironment();
 
+  // Environment Variablen früh deklarieren
+  const port = process.env.PORT || 3000;
+  const environment = process.env.NODE_ENV || 'development';
+
   const app = await NestFactory.create(AppModule, {
     logger:
       process.env.NODE_ENV === 'production'
@@ -83,9 +87,9 @@ async function bootstrap() {
       )
       .setVersion('1.0')
       .setContact(
-        'Adem Decker',
+        'Adem Dokur',
         'https://github.com/Ademdkr/issue-tracker',
-        'your-email@example.com'
+        'adem.dokur@outlook.de'
       )
       .setLicense('MIT', 'https://opensource.org/licenses/MIT')
       .addBearerAuth(
@@ -127,9 +131,6 @@ async function bootstrap() {
       'Bootstrap'
     );
   }
-
-  const port = process.env.PORT || 3000;
-  const environment = process.env.NODE_ENV || 'development';
 
   await app.listen(port);
 

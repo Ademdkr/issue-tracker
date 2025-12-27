@@ -23,6 +23,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 // Services
 import { CommentsService } from '../../../../../core/services/comments.service';
 import { AuthService } from '../../../../../core/services/auth.service';
+import { ErrorService } from '../../../../../core/services/error.service';
 
 // Types
 import {
@@ -113,12 +114,10 @@ export class TicketCommentsTab implements OnInit, OnDestroy {
           this.isLoading = false;
         },
         error: (err) => {
-          console.error('Error loading comments:', err);
-          this.snackBar.open('Fehler beim Laden der Kommentare', 'Schließen', {
-            duration: 5000,
-            verticalPosition: 'top',
-            horizontalPosition: 'center',
-          });
+          inject(ErrorService).handleHttpError(
+            err,
+            'Fehler beim Laden der Kommentare'
+          );
           this.isLoading = false;
         },
       });
@@ -159,15 +158,9 @@ export class TicketCommentsTab implements OnInit, OnDestroy {
             this.cancelEdit();
           },
           error: (err) => {
-            console.error('Error updating comment:', err);
-            this.snackBar.open(
-              'Fehler beim Aktualisieren des Kommentars',
-              'Schließen',
-              {
-                duration: 5000,
-                verticalPosition: 'top',
-                horizontalPosition: 'center',
-              }
+            inject(ErrorService).handleHttpError(
+              err,
+              'Fehler beim Aktualisieren des Kommentars'
             );
             this.isSending = false;
           },
@@ -196,15 +189,9 @@ export class TicketCommentsTab implements OnInit, OnDestroy {
             this.isSending = false;
           },
           error: (err) => {
-            console.error('Error creating comment:', err);
-            this.snackBar.open(
-              'Fehler beim Erstellen des Kommentars',
-              'Schließen',
-              {
-                duration: 5000,
-                verticalPosition: 'top',
-                horizontalPosition: 'center',
-              }
+            inject(ErrorService).handleHttpError(
+              err,
+              'Fehler beim Erstellen des Kommentars'
             );
             this.isSending = false;
           },
@@ -259,15 +246,9 @@ export class TicketCommentsTab implements OnInit, OnDestroy {
               );
             },
             error: (err) => {
-              console.error('Error deleting comment:', err);
-              this.snackBar.open(
-                'Fehler beim Löschen des Kommentars',
-                'Schließen',
-                {
-                  duration: 5000,
-                  verticalPosition: 'top',
-                  horizontalPosition: 'center',
-                }
+              inject(ErrorService).handleHttpError(
+                err,
+                'Fehler beim Löschen des Kommentars'
               );
             },
           });

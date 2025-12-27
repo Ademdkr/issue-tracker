@@ -2,11 +2,14 @@
 # Multi-stage build for optimized production image
 
 # Stage 1: Base - Install dependencies
-FROM node:20-alpine AS base
+FROM node:20.11.0-alpine3.19 AS base
 WORKDIR /app
 
-# Install required build tools
-RUN apk add --no-cache libc6-compat python3 make g++
+# Install security updates and required build tools
+RUN apk update && \
+  apk upgrade && \
+  apk add --no-cache libc6-compat python3 make g++ && \
+  rm -rf /var/cache/apk/*
 
 # Copy package files
 COPY package*.json ./
@@ -35,12 +38,17 @@ RUN npx prisma generate --schema=./apps/backend/prisma/schema.prisma
 RUN npx nx build backend --configuration=production
 
 # Stage 4: Production - Final lightweight image
-FROM node:20-alpine AS production
+FROM node:20.11.0-alpine3.19 AS production
 WORKDIR /app
+
+# Install security updates
+RUN apk update && \
+  apk upgrade && \
+  rm -rf /var/cache/apk/*
 
 # Create non-root user for security
 RUN addgroup -g 1001 -S nodejs && \
-    adduser -S nestjs -u 1001
+  adduser -S nestjs -u 1001
 
 # Install production dependencies only
 COPY package*.json ./
@@ -56,6 +64,9 @@ COPY --chown=nestjs:nodejs apps/backend/prisma/schema.prisma ./prisma/
 
 # Switch to non-root user
 USER nestjs
+
+# Set production environment
+ENV NODE_ENV=production
 
 # Expose port
 EXPOSE 3000

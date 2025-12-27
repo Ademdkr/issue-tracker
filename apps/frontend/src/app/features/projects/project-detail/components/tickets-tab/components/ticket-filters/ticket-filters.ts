@@ -24,6 +24,7 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
 
 // Services
 import { ProjectsService } from '../../../../../../../core/services/projects.service';
+import { ErrorService } from '../../../../../../../core/services/error.service';
 
 // Shared Types
 import {
@@ -123,7 +124,10 @@ export class TicketFilters implements OnInit, OnDestroy {
           ];
         },
         error: (err: Error) => {
-          console.error('Error loading assignees:', err);
+          inject(ErrorService).handleHttpError(
+            err,
+            'Fehler beim Laden der Zuständigen'
+          );
         },
       });
   }
@@ -140,7 +144,10 @@ export class TicketFilters implements OnInit, OnDestroy {
             this.groupLabels(labels);
           },
           error: (err: Error) => {
-            console.error('Error loading all labels:', err);
+            inject(ErrorService).handleHttpError(
+              err,
+              'Fehler beim Laden aller Labels'
+            );
           },
         });
       return;
@@ -160,7 +167,10 @@ export class TicketFilters implements OnInit, OnDestroy {
           }));
         },
         error: (err: Error) => {
-          console.error('Error loading labels:', err);
+          inject(ErrorService).handleHttpError(
+            err,
+            'Fehler beim Laden der Labels'
+          );
         },
       });
   }

@@ -151,7 +151,7 @@ export class ProjectsService {
     search?: string
   ): Promise<ProjectSummary[]> {
     // Erstelle die Where-Clause basierend auf Rolle und Suche
-    const whereConditions: any[] = [];
+    const whereConditions: Record<string, unknown>[] = [];
 
     // Rollenberechtigung: Developer/Reporter sehen nur ihre Projekte
     if (userRole !== UserRole.ADMIN && userRole !== UserRole.MANAGER) {

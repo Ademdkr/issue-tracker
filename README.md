@@ -39,17 +39,7 @@ Dieses Projekt demonstriert Best Practices für moderne Full-Stack-Entwicklung m
   </tr>
 </table>
 
-> 📝 *Screenshots werden nach Deployment hinzugefügt*
-
----
-
-## 🚀 Live Demo
-
-🔗 **[Live Demo ansehen](https://issue-tracker-demo.example.com)** *(wird nach Deployment hinzugefügt)*
-
-**Test-Zugangsdaten:**
-- Admin: `admin@example.com` / `admin123`
-- User: `user@example.com` / `user123`
+> � **Hinweis:** Live-Demo und Screenshots werden nach dem Deployment hinzugefügt
 
 ---
 
@@ -129,6 +119,7 @@ issue-tracker/
 ### Tech Stack
 
 #### Frontend
+
 - **Angular 20.3** - Progressive Web Framework
 - **TypeScript 5.9** - Statische Typisierung
 - **Angular Material** - UI Component Library
@@ -136,6 +127,7 @@ issue-tracker/
 - **ng2-charts** - Chart.js Integration
 
 #### Backend
+
 - **NestJS 11** - Enterprise Node.js Framework
 - **Prisma 5.11** - Type-Safe ORM
 - **PostgreSQL** - Production Database
@@ -144,6 +136,7 @@ issue-tracker/
 - **bcrypt** - Password Hashing
 
 #### DevOps & Tools
+
 - **Nx 22.2** - Monorepo Build System
 - **Webpack** - Module Bundler
 - **Jest** - Testing Framework
@@ -296,13 +289,13 @@ npm run frontend:dev
 
 ### 🌐 URLs nach Start
 
-| Service | URL | Beschreibung |
-|---------|-----|--------------|
-| **Frontend** | http://localhost:4200 | Angular SPA |
-| **Backend API** | http://localhost:3000/api | REST API |
-| **API Docs** | http://localhost:3000/api/docs | Swagger UI |
-| **Health Check** | http://localhost:3000/health | Health Endpoint |
-| **Prisma Studio** | http://localhost:5555 | DB-Browser (`npx prisma studio`) |
+| Service           | URL                            | Beschreibung                     |
+| ----------------- | ------------------------------ | -------------------------------- |
+| **Frontend**      | http://localhost:4200          | Angular SPA                      |
+| **Backend API**   | http://localhost:3000/api      | REST API                         |
+| **API Docs**      | http://localhost:3000/api/docs | Swagger UI                       |
+| **Health Check**  | http://localhost:3000/health   | Health Endpoint                  |
+| **Prisma Studio** | http://localhost:5555          | DB-Browser (`npx prisma studio`) |
 
 ---
 
@@ -318,14 +311,14 @@ Die REST API ist vollständig mit **Swagger/OpenAPI** dokumentiert.
 
 ### API-Endpunkte Übersicht
 
-| Modul | Endpunkt | Methoden | Auth erforderlich |
-|-------|----------|----------|-------------------|
-| **Auth** | `/api/auth` | `POST /login`, `POST /register`, `POST /refresh` | ❌ |
-| **Users** | `/api/users` | `GET`, `GET /:id`, `PATCH /:id`, `DELETE /:id` | ✅ |
-| **Projects** | `/api/projects` | `GET`, `POST`, `GET /:id`, `PATCH /:id`, `DELETE /:id` | ✅ |
-| **Tickets** | `/api/tickets` | `GET`, `POST`, `GET /:id`, `PATCH /:id`, `DELETE /:id` | ✅ |
-| **Comments** | `/api/comments` | `GET`, `POST`, `DELETE /:id` | ✅ |
-| **Labels** | `/api/labels` | `GET`, `POST`, `PATCH /:id`, `DELETE /:id` | ✅ |
+| Modul        | Endpunkt        | Methoden                                               | Auth erforderlich |
+| ------------ | --------------- | ------------------------------------------------------ | ----------------- |
+| **Auth**     | `/api/auth`     | `POST /login`, `POST /register`, `POST /refresh`       | ❌                |
+| **Users**    | `/api/users`    | `GET`, `GET /:id`, `PATCH /:id`, `DELETE /:id`         | ✅                |
+| **Projects** | `/api/projects` | `GET`, `POST`, `GET /:id`, `PATCH /:id`, `DELETE /:id` | ✅                |
+| **Tickets**  | `/api/tickets`  | `GET`, `POST`, `GET /:id`, `PATCH /:id`, `DELETE /:id` | ✅                |
+| **Comments** | `/api/comments` | `GET`, `POST`, `DELETE /:id`                           | ✅                |
+| **Labels**   | `/api/labels`   | `GET`, `POST`, `PATCH /:id`, `DELETE /:id`             | ✅                |
 
 **Beispiel-Request:**
 
@@ -462,7 +455,7 @@ npx nx reset
 
 ### Architektur & Design
 
-- 🏗️ [System-Architektur](./docs/ARCHITECTURE.md) *(wird erstellt)*
+- 🏗️ [System-Architektur](./docs/ARCHITECTURE.md) _(wird erstellt)_
 - 🏗️ [Backend-Mapping-Strategie](./docs/backend/MAPPING_STRATEGY.md)
 - 🏗️ [Policy-System](./docs/backend/policy/policy-system-implementation.md)
 - 🏗️ [Frontend-Struktur](./docs/frontend/folder-structure.md)
@@ -476,16 +469,16 @@ npx nx reset
 
 ### CI/CD & Deployment
 
-- 🚀 [CI/CD Setup](./CI_CD_SETUP.md)
-- 🚀 [CI Quickstart](./CI_QUICKSTART.md)
-- 🚀 [Production Readiness](./PRODUCTION_READINESS.md)
-- 🚀 [Performance-Optimierungen](./PERFORMANCE_OPTIMIZATIONS.md)
+- 🚀 [CI/CD Setup](./docs/setup/ci-cd-setup.md)
+- 🚀 [CI Quickstart](./docs/setup/ci-quickstart.md)
+- 🚀 [Production Readiness](./docs/production-readiness.md)
+- 🚀 [Performance-Optimierungen](./docs/performance-optimizations.md)
 
 ---
 
 ## 🤝 Contributing
 
-Contributions sind willkommen! Bitte lies die [CONTRIBUTING.md](./CONTRIBUTING.md) *(wird erstellt)* für Details zum Code of Conduct und Pull Request Prozess.
+Contributions sind willkommen! Bitte lies die [CONTRIBUTING.md](./CONTRIBUTING.md) _(wird erstellt)_ für Details zum Code of Conduct und Pull Request Prozess.
 
 ### Development Workflow
 
@@ -520,9 +513,10 @@ Dieses Projekt ist unter der **MIT License** lizenziert - siehe [LICENSE](./LICE
 ## 👨‍💻 Autor
 
 **Adem Decker**
+
 - GitHub: [@Ademdkr](https://github.com/Ademdkr)
-- LinkedIn: [Adem Decker](https://linkedin.com/in/adem-decker) *(Platzhalter - bitte anpassen)*
-- Portfolio: [ademdecker.dev](https://ademdecker.dev) *(Platzhalter - bitte anpassen)*
+- LinkedIn: [Adem Decker](https://linkedin.com/in/adem-decker) _(Platzhalter - bitte anpassen)_
+- Portfolio: [ademdecker.dev](https://ademdecker.dev) _(Platzhalter - bitte anpassen)_
 
 ---
 
@@ -539,10 +533,10 @@ Dieses Projekt ist unter der **MIT License** lizenziert - siehe [LICENSE](./LICE
 
 ### Projekt
 
-- 📦 [npm Package](https://www.npmjs.com/package/@issue-tracker/source) *(falls veröffentlicht)*
+- 📦 [npm Package](https://www.npmjs.com/package/@issue-tracker/source) _(falls veröffentlicht)_
 - 📊 [GitHub Issues](https://github.com/Ademdkr/issue-tracker/issues)
 - 🔀 [Pull Requests](https://github.com/Ademdkr/issue-tracker/pulls)
-- 📈 [Projekt-Board](https://github.com/users/Ademdkr/projects) *(optional)*
+- 📈 [Projekt-Board](https://github.com/users/Ademdkr/projects) _(optional)_
 
 ### Technologie-Dokumentation
 
