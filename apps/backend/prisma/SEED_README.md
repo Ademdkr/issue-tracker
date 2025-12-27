@@ -14,6 +14,7 @@ npx tsx apps/backend/prisma/export-current-data.ts
 ```
 
 Dies erstellt die Datei `apps/backend/prisma/seed-data.json` mit allen:
+
 - Users (mit gehashten Passwörtern)
 - Projects
 - Project Members
@@ -47,6 +48,7 @@ Falls `seed-data.json` nicht existiert, werden Standard-Testdaten angelegt.
 ## 💡 Anwendungsfälle
 
 ### Entwicklung
+
 ```powershell
 # 1. Datenbank mit Testdaten füllen
 npx tsx apps/backend/prisma/import-seed-data.ts
@@ -58,6 +60,7 @@ npx tsx apps/backend/prisma/export-current-data.ts
 ```
 
 ### Deployment Vorbereitung
+
 ```powershell
 # 1. Exportiere finalen Datenbestand für Portfolio
 npx tsx apps/backend/prisma/export-current-data.ts
@@ -71,6 +74,7 @@ npx tsx apps/backend/prisma/import-seed-data.ts
 ```
 
 ### Datenbank zurücksetzen
+
 ```powershell
 # Setzt Datenbank auf letzten exportierten Stand zurück
 npx tsx apps/backend/prisma/import-seed-data.ts
@@ -81,6 +85,7 @@ npx tsx apps/backend/prisma/import-seed-data.ts
 Die exportierten User-Daten enthalten bcrypt-gehashte Passwörter. Beim Import werden diese Hashes beibehalten, sodass die Login-Credentials gleich bleiben.
 
 **Standard-Testdaten Credentials:**
+
 - `admin@example.com` → `Admin123!`
 - `manager@example.com` → `Manager123!`
 - `developer@example.com` → `Developer123!`

@@ -8,11 +8,11 @@ const prisma = new PrismaClient();
 /**
  * Importiert Daten aus seed-data.json
  * Falls seed-data.json nicht existiert, werden Standard-Testdaten angelegt
- * 
+ *
  * Ausführung:
  * $env:DATABASE_URL = "postgresql://postgres:1234@localhost:5435/issue_tracker_db"
  * npx tsx apps/backend/prisma/import-seed-data.ts
- * 
+ *
  * Oder mit Prisma CLI:
  * npx prisma db seed
  */
@@ -53,7 +53,7 @@ async function importFromJson(filePath: string) {
 
     // Importiere in der richtigen Reihenfolge
     console.log('📥 Importiere Daten...');
-    
+
     // Users (ohne passwordHash ändern - behalte bestehende Hashes)
     for (const user of data.users) {
       await prisma.user.create({ data: user });

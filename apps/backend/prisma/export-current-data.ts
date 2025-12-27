@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 /**
  * Exportiert den aktuellen Datenbestand in eine JSON-Datei
  * Diese Datei kann dann vom seed.ts verwendet werden
- * 
+ *
  * Ausführung:
  * $env:DATABASE_URL = "postgresql://postgres:1234@localhost:5435/issue_tracker_db"
  * npx tsx apps/backend/prisma/export-current-data.ts
