@@ -19,22 +19,22 @@ Dieses Projekt demonstriert Best Practices für moderne Full-Stack-Entwicklung m
 <table>
   <tr>
     <td width="50%">
-      <img src="docs/screenshots/dashboard.png" alt="Dashboard" width="100%"/>
+      <img src="docs/screenshots/dashboard-route.png" alt="Dashboard" width="100%"/>
       <p align="center"><b>Dashboard Übersicht</b></p>
     </td>
     <td width="50%">
-      <img src="docs/screenshots/ticket-list.png" alt="Ticket Liste" width="100%"/>
-      <p align="center"><b>Ticket-Verwaltung</b></p>
+      <img src="docs/screenshots/projects-route.png" alt="Projekte" width="100%"/>
+      <p align="center"><b>Projekt-Übersicht</b></p>
     </td>
   </tr>
   <tr>
     <td width="50%">
-      <img src="docs/screenshots/project-detail.png" alt="Projekt Details" width="100%"/>
-      <p align="center"><b>Projekt-Detail-Ansicht</b></p>
+      <img src="docs/screenshots/project-management-tab.png" alt="Projekt Management" width="100%"/>
+      <p align="center"><b>Projekt-Verwaltung</b></p>
     </td>
     <td width="50%">
-      <img src="docs/screenshots/ticket-detail.png" alt="Ticket Details" width="100%"/>
-      <p align="center"><b>Ticket-Bearbeitung</b></p>
+      <img src="docs/screenshots/ticket-overview-tab.png" alt="Ticket Details" width="100%"/>
+      <p align="center"><b>Ticket-Übersicht</b></p>
     </td>
   </tr>
 </table>
