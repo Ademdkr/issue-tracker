@@ -292,6 +292,7 @@ export class ProjectsService {
       name?: string;
       description?: string;
       slug?: string;
+      status?: string;
       updatedAt?: Date;
     } = {};
 
@@ -308,6 +309,19 @@ export class ProjectsService {
 
     if (
       updateProjectDto.description !== undefined &&
+      updateProjectDto.description !== currentProject.description
+    ) {
+      updateData.description = updateProjectDto.description;
+      hasChanges = true;
+    }
+
+    if (
+      updateProjectDto.status !== undefined &&
+      updateProjectDto.status !== currentProject.status
+    ) {
+      updateData.status = updateProjectDto.status;
+      hasChanges = true;
+    }
       updateProjectDto.description !== currentProject.description
     ) {
       updateData.description = updateProjectDto.description;

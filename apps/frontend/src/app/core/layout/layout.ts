@@ -234,6 +234,36 @@ export class Layout implements OnInit {
     });
   }
 
+  onToggleProjectStatus(): void {
+    if (!this.selectedProject) return;
+
+    const newStatus =
+      this.selectedProject.status === 'OPEN' ? 'CLOSED' : 'OPEN';
+    const actionText = newStatus === 'CLOSED' ? 'geschlossen' : 'geöffnet';
+
+    this.projectsService
+      .update(this.selectedProject.id, { status: newStatus as any })
+      .subscribe({
+        next: () => {
+          this.snackBar.open(
+            `Projekt erfolgreich ${actionText}`,
+            'Schließen',
+            {
+              duration: 3000,
+            }
+          );
+          this.selectedProject!.status = newStatus as any;
+          this.projectsService.notifyProjectCreated(); // Trigger reload
+        },
+        error: (error) => {
+          this.errorService.handleHttpError(
+            error,
+            'Fehler beim Aktualisieren des Projektstatus'
+          );
+        },
+      });
+  }
+
   openCreateTicketDialog(event: Event): void {
     event.stopPropagation();
 

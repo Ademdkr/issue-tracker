@@ -108,7 +108,10 @@ export class Projects implements OnInit, OnDestroy {
         this.cdr.markForCheck();
       },
       error: (error) => {
-        inject(ErrorService).handleHttpError(error, 'Fehler beim Laden der Projekte');
+        inject(ErrorService).handleHttpError(
+          error,
+          'Fehler beim Laden der Projekte'
+        );
         this.error = 'Projekte konnten nicht geladen werden.';
         this.isLoading = false;
         this.isSearching = false;

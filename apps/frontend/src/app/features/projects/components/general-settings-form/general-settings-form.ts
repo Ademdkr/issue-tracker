@@ -47,6 +47,7 @@ export class GeneralSettingsForm implements OnInit {
   @Output() closeForm = new EventEmitter<void>();
   @Output() saveForm = new EventEmitter<any>();
   @Output() deleteProject = new EventEmitter<string>();
+  @Output() toggleProjectStatus = new EventEmitter<void>();
 
   settingsForm!: FormGroup;
   isAdmin = false;
@@ -100,6 +101,18 @@ export class GeneralSettingsForm implements OnInit {
     );
     if (confirmed) {
       this.deleteProject.emit(this.project.id);
+    }
+  }
+
+  onToggleStatus(): void {
+    const newStatus = this.project.status === 'OPEN' ? 'CLOSED' : 'OPEN';
+    const actionText = newStatus === 'CLOSED' ? 'schließen' : 'wieder öffnen';
+
+    const confirmed = confirm(
+      `Möchten Sie das Projekt "${this.project.name}" wirklich ${actionText}?`
+    );
+    if (confirmed) {
+      this.toggleProjectStatus.emit();
     }
   }
 
