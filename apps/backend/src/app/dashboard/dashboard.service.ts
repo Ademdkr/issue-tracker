@@ -103,6 +103,7 @@ export class DashboardService {
     const projects = await this.prisma.project.findMany({
       where: {
         ...(projectIds && { id: { in: projectIds } }),
+        status: 'OPEN',
         tickets: {
           some: {
             status: { in: ['OPEN', 'IN_PROGRESS'] },
