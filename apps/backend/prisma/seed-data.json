@@ -1,0 +1,1786 @@
+{
+  "users": [
+    {
+      "id": "9f9c9832-86a8-4db9-9ece-4f1c27287cd3",
+      "name": "Test",
+      "surname": "Reporter",
+      "email": "reporter@example.com",
+      "passwordHash": "$2b$10$MYyrpjKwVRVqEHt4p8LsZux/yPKTgXGF3aXvWita8pNWgkHtRFas.",
+      "role": "REPORTER",
+      "createdAt": "2025-11-12T00:38:58.518Z"
+    },
+    {
+      "id": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "name": "Test",
+      "surname": "Developer",
+      "email": "developer@example.com",
+      "passwordHash": "$2b$10$BZBiZZp/chCDC9hV98.Lb.qAoYuH3gSHP/GD66EzoSRFuibj1OfOa",
+      "role": "DEVELOPER",
+      "createdAt": "2025-11-12T02:01:19.327Z"
+    },
+    {
+      "id": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "name": "Test",
+      "surname": "Manager",
+      "email": "manager@example.com",
+      "passwordHash": "$2b$10$rD1/TPHP3rasFCVf8HO4Q.vx3nbNfWUi/H/9cd9GGjC3qGbkO3Qrm",
+      "role": "MANAGER",
+      "createdAt": "2025-11-12T04:51:27.350Z"
+    },
+    {
+      "id": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "name": "Test",
+      "surname": "Admin",
+      "email": "admin@example.com",
+      "passwordHash": "$2b$10$Szqj0csu1QSXRDu8HUrGhuuhiE7Is6vGXI1F70tDowYdburgn7X6.",
+      "role": "ADMIN",
+      "createdAt": "2025-11-12T04:52:45.045Z"
+    }
+  ],
+  "projects": [
+    {
+      "id": "c92a74df-2828-4974-91c2-25258d01e715",
+      "createdBy": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "name": "Logistik-Portal",
+      "description": "Portal für Logistik",
+      "slug": "PORTAL",
+      "status": "CLOSED",
+      "createdAt": "2025-11-13T00:28:58.546Z",
+      "updatedAt": null
+    },
+    {
+      "id": "4aa67272-da6f-42ad-ac6c-33d9a61d8f4a",
+      "createdBy": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "name": "Web-Shop",
+      "description": "Web-Shop für Elektronik-Handel",
+      "slug": "WSHOP",
+      "status": "CLOSED",
+      "createdAt": "2025-11-13T00:36:51.463Z",
+      "updatedAt": "2025-12-27T06:10:41.538Z"
+    },
+    {
+      "id": "f01e22d8-e9c3-4f9d-9998-a2abbe222d83",
+      "createdBy": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "name": "Internes KI-System",
+      "description": "Internes KI-System zur Automatisierung von Routinearbeiten",
+      "slug": "SYSTEM",
+      "status": "OPEN",
+      "createdAt": "2025-11-15T08:02:16.583Z",
+      "updatedAt": "2025-12-07T15:20:07.849Z"
+    },
+    {
+      "id": "6c9bdff1-ab38-4141-8718-eea5a3049d6f",
+      "createdBy": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "name": "ERP-System",
+      "description": "ERP-System für Logistik-Unternehmen",
+      "slug": "ERP-SYS",
+      "status": "CLOSED",
+      "createdAt": "2025-11-15T08:09:01.711Z",
+      "updatedAt": "2025-12-27T06:10:54.416Z"
+    },
+    {
+      "id": "e797feee-4b15-45d5-9b84-1eea0f1ffd32",
+      "createdBy": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "name": "CMS-System",
+      "description": "CMS-System zur Pflege der Kundenbeziehungen",
+      "slug": "SYSTEM1",
+      "status": "OPEN",
+      "createdAt": "2025-12-08T17:29:00.095Z",
+      "updatedAt": null
+    },
+    {
+      "id": "fc68980b-de6a-4131-81fe-102c5fe095a4",
+      "createdBy": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "name": "Web-Auftritt der Firma: Heinz Heizungsanlagen",
+      "description": "Entwicklung des Web-Auftritts der Firma Heinz Heizungsanlagen",
+      "slug": "WADFHH",
+      "status": "OPEN",
+      "createdAt": "2025-12-08T17:34:31.000Z",
+      "updatedAt": null
+    },
+    {
+      "id": "7e43fcd1-55aa-452b-801e-60075735352f",
+      "createdBy": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "name": "E-Commerce Platform",
+      "description": "E-Commerce Platform für Elektronik",
+      "slug": "PLATFORM",
+      "status": "OPEN",
+      "createdAt": "2025-12-08T17:38:28.361Z",
+      "updatedAt": null
+    },
+    {
+      "id": "e96f2bec-9e9f-44d6-a115-d6b292632d38",
+      "createdBy": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "name": "Employee Portal",
+      "description": "Interne Mitarbeiterplattform für HR-Services, Urlaubsverwaltung, Zeiterfassung und digitale Dokumentenverwaltung mit Self-Service-Funktionalität.",
+      "slug": "PORTAL1",
+      "status": "CLOSED",
+      "createdAt": "2025-12-08T17:42:36.521Z",
+      "updatedAt": "2025-12-27T06:10:17.941Z"
+    }
+  ],
+  "projectMembers": [
+    {
+      "projectId": "4aa67272-da6f-42ad-ac6c-33d9a61d8f4a",
+      "userId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "addedBy": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "addedAt": "2025-11-16T08:11:06.012Z"
+    },
+    {
+      "projectId": "6c9bdff1-ab38-4141-8718-eea5a3049d6f",
+      "userId": "9f9c9832-86a8-4db9-9ece-4f1c27287cd3",
+      "addedBy": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "addedAt": "2025-11-16T08:12:24.070Z"
+    },
+    {
+      "projectId": "c92a74df-2828-4974-91c2-25258d01e715",
+      "userId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "addedBy": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "addedAt": "2025-12-13T18:20:15.309Z"
+    },
+    {
+      "projectId": "c92a74df-2828-4974-91c2-25258d01e715",
+      "userId": "9f9c9832-86a8-4db9-9ece-4f1c27287cd3",
+      "addedBy": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "addedAt": "2025-12-13T18:20:15.309Z"
+    },
+    {
+      "projectId": "6c9bdff1-ab38-4141-8718-eea5a3049d6f",
+      "userId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "addedBy": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "addedAt": "2025-12-15T03:28:10.751Z"
+    }
+  ],
+  "labels": [
+    {
+      "id": "76ec7f99-a754-4411-80a2-3703065863cb",
+      "projectId": "c92a74df-2828-4974-91c2-25258d01e715",
+      "name": "bug",
+      "color": "#FF0000",
+      "createdAt": "2025-11-13T22:18:59.685Z",
+      "updatedAt": null
+    },
+    {
+      "id": "428ad2bd-e180-45ff-9bb1-591dded0dede",
+      "projectId": "c92a74df-2828-4974-91c2-25258d01e715",
+      "name": "feature",
+      "color": "#0000FF",
+      "createdAt": "2025-11-13T22:23:04.468Z",
+      "updatedAt": null
+    },
+    {
+      "id": "ea262579-0c82-48ad-b514-60b2f94af5c1",
+      "projectId": "6c9bdff1-ab38-4141-8718-eea5a3049d6f",
+      "name": "bug",
+      "color": "#f44336",
+      "createdAt": "2025-12-17T02:56:55.011Z",
+      "updatedAt": null
+    },
+    {
+      "id": "865b86ed-ecd9-4bc5-9ef4-c6ce2a3f5959",
+      "projectId": "6c9bdff1-ab38-4141-8718-eea5a3049d6f",
+      "name": "improvement",
+      "color": "#009688",
+      "createdAt": "2025-12-17T02:57:36.815Z",
+      "updatedAt": null
+    },
+    {
+      "id": "3c838488-242e-4a23-bff0-8e4d8c8a9163",
+      "projectId": "6c9bdff1-ab38-4141-8718-eea5a3049d6f",
+      "name": "feature",
+      "color": "#3f51b5",
+      "createdAt": "2025-12-17T02:57:46.370Z",
+      "updatedAt": null
+    }
+  ],
+  "tickets": [
+    {
+      "id": "ba0981a7-1829-487c-97f4-f2fc58eb1049",
+      "projectId": "c92a74df-2828-4974-91c2-25258d01e715",
+      "reporterId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "assigneeId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "title": "Backend-Implementierung",
+      "description": "API für die Benutzer-Registrierung",
+      "status": "CLOSED",
+      "priority": "LOW",
+      "createdAt": "2025-11-14T04:15:52.625Z",
+      "updatedAt": "2025-12-17T19:27:43.331Z"
+    },
+    {
+      "id": "d4079387-d0e4-4192-b07b-bf30f057af3c",
+      "projectId": "4aa67272-da6f-42ad-ac6c-33d9a61d8f4a",
+      "reporterId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "assigneeId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "title": "Frontend-Implementierung",
+      "description": "Formular für die Benutzer-Registrierung",
+      "status": "IN_PROGRESS",
+      "priority": "MEDIUM",
+      "createdAt": "2025-11-14T04:18:22.584Z",
+      "updatedAt": "2025-12-17T19:47:33.267Z"
+    },
+    {
+      "id": "3058b893-c413-46fd-897f-c7a029dedc53",
+      "projectId": "c92a74df-2828-4974-91c2-25258d01e715",
+      "reporterId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "assigneeId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "title": "Bewerber-Portal Integration",
+      "description": "Integration des Bewerber-Managements auf der Webseite des Loglistik-Portals",
+      "status": "CLOSED",
+      "priority": "HIGH",
+      "createdAt": "2025-12-13T22:49:03.807Z",
+      "updatedAt": "2025-12-27T06:02:42.241Z"
+    },
+    {
+      "id": "9094f678-8cd4-483a-bcc9-a6538470db08",
+      "projectId": "6c9bdff1-ab38-4141-8718-eea5a3049d6f",
+      "reporterId": "9f9c9832-86a8-4db9-9ece-4f1c27287cd3",
+      "assigneeId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "title": "Inventur-Export generiert falsche Bestandszahlen",
+      "description": "Der Excel-Export der Inventur zeigt abweichende Bestände im Vergleich zur Datenbank. Artikel mit Chargen-Verwaltung werden mehrfach gezählt. Betrifft Warehouse-Modul seit Update v3.2.1. Kritisch für Monatsabschluss.",
+      "status": "IN_PROGRESS",
+      "priority": "HIGH",
+      "createdAt": "2025-12-15T02:56:18.012Z",
+      "updatedAt": "2025-12-27T06:02:02.172Z"
+    },
+    {
+      "id": "bc50ff13-3f5d-4a86-b4eb-7463e8417d17",
+      "projectId": "e96f2bec-9e9f-44d6-a115-d6b292632d38",
+      "reporterId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "assigneeId": null,
+      "title": "Urlaubsantrag wird nicht gespeichert",
+      "description": "Beim Einreichen eines Urlaubsantrags über das Formular erscheint die Fehlermeldung 'Speichern fehlgeschlagen'. Die eingegebenen Daten gehen verloren. Betrifft Firefox 121 und Chrome 120.",
+      "status": "OPEN",
+      "priority": "MEDIUM",
+      "createdAt": "2025-12-17T19:44:23.705Z",
+      "updatedAt": "2025-12-27T05:59:04.727Z"
+    },
+    {
+      "id": "8e7d82b0-66ee-43ca-a119-680a065bcf4d",
+      "projectId": "7e43fcd1-55aa-452b-801e-60075735352f",
+      "reporterId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "assigneeId": null,
+      "title": "Warenkorb wird nach Login gelöscht",
+      "description": "Wenn ein Gast-Nutzer Artikel in den Warenkorb legt und sich dann einloggt, wird der Warenkorb geleert. Die Artikel sollten nach Login erhalten bleiben und mit dem Benutzerkonto synchronisiert werden.",
+      "status": "OPEN",
+      "priority": "MEDIUM",
+      "createdAt": "2025-12-17T19:45:24.821Z",
+      "updatedAt": "2025-12-27T06:00:29.294Z"
+    },
+    {
+      "id": "99ef5aba-9a07-481b-ba80-6b1ebe224ce6",
+      "projectId": "c92a74df-2828-4974-91c2-25258d01e715",
+      "reporterId": "9f9c9832-86a8-4db9-9ece-4f1c27287cd3",
+      "assigneeId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "title": "Urlaubsantrag wird nicht gespeichert",
+      "description": "Beim Einreichen eines Urlaubsantrags über das Formular erscheint die Fehlermeldung \"Speichern fehlgeschlagen\". Die eingegebenen Daten gehen verloren. Betrifft Firefox 121 und Chrome 120.",
+      "status": "OPEN",
+      "priority": "HIGH",
+      "createdAt": "2025-12-27T06:18:46.315Z",
+      "updatedAt": null
+    },
+    {
+      "id": "71de7078-041b-4df4-a7a8-f2d8456fd8e1",
+      "projectId": "c92a74df-2828-4974-91c2-25258d01e715",
+      "reporterId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "assigneeId": "9f9c9832-86a8-4db9-9ece-4f1c27287cd3",
+      "title": "Gehaltsabrechnung Download funktioniert nicht",
+      "description": "Der PDF-Download der Gehaltsabrechnungen schlägt fehl. Nach Klick auf \"Download\" passiert nichts. Die Datei erscheint nicht im Downloads-Ordner. Reproduzierbar für alle Mitarbeiter.",
+      "status": "IN_PROGRESS",
+      "priority": "CRITICAL",
+      "createdAt": "2025-12-27T06:18:46.318Z",
+      "updatedAt": null
+    },
+    {
+      "id": "fb031d4f-1265-48f4-b34b-26cf57343411",
+      "projectId": "c92a74df-2828-4974-91c2-25258d01e715",
+      "reporterId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "assigneeId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "title": "Profilbild Upload - Größenlimit zu klein",
+      "description": "Das aktuelle Größenlimit für Profilbilder (500 KB) ist zu niedrig. Moderne Smartphone-Kameras erzeugen Bilder >1 MB. Vorschlag: Limit auf 2 MB erhöhen und automatische Komprimierung implementieren.",
+      "status": "OPEN",
+      "priority": "MEDIUM",
+      "createdAt": "2025-12-27T06:18:46.319Z",
+      "updatedAt": null
+    },
+    {
+      "id": "6f763c87-b121-48af-a6fc-1968881eec91",
+      "projectId": "c92a74df-2828-4974-91c2-25258d01e715",
+      "reporterId": "9f9c9832-86a8-4db9-9ece-4f1c27287cd3",
+      "assigneeId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "title": "Fehlende Validierung bei Telefonnummer-Eingabe",
+      "description": "Im Profil-Bereich können ungültige Telefonnummern (z.B. Buchstaben) eingegeben werden. Es fehlt eine Client- und Server-seitige Validierung. Erwartetes Format: +49 oder 0 gefolgt von 7-15 Ziffern.",
+      "status": "RESOLVED",
+      "priority": "LOW",
+      "createdAt": "2025-12-27T06:18:46.320Z",
+      "updatedAt": null
+    },
+    {
+      "id": "a7b244eb-2930-4f9d-953d-4e4a46bae5bd",
+      "projectId": "c92a74df-2828-4974-91c2-25258d01e715",
+      "reporterId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "assigneeId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "title": "Dark Mode implementieren",
+      "description": "Anfrage mehrerer Mitarbeiter: Implementierung eines Dark Mode für bessere Lesbarkeit bei Nachtschicht. Sollte systemweite Einstellung respektieren und manuell umschaltbar sein.",
+      "status": "OPEN",
+      "priority": "MEDIUM",
+      "createdAt": "2025-12-27T06:18:46.323Z",
+      "updatedAt": null
+    },
+    {
+      "id": "132a67bd-f3a8-4886-905d-3cd80180aba1",
+      "projectId": "c92a74df-2828-4974-91c2-25258d01e715",
+      "reporterId": "9f9c9832-86a8-4db9-9ece-4f1c27287cd3",
+      "assigneeId": null,
+      "title": "E-Mail-Benachrichtigungen doppelt",
+      "description": "Mitarbeiter erhalten doppelte E-Mail-Benachrichtigungen für Urlaubsgenehmigungen. Problem tritt seit dem letzten Update auf. Logs zeigen, dass der Job zweimal ausgeführt wird.",
+      "status": "IN_PROGRESS",
+      "priority": "HIGH",
+      "createdAt": "2025-12-27T06:18:46.324Z",
+      "updatedAt": null
+    },
+    {
+      "id": "c7883892-b0ba-40de-8ec2-84635af32d2e",
+      "projectId": "c92a74df-2828-4974-91c2-25258d01e715",
+      "reporterId": "9f9c9832-86a8-4db9-9ece-4f1c27287cd3",
+      "assigneeId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "title": "Passwort-Reset-Link läuft zu schnell ab",
+      "description": "Der Link zum Zurücksetzen des Passworts läuft nach 15 Minuten ab. Viele Mitarbeiter schaffen es nicht rechtzeitig. Vorschlag: Ablaufzeit auf 1 Stunde erhöhen.",
+      "status": "OPEN",
+      "priority": "LOW",
+      "createdAt": "2025-12-27T06:18:46.325Z",
+      "updatedAt": null
+    },
+    {
+      "id": "fe4852a1-8f77-4979-b0af-b1916ac697a5",
+      "projectId": "c92a74df-2828-4974-91c2-25258d01e715",
+      "reporterId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "assigneeId": null,
+      "title": "Suchfunktion findet keine archivierten Mitarbeiter",
+      "description": "Die globale Mitarbeitersuche zeigt keine archivierten/ausgeschiedenen Mitarbeiter an. Für HR-Prozesse ist es aber wichtig, auch historische Daten zu durchsuchen.",
+      "status": "CLOSED",
+      "priority": "MEDIUM",
+      "createdAt": "2025-12-27T06:18:46.326Z",
+      "updatedAt": null
+    },
+    {
+      "id": "198a7b9d-2986-4ef3-b10e-b22f7292df6a",
+      "projectId": "c92a74df-2828-4974-91c2-25258d01e715",
+      "reporterId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "assigneeId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "title": "Kalenderintegration mit Outlook fehlt",
+      "description": "Anfrage: Integration mit Microsoft Outlook Kalender, damit genehmigte Urlaubstage automatisch im Kalender erscheinen. Reduziert manuelle Eingaben.",
+      "status": "OPEN",
+      "priority": "MEDIUM",
+      "createdAt": "2025-12-27T06:18:46.326Z",
+      "updatedAt": null
+    },
+    {
+      "id": "637fb54f-ef93-47fc-bc33-56e86442d43e",
+      "projectId": "c92a74df-2828-4974-91c2-25258d01e715",
+      "reporterId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "assigneeId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "title": "Performance-Problem beim Laden der Überstundenliste",
+      "description": "Die Überstundenliste lädt sehr langsam (>10 Sekunden) für Mitarbeiter mit vielen Einträgen. Pagination oder Lazy Loading implementieren.",
+      "status": "IN_PROGRESS",
+      "priority": "HIGH",
+      "createdAt": "2025-12-27T06:18:46.327Z",
+      "updatedAt": null
+    },
+    {
+      "id": "193812f9-7830-437d-b744-b34f2f1f1772",
+      "projectId": "f01e22d8-e9c3-4f9d-9998-a2abbe222d83",
+      "reporterId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "assigneeId": "9f9c9832-86a8-4db9-9ece-4f1c27287cd3",
+      "title": "Urlaubsantrag wird nicht gespeichert",
+      "description": "Beim Einreichen eines Urlaubsantrags über das Formular erscheint die Fehlermeldung \"Speichern fehlgeschlagen\". Die eingegebenen Daten gehen verloren. Betrifft Firefox 121 und Chrome 120.",
+      "status": "OPEN",
+      "priority": "HIGH",
+      "createdAt": "2025-12-27T06:18:46.328Z",
+      "updatedAt": null
+    },
+    {
+      "id": "7b803091-fc01-4659-9dc0-4c4f541fb389",
+      "projectId": "f01e22d8-e9c3-4f9d-9998-a2abbe222d83",
+      "reporterId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "assigneeId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "title": "Gehaltsabrechnung Download funktioniert nicht",
+      "description": "Der PDF-Download der Gehaltsabrechnungen schlägt fehl. Nach Klick auf \"Download\" passiert nichts. Die Datei erscheint nicht im Downloads-Ordner. Reproduzierbar für alle Mitarbeiter.",
+      "status": "IN_PROGRESS",
+      "priority": "CRITICAL",
+      "createdAt": "2025-12-27T06:18:46.328Z",
+      "updatedAt": null
+    },
+    {
+      "id": "8cd4980c-29f1-4306-a158-e67d63fea82e",
+      "projectId": "f01e22d8-e9c3-4f9d-9998-a2abbe222d83",
+      "reporterId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "assigneeId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "title": "Profilbild Upload - Größenlimit zu klein",
+      "description": "Das aktuelle Größenlimit für Profilbilder (500 KB) ist zu niedrig. Moderne Smartphone-Kameras erzeugen Bilder >1 MB. Vorschlag: Limit auf 2 MB erhöhen und automatische Komprimierung implementieren.",
+      "status": "OPEN",
+      "priority": "MEDIUM",
+      "createdAt": "2025-12-27T06:18:46.329Z",
+      "updatedAt": null
+    },
+    {
+      "id": "208c1da7-fd25-4c0f-b124-1deef6d9b1e9",
+      "projectId": "f01e22d8-e9c3-4f9d-9998-a2abbe222d83",
+      "reporterId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "assigneeId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "title": "Fehlende Validierung bei Telefonnummer-Eingabe",
+      "description": "Im Profil-Bereich können ungültige Telefonnummern (z.B. Buchstaben) eingegeben werden. Es fehlt eine Client- und Server-seitige Validierung. Erwartetes Format: +49 oder 0 gefolgt von 7-15 Ziffern.",
+      "status": "RESOLVED",
+      "priority": "LOW",
+      "createdAt": "2025-12-27T06:18:46.330Z",
+      "updatedAt": null
+    },
+    {
+      "id": "1bdb9b00-bde2-4760-9f37-9c15cdc3eaad",
+      "projectId": "f01e22d8-e9c3-4f9d-9998-a2abbe222d83",
+      "reporterId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "assigneeId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "title": "Dark Mode implementieren",
+      "description": "Anfrage mehrerer Mitarbeiter: Implementierung eines Dark Mode für bessere Lesbarkeit bei Nachtschicht. Sollte systemweite Einstellung respektieren und manuell umschaltbar sein.",
+      "status": "OPEN",
+      "priority": "MEDIUM",
+      "createdAt": "2025-12-27T06:18:46.330Z",
+      "updatedAt": null
+    },
+    {
+      "id": "030323e5-c6f0-4d80-bf6e-4468a1d02e37",
+      "projectId": "f01e22d8-e9c3-4f9d-9998-a2abbe222d83",
+      "reporterId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "assigneeId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "title": "E-Mail-Benachrichtigungen doppelt",
+      "description": "Mitarbeiter erhalten doppelte E-Mail-Benachrichtigungen für Urlaubsgenehmigungen. Problem tritt seit dem letzten Update auf. Logs zeigen, dass der Job zweimal ausgeführt wird.",
+      "status": "IN_PROGRESS",
+      "priority": "HIGH",
+      "createdAt": "2025-12-27T06:18:46.331Z",
+      "updatedAt": null
+    },
+    {
+      "id": "0f626596-fb4f-4049-8f41-5b2a2ab41cd4",
+      "projectId": "f01e22d8-e9c3-4f9d-9998-a2abbe222d83",
+      "reporterId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "assigneeId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "title": "Passwort-Reset-Link läuft zu schnell ab",
+      "description": "Der Link zum Zurücksetzen des Passworts läuft nach 15 Minuten ab. Viele Mitarbeiter schaffen es nicht rechtzeitig. Vorschlag: Ablaufzeit auf 1 Stunde erhöhen.",
+      "status": "OPEN",
+      "priority": "LOW",
+      "createdAt": "2025-12-27T06:18:46.332Z",
+      "updatedAt": null
+    },
+    {
+      "id": "8bc09919-006b-43ee-8a86-06195f1d9fe8",
+      "projectId": "f01e22d8-e9c3-4f9d-9998-a2abbe222d83",
+      "reporterId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "assigneeId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "title": "Suchfunktion findet keine archivierten Mitarbeiter",
+      "description": "Die globale Mitarbeitersuche zeigt keine archivierten/ausgeschiedenen Mitarbeiter an. Für HR-Prozesse ist es aber wichtig, auch historische Daten zu durchsuchen.",
+      "status": "CLOSED",
+      "priority": "MEDIUM",
+      "createdAt": "2025-12-27T06:18:46.332Z",
+      "updatedAt": null
+    },
+    {
+      "id": "30aca9c5-78b7-4b5d-b2e4-9e92a13477ca",
+      "projectId": "f01e22d8-e9c3-4f9d-9998-a2abbe222d83",
+      "reporterId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "assigneeId": null,
+      "title": "Kalenderintegration mit Outlook fehlt",
+      "description": "Anfrage: Integration mit Microsoft Outlook Kalender, damit genehmigte Urlaubstage automatisch im Kalender erscheinen. Reduziert manuelle Eingaben.",
+      "status": "OPEN",
+      "priority": "MEDIUM",
+      "createdAt": "2025-12-27T06:18:46.333Z",
+      "updatedAt": null
+    },
+    {
+      "id": "bbed9a41-22ef-42e2-b5c0-bf9b45056b13",
+      "projectId": "f01e22d8-e9c3-4f9d-9998-a2abbe222d83",
+      "reporterId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "assigneeId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "title": "Performance-Problem beim Laden der Überstundenliste",
+      "description": "Die Überstundenliste lädt sehr langsam (>10 Sekunden) für Mitarbeiter mit vielen Einträgen. Pagination oder Lazy Loading implementieren.",
+      "status": "IN_PROGRESS",
+      "priority": "HIGH",
+      "createdAt": "2025-12-27T06:18:46.333Z",
+      "updatedAt": null
+    },
+    {
+      "id": "eb34e9fc-a43d-47bb-9d32-dfcac52cce22",
+      "projectId": "e797feee-4b15-45d5-9b84-1eea0f1ffd32",
+      "reporterId": "9f9c9832-86a8-4db9-9ece-4f1c27287cd3",
+      "assigneeId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "title": "Urlaubsantrag wird nicht gespeichert",
+      "description": "Beim Einreichen eines Urlaubsantrags über das Formular erscheint die Fehlermeldung \"Speichern fehlgeschlagen\". Die eingegebenen Daten gehen verloren. Betrifft Firefox 121 und Chrome 120.",
+      "status": "OPEN",
+      "priority": "HIGH",
+      "createdAt": "2025-12-27T06:18:46.334Z",
+      "updatedAt": null
+    },
+    {
+      "id": "4db80e84-88d0-40ab-9af1-6e8b0c35e7f8",
+      "projectId": "e797feee-4b15-45d5-9b84-1eea0f1ffd32",
+      "reporterId": "9f9c9832-86a8-4db9-9ece-4f1c27287cd3",
+      "assigneeId": null,
+      "title": "Gehaltsabrechnung Download funktioniert nicht",
+      "description": "Der PDF-Download der Gehaltsabrechnungen schlägt fehl. Nach Klick auf \"Download\" passiert nichts. Die Datei erscheint nicht im Downloads-Ordner. Reproduzierbar für alle Mitarbeiter.",
+      "status": "IN_PROGRESS",
+      "priority": "CRITICAL",
+      "createdAt": "2025-12-27T06:18:46.335Z",
+      "updatedAt": null
+    },
+    {
+      "id": "68994687-c46b-416a-85be-4073a910f57c",
+      "projectId": "e797feee-4b15-45d5-9b84-1eea0f1ffd32",
+      "reporterId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "assigneeId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "title": "Profilbild Upload - Größenlimit zu klein",
+      "description": "Das aktuelle Größenlimit für Profilbilder (500 KB) ist zu niedrig. Moderne Smartphone-Kameras erzeugen Bilder >1 MB. Vorschlag: Limit auf 2 MB erhöhen und automatische Komprimierung implementieren.",
+      "status": "OPEN",
+      "priority": "MEDIUM",
+      "createdAt": "2025-12-27T06:18:46.335Z",
+      "updatedAt": null
+    },
+    {
+      "id": "60edca9f-72da-49cd-8e3e-01adfa040bd8",
+      "projectId": "e797feee-4b15-45d5-9b84-1eea0f1ffd32",
+      "reporterId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "assigneeId": null,
+      "title": "Fehlende Validierung bei Telefonnummer-Eingabe",
+      "description": "Im Profil-Bereich können ungültige Telefonnummern (z.B. Buchstaben) eingegeben werden. Es fehlt eine Client- und Server-seitige Validierung. Erwartetes Format: +49 oder 0 gefolgt von 7-15 Ziffern.",
+      "status": "RESOLVED",
+      "priority": "LOW",
+      "createdAt": "2025-12-27T06:18:46.336Z",
+      "updatedAt": null
+    },
+    {
+      "id": "33a911a6-af65-4cbf-a099-ee3a4d9e272e",
+      "projectId": "e797feee-4b15-45d5-9b84-1eea0f1ffd32",
+      "reporterId": "9f9c9832-86a8-4db9-9ece-4f1c27287cd3",
+      "assigneeId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "title": "Dark Mode implementieren",
+      "description": "Anfrage mehrerer Mitarbeiter: Implementierung eines Dark Mode für bessere Lesbarkeit bei Nachtschicht. Sollte systemweite Einstellung respektieren und manuell umschaltbar sein.",
+      "status": "OPEN",
+      "priority": "MEDIUM",
+      "createdAt": "2025-12-27T06:18:46.336Z",
+      "updatedAt": null
+    },
+    {
+      "id": "9b7b7ed3-6a2c-4563-8ecf-8e78b959d3a4",
+      "projectId": "e797feee-4b15-45d5-9b84-1eea0f1ffd32",
+      "reporterId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "assigneeId": null,
+      "title": "E-Mail-Benachrichtigungen doppelt",
+      "description": "Mitarbeiter erhalten doppelte E-Mail-Benachrichtigungen für Urlaubsgenehmigungen. Problem tritt seit dem letzten Update auf. Logs zeigen, dass der Job zweimal ausgeführt wird.",
+      "status": "IN_PROGRESS",
+      "priority": "HIGH",
+      "createdAt": "2025-12-27T06:18:46.337Z",
+      "updatedAt": null
+    },
+    {
+      "id": "f1792b20-c156-4a99-aea3-319292b9f225",
+      "projectId": "e797feee-4b15-45d5-9b84-1eea0f1ffd32",
+      "reporterId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "assigneeId": null,
+      "title": "Passwort-Reset-Link läuft zu schnell ab",
+      "description": "Der Link zum Zurücksetzen des Passworts läuft nach 15 Minuten ab. Viele Mitarbeiter schaffen es nicht rechtzeitig. Vorschlag: Ablaufzeit auf 1 Stunde erhöhen.",
+      "status": "OPEN",
+      "priority": "LOW",
+      "createdAt": "2025-12-27T06:18:46.337Z",
+      "updatedAt": null
+    },
+    {
+      "id": "1b6bb1bb-1ae0-4cc4-a228-8a23631eda80",
+      "projectId": "e797feee-4b15-45d5-9b84-1eea0f1ffd32",
+      "reporterId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "assigneeId": null,
+      "title": "Suchfunktion findet keine archivierten Mitarbeiter",
+      "description": "Die globale Mitarbeitersuche zeigt keine archivierten/ausgeschiedenen Mitarbeiter an. Für HR-Prozesse ist es aber wichtig, auch historische Daten zu durchsuchen.",
+      "status": "CLOSED",
+      "priority": "MEDIUM",
+      "createdAt": "2025-12-27T06:18:46.338Z",
+      "updatedAt": null
+    },
+    {
+      "id": "eb3b4ed4-f4fc-424d-a563-c6639778a8f0",
+      "projectId": "e797feee-4b15-45d5-9b84-1eea0f1ffd32",
+      "reporterId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "assigneeId": null,
+      "title": "Kalenderintegration mit Outlook fehlt",
+      "description": "Anfrage: Integration mit Microsoft Outlook Kalender, damit genehmigte Urlaubstage automatisch im Kalender erscheinen. Reduziert manuelle Eingaben.",
+      "status": "OPEN",
+      "priority": "MEDIUM",
+      "createdAt": "2025-12-27T06:18:46.338Z",
+      "updatedAt": null
+    },
+    {
+      "id": "e6045af0-a442-4a42-a580-6b6b57c010f4",
+      "projectId": "e797feee-4b15-45d5-9b84-1eea0f1ffd32",
+      "reporterId": "9f9c9832-86a8-4db9-9ece-4f1c27287cd3",
+      "assigneeId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "title": "Performance-Problem beim Laden der Überstundenliste",
+      "description": "Die Überstundenliste lädt sehr langsam (>10 Sekunden) für Mitarbeiter mit vielen Einträgen. Pagination oder Lazy Loading implementieren.",
+      "status": "IN_PROGRESS",
+      "priority": "HIGH",
+      "createdAt": "2025-12-27T06:18:46.339Z",
+      "updatedAt": null
+    },
+    {
+      "id": "cec209e2-e0c3-435a-a56c-8ce4b38c6c0f",
+      "projectId": "fc68980b-de6a-4131-81fe-102c5fe095a4",
+      "reporterId": "9f9c9832-86a8-4db9-9ece-4f1c27287cd3",
+      "assigneeId": null,
+      "title": "Urlaubsantrag wird nicht gespeichert",
+      "description": "Beim Einreichen eines Urlaubsantrags über das Formular erscheint die Fehlermeldung \"Speichern fehlgeschlagen\". Die eingegebenen Daten gehen verloren. Betrifft Firefox 121 und Chrome 120.",
+      "status": "OPEN",
+      "priority": "HIGH",
+      "createdAt": "2025-12-27T06:18:46.340Z",
+      "updatedAt": null
+    },
+    {
+      "id": "1b0af1bf-9e4c-4e64-a3d2-d3984c8ec8bf",
+      "projectId": "fc68980b-de6a-4131-81fe-102c5fe095a4",
+      "reporterId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "assigneeId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "title": "Gehaltsabrechnung Download funktioniert nicht",
+      "description": "Der PDF-Download der Gehaltsabrechnungen schlägt fehl. Nach Klick auf \"Download\" passiert nichts. Die Datei erscheint nicht im Downloads-Ordner. Reproduzierbar für alle Mitarbeiter.",
+      "status": "IN_PROGRESS",
+      "priority": "CRITICAL",
+      "createdAt": "2025-12-27T06:18:46.340Z",
+      "updatedAt": null
+    },
+    {
+      "id": "53cf933a-838d-4b43-925d-2a87c00d2d32",
+      "projectId": "fc68980b-de6a-4131-81fe-102c5fe095a4",
+      "reporterId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "assigneeId": null,
+      "title": "Profilbild Upload - Größenlimit zu klein",
+      "description": "Das aktuelle Größenlimit für Profilbilder (500 KB) ist zu niedrig. Moderne Smartphone-Kameras erzeugen Bilder >1 MB. Vorschlag: Limit auf 2 MB erhöhen und automatische Komprimierung implementieren.",
+      "status": "OPEN",
+      "priority": "MEDIUM",
+      "createdAt": "2025-12-27T06:18:46.341Z",
+      "updatedAt": null
+    },
+    {
+      "id": "7d4fbb2d-5e7f-4861-8350-fc29f8d790b7",
+      "projectId": "fc68980b-de6a-4131-81fe-102c5fe095a4",
+      "reporterId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "assigneeId": "9f9c9832-86a8-4db9-9ece-4f1c27287cd3",
+      "title": "Fehlende Validierung bei Telefonnummer-Eingabe",
+      "description": "Im Profil-Bereich können ungültige Telefonnummern (z.B. Buchstaben) eingegeben werden. Es fehlt eine Client- und Server-seitige Validierung. Erwartetes Format: +49 oder 0 gefolgt von 7-15 Ziffern.",
+      "status": "RESOLVED",
+      "priority": "LOW",
+      "createdAt": "2025-12-27T06:18:46.341Z",
+      "updatedAt": null
+    },
+    {
+      "id": "f2a8b060-604f-4e35-8c6b-4885d3418d23",
+      "projectId": "fc68980b-de6a-4131-81fe-102c5fe095a4",
+      "reporterId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "assigneeId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "title": "Dark Mode implementieren",
+      "description": "Anfrage mehrerer Mitarbeiter: Implementierung eines Dark Mode für bessere Lesbarkeit bei Nachtschicht. Sollte systemweite Einstellung respektieren und manuell umschaltbar sein.",
+      "status": "OPEN",
+      "priority": "MEDIUM",
+      "createdAt": "2025-12-27T06:18:46.342Z",
+      "updatedAt": null
+    },
+    {
+      "id": "2e98ece0-c8e4-4cb1-a44f-61e104f3d755",
+      "projectId": "fc68980b-de6a-4131-81fe-102c5fe095a4",
+      "reporterId": "9f9c9832-86a8-4db9-9ece-4f1c27287cd3",
+      "assigneeId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "title": "E-Mail-Benachrichtigungen doppelt",
+      "description": "Mitarbeiter erhalten doppelte E-Mail-Benachrichtigungen für Urlaubsgenehmigungen. Problem tritt seit dem letzten Update auf. Logs zeigen, dass der Job zweimal ausgeführt wird.",
+      "status": "IN_PROGRESS",
+      "priority": "HIGH",
+      "createdAt": "2025-12-27T06:18:46.342Z",
+      "updatedAt": null
+    },
+    {
+      "id": "89db2897-a8cb-408e-a186-24d1db7f0d43",
+      "projectId": "fc68980b-de6a-4131-81fe-102c5fe095a4",
+      "reporterId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "assigneeId": null,
+      "title": "Passwort-Reset-Link läuft zu schnell ab",
+      "description": "Der Link zum Zurücksetzen des Passworts läuft nach 15 Minuten ab. Viele Mitarbeiter schaffen es nicht rechtzeitig. Vorschlag: Ablaufzeit auf 1 Stunde erhöhen.",
+      "status": "OPEN",
+      "priority": "LOW",
+      "createdAt": "2025-12-27T06:18:46.343Z",
+      "updatedAt": null
+    },
+    {
+      "id": "1d8a86f4-2df6-4327-b6fa-33aec7658ad2",
+      "projectId": "fc68980b-de6a-4131-81fe-102c5fe095a4",
+      "reporterId": "9f9c9832-86a8-4db9-9ece-4f1c27287cd3",
+      "assigneeId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "title": "Suchfunktion findet keine archivierten Mitarbeiter",
+      "description": "Die globale Mitarbeitersuche zeigt keine archivierten/ausgeschiedenen Mitarbeiter an. Für HR-Prozesse ist es aber wichtig, auch historische Daten zu durchsuchen.",
+      "status": "CLOSED",
+      "priority": "MEDIUM",
+      "createdAt": "2025-12-27T06:18:46.344Z",
+      "updatedAt": null
+    },
+    {
+      "id": "fa5dce83-203f-47a3-8e65-1460c82b98d2",
+      "projectId": "fc68980b-de6a-4131-81fe-102c5fe095a4",
+      "reporterId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "assigneeId": null,
+      "title": "Kalenderintegration mit Outlook fehlt",
+      "description": "Anfrage: Integration mit Microsoft Outlook Kalender, damit genehmigte Urlaubstage automatisch im Kalender erscheinen. Reduziert manuelle Eingaben.",
+      "status": "OPEN",
+      "priority": "MEDIUM",
+      "createdAt": "2025-12-27T06:18:46.344Z",
+      "updatedAt": null
+    },
+    {
+      "id": "86197291-c054-4d44-abb1-e86f92baaaa5",
+      "projectId": "fc68980b-de6a-4131-81fe-102c5fe095a4",
+      "reporterId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "assigneeId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "title": "Performance-Problem beim Laden der Überstundenliste",
+      "description": "Die Überstundenliste lädt sehr langsam (>10 Sekunden) für Mitarbeiter mit vielen Einträgen. Pagination oder Lazy Loading implementieren.",
+      "status": "IN_PROGRESS",
+      "priority": "HIGH",
+      "createdAt": "2025-12-27T06:18:46.345Z",
+      "updatedAt": null
+    },
+    {
+      "id": "769242ac-e4e0-47aa-820e-5cb9cc70cf9e",
+      "projectId": "7e43fcd1-55aa-452b-801e-60075735352f",
+      "reporterId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "assigneeId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "title": "Warenkorb wird nach Login gelöscht",
+      "description": "Wenn ein Gast-Nutzer Artikel in den Warenkorb legt und sich dann einloggt, wird der Warenkorb geleert. Die Artikel sollten nach Login erhalten bleiben und mit dem Benutzerkonto synchronisiert werden.",
+      "status": "OPEN",
+      "priority": "CRITICAL",
+      "createdAt": "2025-12-27T06:18:46.345Z",
+      "updatedAt": null
+    },
+    {
+      "id": "1bca41cd-2ecc-4f72-85ec-44c984c2f940",
+      "projectId": "7e43fcd1-55aa-452b-801e-60075735352f",
+      "reporterId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "assigneeId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "title": "PayPal-Zahlung schlägt bei Beträgen über 500€ fehl",
+      "description": "PayPal-Transaktionen über 500€ werden mit Fehlercode \"AMOUNT_LIMIT_EXCEEDED\" abgelehnt. Ursache: Merchant-Account hat nur Standard-Limit. Lösung: Business-Account-Upgrade beantragen oder Split-Payment implementieren.",
+      "status": "IN_PROGRESS",
+      "priority": "CRITICAL",
+      "createdAt": "2025-12-27T06:18:46.346Z",
+      "updatedAt": null
+    },
+    {
+      "id": "de96dc17-4d11-4bcc-8655-538525cbf4d6",
+      "projectId": "7e43fcd1-55aa-452b-801e-60075735352f",
+      "reporterId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "assigneeId": null,
+      "title": "Produktbilder laden sehr langsam",
+      "description": "Produktbilder in der Kategorie-Übersicht benötigen 3-5 Sekunden zum Laden. Originalbilder werden mit 4 MB statt komprimiert ausgeliefert. Implementierung von Lazy Loading und WebP-Format mit automatischer Komprimierung erforderlich.",
+      "status": "OPEN",
+      "priority": "HIGH",
+      "createdAt": "2025-12-27T06:18:46.347Z",
+      "updatedAt": null
+    },
+    {
+      "id": "73b16511-39b9-49f8-a719-2712bb870717",
+      "projectId": "7e43fcd1-55aa-452b-801e-60075735352f",
+      "reporterId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "assigneeId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "title": "Suchfunktion findet keine Umlaute",
+      "description": "Die Produktsuche findet keine Ergebnisse bei Eingabe von Umlauten (ä, ö, ü). Beispiel: Suche nach \"Kühlschrank\" liefert 0 Treffer, \"Kuehlschrank\" funktioniert. Elasticsearch-Analyzer muss um German Normalization erweitert werden.",
+      "status": "RESOLVED",
+      "priority": "MEDIUM",
+      "createdAt": "2025-12-27T06:18:46.347Z",
+      "updatedAt": null
+    },
+    {
+      "id": "19dca9a4-638a-4426-a511-846a29feb7e7",
+      "projectId": "7e43fcd1-55aa-452b-801e-60075735352f",
+      "reporterId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "assigneeId": null,
+      "title": "Rabattcode kann mehrfach verwendet werden",
+      "description": "Einmalige Rabattcodes (WELCOME20) können durch Öffnen mehrerer Browser-Tabs mehrfach auf denselben Account angewendet werden. Sicherheitslücke: Validierung nur Client-seitig. Server-seitige Prüfung + Redemption-Lock implementieren.",
+      "status": "OPEN",
+      "priority": "CRITICAL",
+      "createdAt": "2025-12-27T06:18:46.348Z",
+      "updatedAt": null
+    },
+    {
+      "id": "86c5e35f-08f9-4bb8-b7d3-e80a46f7c7cd",
+      "projectId": "7e43fcd1-55aa-452b-801e-60075735352f",
+      "reporterId": "9f9c9832-86a8-4db9-9ece-4f1c27287cd3",
+      "assigneeId": null,
+      "title": "Mobile Checkout-Formular abgeschnitten",
+      "description": "Auf iPhone SE (375px Breite) wird der \"Kaufen\"-Button vom unteren Bildschirmrand abgeschnitten. Footer überlappt das Formular. Responsive Layout für kleine Viewports anpassen.",
+      "status": "IN_PROGRESS",
+      "priority": "HIGH",
+      "createdAt": "2025-12-27T06:18:46.348Z",
+      "updatedAt": null
+    },
+    {
+      "id": "29880c4b-5709-40c3-a568-57f76d918839",
+      "projectId": "7e43fcd1-55aa-452b-801e-60075735352f",
+      "reporterId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "assigneeId": "9f9c9832-86a8-4db9-9ece-4f1c27287cd3",
+      "title": "Produktbewertungen können nicht bearbeitet werden",
+      "description": "Kunden können abgegebene Produktbewertungen nicht nachträglich bearbeiten. \"Bearbeiten\"-Button fehlt. Feature-Request: Edit-Funktion innerhalb von 48h nach Erstellen.",
+      "status": "OPEN",
+      "priority": "LOW",
+      "createdAt": "2025-12-27T06:18:46.349Z",
+      "updatedAt": null
+    },
+    {
+      "id": "32770480-5bc9-4ff1-903b-8ef4580cc98f",
+      "projectId": "7e43fcd1-55aa-452b-801e-60075735352f",
+      "reporterId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "assigneeId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "title": "Versandkosten werden falsch berechnet",
+      "description": "Bei Bestellungen mit mehreren Artikeln aus verschiedenen Lagern werden Versandkosten nur einmal statt pro Lager berechnet. Führt zu finanziellen Verlusten.",
+      "status": "CLOSED",
+      "priority": "HIGH",
+      "createdAt": "2025-12-27T06:18:46.349Z",
+      "updatedAt": null
+    },
+    {
+      "id": "3f1ffc5a-45fc-4b7c-a043-664c99cce256",
+      "projectId": "7e43fcd1-55aa-452b-801e-60075735352f",
+      "reporterId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "assigneeId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "title": "Newsletter-Abmeldung funktioniert nicht",
+      "description": "Der \"Abmelden\"-Link im Newsletter führt zu 404-Fehler. Kunden können sich nicht vom Newsletter abmelden. DSGVO-Verstoß!",
+      "status": "IN_PROGRESS",
+      "priority": "CRITICAL",
+      "createdAt": "2025-12-27T06:18:46.350Z",
+      "updatedAt": null
+    },
+    {
+      "id": "58845ff1-2ff8-414f-87e7-d1b205012b37",
+      "projectId": "7e43fcd1-55aa-452b-801e-60075735352f",
+      "reporterId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "assigneeId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "title": "Wunschliste wird nicht synchronisiert",
+      "description": "Artikel in der Wunschliste werden nicht geräteübergreifend synchronisiert. Desktop-Wunschliste unterscheidet sich von Mobile-App. Cloud-Sync implementieren.",
+      "status": "OPEN",
+      "priority": "MEDIUM",
+      "createdAt": "2025-12-27T06:18:46.350Z",
+      "updatedAt": null
+    },
+    {
+      "id": "1a1f669e-5bcb-4211-a8dc-3e4d06dca8de",
+      "projectId": "e96f2bec-9e9f-44d6-a115-d6b292632d38",
+      "reporterId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "assigneeId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "title": "Urlaubsantrag wird nicht gespeichert",
+      "description": "Beim Einreichen eines Urlaubsantrags über das Formular erscheint die Fehlermeldung \"Speichern fehlgeschlagen\". Die eingegebenen Daten gehen verloren. Betrifft Firefox 121 und Chrome 120.",
+      "status": "OPEN",
+      "priority": "HIGH",
+      "createdAt": "2025-12-27T06:18:46.351Z",
+      "updatedAt": null
+    },
+    {
+      "id": "7dd8417b-d0c4-4652-81f3-6316dbecf8f8",
+      "projectId": "e96f2bec-9e9f-44d6-a115-d6b292632d38",
+      "reporterId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "assigneeId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "title": "Gehaltsabrechnung Download funktioniert nicht",
+      "description": "Der PDF-Download der Gehaltsabrechnungen schlägt fehl. Nach Klick auf \"Download\" passiert nichts. Die Datei erscheint nicht im Downloads-Ordner. Reproduzierbar für alle Mitarbeiter.",
+      "status": "IN_PROGRESS",
+      "priority": "CRITICAL",
+      "createdAt": "2025-12-27T06:18:46.352Z",
+      "updatedAt": null
+    },
+    {
+      "id": "36a4e9c6-901e-4bc8-abd2-92fa6bb46aa9",
+      "projectId": "e96f2bec-9e9f-44d6-a115-d6b292632d38",
+      "reporterId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "assigneeId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "title": "Profilbild Upload - Größenlimit zu klein",
+      "description": "Das aktuelle Größenlimit für Profilbilder (500 KB) ist zu niedrig. Moderne Smartphone-Kameras erzeugen Bilder >1 MB. Vorschlag: Limit auf 2 MB erhöhen und automatische Komprimierung implementieren.",
+      "status": "OPEN",
+      "priority": "MEDIUM",
+      "createdAt": "2025-12-27T06:18:46.352Z",
+      "updatedAt": null
+    },
+    {
+      "id": "3e262630-9efe-4f58-ba52-5d55cf1bb1a3",
+      "projectId": "e96f2bec-9e9f-44d6-a115-d6b292632d38",
+      "reporterId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "assigneeId": null,
+      "title": "Fehlende Validierung bei Telefonnummer-Eingabe",
+      "description": "Im Profil-Bereich können ungültige Telefonnummern (z.B. Buchstaben) eingegeben werden. Es fehlt eine Client- und Server-seitige Validierung. Erwartetes Format: +49 oder 0 gefolgt von 7-15 Ziffern.",
+      "status": "RESOLVED",
+      "priority": "LOW",
+      "createdAt": "2025-12-27T06:18:46.353Z",
+      "updatedAt": null
+    },
+    {
+      "id": "a2443fd8-6dfe-4d39-8b08-3f3e33789d0b",
+      "projectId": "e96f2bec-9e9f-44d6-a115-d6b292632d38",
+      "reporterId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "assigneeId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "title": "Dark Mode implementieren",
+      "description": "Anfrage mehrerer Mitarbeiter: Implementierung eines Dark Mode für bessere Lesbarkeit bei Nachtschicht. Sollte systemweite Einstellung respektieren und manuell umschaltbar sein.",
+      "status": "OPEN",
+      "priority": "MEDIUM",
+      "createdAt": "2025-12-27T06:18:46.353Z",
+      "updatedAt": null
+    },
+    {
+      "id": "aad2d6c0-7e10-4e4c-afc1-61176ccf5052",
+      "projectId": "e96f2bec-9e9f-44d6-a115-d6b292632d38",
+      "reporterId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "assigneeId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "title": "E-Mail-Benachrichtigungen doppelt",
+      "description": "Mitarbeiter erhalten doppelte E-Mail-Benachrichtigungen für Urlaubsgenehmigungen. Problem tritt seit dem letzten Update auf. Logs zeigen, dass der Job zweimal ausgeführt wird.",
+      "status": "IN_PROGRESS",
+      "priority": "HIGH",
+      "createdAt": "2025-12-27T06:18:46.354Z",
+      "updatedAt": null
+    },
+    {
+      "id": "2da2e3bc-96c1-45ff-b00e-12030fcbcd76",
+      "projectId": "e96f2bec-9e9f-44d6-a115-d6b292632d38",
+      "reporterId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "assigneeId": "9f9c9832-86a8-4db9-9ece-4f1c27287cd3",
+      "title": "Passwort-Reset-Link läuft zu schnell ab",
+      "description": "Der Link zum Zurücksetzen des Passworts läuft nach 15 Minuten ab. Viele Mitarbeiter schaffen es nicht rechtzeitig. Vorschlag: Ablaufzeit auf 1 Stunde erhöhen.",
+      "status": "OPEN",
+      "priority": "LOW",
+      "createdAt": "2025-12-27T06:18:46.355Z",
+      "updatedAt": null
+    },
+    {
+      "id": "d3e64d9a-dec8-4125-82ba-1d8cdbb585ab",
+      "projectId": "e96f2bec-9e9f-44d6-a115-d6b292632d38",
+      "reporterId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "assigneeId": null,
+      "title": "Suchfunktion findet keine archivierten Mitarbeiter",
+      "description": "Die globale Mitarbeitersuche zeigt keine archivierten/ausgeschiedenen Mitarbeiter an. Für HR-Prozesse ist es aber wichtig, auch historische Daten zu durchsuchen.",
+      "status": "CLOSED",
+      "priority": "MEDIUM",
+      "createdAt": "2025-12-27T06:18:46.355Z",
+      "updatedAt": null
+    },
+    {
+      "id": "4b5b38de-92b1-4abe-b88d-5b4e3bc05e77",
+      "projectId": "e96f2bec-9e9f-44d6-a115-d6b292632d38",
+      "reporterId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "assigneeId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "title": "Kalenderintegration mit Outlook fehlt",
+      "description": "Anfrage: Integration mit Microsoft Outlook Kalender, damit genehmigte Urlaubstage automatisch im Kalender erscheinen. Reduziert manuelle Eingaben.",
+      "status": "OPEN",
+      "priority": "MEDIUM",
+      "createdAt": "2025-12-27T06:18:46.356Z",
+      "updatedAt": null
+    },
+    {
+      "id": "63d3dd1f-1ac4-4e26-95f6-ba5440a716e1",
+      "projectId": "e96f2bec-9e9f-44d6-a115-d6b292632d38",
+      "reporterId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "assigneeId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "title": "Performance-Problem beim Laden der Überstundenliste",
+      "description": "Die Überstundenliste lädt sehr langsam (>10 Sekunden) für Mitarbeiter mit vielen Einträgen. Pagination oder Lazy Loading implementieren.",
+      "status": "IN_PROGRESS",
+      "priority": "HIGH",
+      "createdAt": "2025-12-27T06:18:46.356Z",
+      "updatedAt": null
+    },
+    {
+      "id": "9c1694dd-3e1d-445c-a12b-dda4aa42719d",
+      "projectId": "4aa67272-da6f-42ad-ac6c-33d9a61d8f4a",
+      "reporterId": "9f9c9832-86a8-4db9-9ece-4f1c27287cd3",
+      "assigneeId": null,
+      "title": "Urlaubsantrag wird nicht gespeichert",
+      "description": "Beim Einreichen eines Urlaubsantrags über das Formular erscheint die Fehlermeldung \"Speichern fehlgeschlagen\". Die eingegebenen Daten gehen verloren. Betrifft Firefox 121 und Chrome 120.",
+      "status": "OPEN",
+      "priority": "HIGH",
+      "createdAt": "2025-12-27T06:18:46.357Z",
+      "updatedAt": null
+    },
+    {
+      "id": "a8451bd3-b7e3-4b75-9bfe-898db7c74db2",
+      "projectId": "4aa67272-da6f-42ad-ac6c-33d9a61d8f4a",
+      "reporterId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "assigneeId": null,
+      "title": "Gehaltsabrechnung Download funktioniert nicht",
+      "description": "Der PDF-Download der Gehaltsabrechnungen schlägt fehl. Nach Klick auf \"Download\" passiert nichts. Die Datei erscheint nicht im Downloads-Ordner. Reproduzierbar für alle Mitarbeiter.",
+      "status": "IN_PROGRESS",
+      "priority": "CRITICAL",
+      "createdAt": "2025-12-27T06:18:46.358Z",
+      "updatedAt": null
+    },
+    {
+      "id": "2e1365c9-f143-464f-914f-a0e4ff8610b3",
+      "projectId": "4aa67272-da6f-42ad-ac6c-33d9a61d8f4a",
+      "reporterId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "assigneeId": null,
+      "title": "Profilbild Upload - Größenlimit zu klein",
+      "description": "Das aktuelle Größenlimit für Profilbilder (500 KB) ist zu niedrig. Moderne Smartphone-Kameras erzeugen Bilder >1 MB. Vorschlag: Limit auf 2 MB erhöhen und automatische Komprimierung implementieren.",
+      "status": "OPEN",
+      "priority": "MEDIUM",
+      "createdAt": "2025-12-27T06:18:46.358Z",
+      "updatedAt": null
+    },
+    {
+      "id": "a3990772-71ce-40b2-90ce-24530980bc6c",
+      "projectId": "4aa67272-da6f-42ad-ac6c-33d9a61d8f4a",
+      "reporterId": "9f9c9832-86a8-4db9-9ece-4f1c27287cd3",
+      "assigneeId": null,
+      "title": "Fehlende Validierung bei Telefonnummer-Eingabe",
+      "description": "Im Profil-Bereich können ungültige Telefonnummern (z.B. Buchstaben) eingegeben werden. Es fehlt eine Client- und Server-seitige Validierung. Erwartetes Format: +49 oder 0 gefolgt von 7-15 Ziffern.",
+      "status": "RESOLVED",
+      "priority": "LOW",
+      "createdAt": "2025-12-27T06:18:46.359Z",
+      "updatedAt": null
+    },
+    {
+      "id": "bec1a43f-b93a-44af-9cbb-92948ec15e6d",
+      "projectId": "4aa67272-da6f-42ad-ac6c-33d9a61d8f4a",
+      "reporterId": "9f9c9832-86a8-4db9-9ece-4f1c27287cd3",
+      "assigneeId": "9f9c9832-86a8-4db9-9ece-4f1c27287cd3",
+      "title": "Dark Mode implementieren",
+      "description": "Anfrage mehrerer Mitarbeiter: Implementierung eines Dark Mode für bessere Lesbarkeit bei Nachtschicht. Sollte systemweite Einstellung respektieren und manuell umschaltbar sein.",
+      "status": "OPEN",
+      "priority": "MEDIUM",
+      "createdAt": "2025-12-27T06:18:46.360Z",
+      "updatedAt": null
+    },
+    {
+      "id": "dd2fee16-a6a5-4ee5-8da5-423c336c5615",
+      "projectId": "4aa67272-da6f-42ad-ac6c-33d9a61d8f4a",
+      "reporterId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "assigneeId": null,
+      "title": "E-Mail-Benachrichtigungen doppelt",
+      "description": "Mitarbeiter erhalten doppelte E-Mail-Benachrichtigungen für Urlaubsgenehmigungen. Problem tritt seit dem letzten Update auf. Logs zeigen, dass der Job zweimal ausgeführt wird.",
+      "status": "IN_PROGRESS",
+      "priority": "HIGH",
+      "createdAt": "2025-12-27T06:18:46.360Z",
+      "updatedAt": null
+    },
+    {
+      "id": "80c415d6-8354-4c85-be4a-f49332551d6f",
+      "projectId": "4aa67272-da6f-42ad-ac6c-33d9a61d8f4a",
+      "reporterId": "9f9c9832-86a8-4db9-9ece-4f1c27287cd3",
+      "assigneeId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "title": "Passwort-Reset-Link läuft zu schnell ab",
+      "description": "Der Link zum Zurücksetzen des Passworts läuft nach 15 Minuten ab. Viele Mitarbeiter schaffen es nicht rechtzeitig. Vorschlag: Ablaufzeit auf 1 Stunde erhöhen.",
+      "status": "OPEN",
+      "priority": "LOW",
+      "createdAt": "2025-12-27T06:18:46.361Z",
+      "updatedAt": null
+    },
+    {
+      "id": "64ac2c00-97a3-4758-ac38-b3faeb9199d7",
+      "projectId": "4aa67272-da6f-42ad-ac6c-33d9a61d8f4a",
+      "reporterId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "assigneeId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "title": "Suchfunktion findet keine archivierten Mitarbeiter",
+      "description": "Die globale Mitarbeitersuche zeigt keine archivierten/ausgeschiedenen Mitarbeiter an. Für HR-Prozesse ist es aber wichtig, auch historische Daten zu durchsuchen.",
+      "status": "CLOSED",
+      "priority": "MEDIUM",
+      "createdAt": "2025-12-27T06:18:46.362Z",
+      "updatedAt": null
+    },
+    {
+      "id": "a69986dd-7a63-4115-a7e7-11cba3a63aff",
+      "projectId": "4aa67272-da6f-42ad-ac6c-33d9a61d8f4a",
+      "reporterId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "assigneeId": null,
+      "title": "Kalenderintegration mit Outlook fehlt",
+      "description": "Anfrage: Integration mit Microsoft Outlook Kalender, damit genehmigte Urlaubstage automatisch im Kalender erscheinen. Reduziert manuelle Eingaben.",
+      "status": "OPEN",
+      "priority": "MEDIUM",
+      "createdAt": "2025-12-27T06:18:46.362Z",
+      "updatedAt": null
+    },
+    {
+      "id": "0a13b4d8-96ff-49f9-bc82-ecb70ab8dac4",
+      "projectId": "4aa67272-da6f-42ad-ac6c-33d9a61d8f4a",
+      "reporterId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "assigneeId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "title": "Performance-Problem beim Laden der Überstundenliste",
+      "description": "Die Überstundenliste lädt sehr langsam (>10 Sekunden) für Mitarbeiter mit vielen Einträgen. Pagination oder Lazy Loading implementieren.",
+      "status": "IN_PROGRESS",
+      "priority": "HIGH",
+      "createdAt": "2025-12-27T06:18:46.363Z",
+      "updatedAt": null
+    },
+    {
+      "id": "be1ac8a2-fceb-4bb6-be1d-97cc3d54e446",
+      "projectId": "6c9bdff1-ab38-4141-8718-eea5a3049d6f",
+      "reporterId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "assigneeId": null,
+      "title": "Inventur-Export generiert falsche Bestandszahlen",
+      "description": "Der Excel-Export der Inventur zeigt abweichende Bestände im Vergleich zur Datenbank. Artikel mit Chargen-Verwaltung werden mehrfach gezählt. Betrifft Warehouse-Modul seit Update v3.2.1. Kritisch für Monatsabschluss.",
+      "status": "OPEN",
+      "priority": "CRITICAL",
+      "createdAt": "2025-12-27T06:18:46.363Z",
+      "updatedAt": null
+    },
+    {
+      "id": "785bbe38-e3f5-4c28-a573-b0b5beca807f",
+      "projectId": "6c9bdff1-ab38-4141-8718-eea5a3049d6f",
+      "reporterId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "assigneeId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "title": "Lieferantenbestellung kann nicht storniert werden",
+      "description": "Bestellungen mit Status \"Teilgeliefert\" lassen sich nicht stornieren. Button \"Stornieren\" ist ausgegraut. Workaround: Manuelle Statusänderung in Datenbank. Permanente Lösung: Teilstorno-Funktion implementieren.",
+      "status": "IN_PROGRESS",
+      "priority": "HIGH",
+      "createdAt": "2025-12-27T06:18:46.364Z",
+      "updatedAt": null
+    },
+    {
+      "id": "1b7b29ce-3df2-4a37-a2c5-e16643c93dfa",
+      "projectId": "6c9bdff1-ab38-4141-8718-eea5a3049d6f",
+      "reporterId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "assigneeId": null,
+      "title": "Doppelte Rechnungsnummern bei gleichzeitiger Erstellung",
+      "description": "Wenn zwei Benutzer gleichzeitig Rechnungen erstellen, wird dieselbe Rechnungsnummer vergeben. Race Condition in der Nummernkreisvergabe. Lösung: Datenbanksperre oder atomare Inkrementierung implementieren.",
+      "status": "OPEN",
+      "priority": "CRITICAL",
+      "createdAt": "2025-12-27T06:18:46.364Z",
+      "updatedAt": null
+    },
+    {
+      "id": "d68b27ad-a49b-4743-83ff-c1c73f154ca8",
+      "projectId": "6c9bdff1-ab38-4141-8718-eea5a3049d6f",
+      "reporterId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "assigneeId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "title": "Performance-Problem bei Buchungsjournal-Abfrage",
+      "description": "Abfrage des Buchungsjournals für Zeitraum >3 Monate führt zu Timeout (>30 Sekunden). Datenbank enthält 2,5 Mio. Buchungssätze. Index auf \"buchungsdatum\" fehlt. Query-Optimierung und Pagination erforderlich.",
+      "status": "RESOLVED",
+      "priority": "HIGH",
+      "createdAt": "2025-12-27T06:18:46.365Z",
+      "updatedAt": null
+    },
+    {
+      "id": "7bf81a5f-bb6e-4f56-a8e0-3e9635233468",
+      "projectId": "6c9bdff1-ab38-4141-8718-eea5a3049d6f",
+      "reporterId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "assigneeId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "title": "Automatische USt-Berechnung fehlerhaft bei Drittland",
+      "description": "Bei Rechnungen an Schweizer Kunden wird fälschlicherweise 19% MwSt. berechnet. Reverse-Charge-Verfahren wird nicht erkannt. Länderkennzeichen-Logik im Tax-Calculator muss erweitert werden (CH, GB, NO, etc.).",
+      "status": "OPEN",
+      "priority": "CRITICAL",
+      "createdAt": "2025-12-27T06:18:46.365Z",
+      "updatedAt": null
+    },
+    {
+      "id": "e5b96c26-6a2d-4baf-ad43-5057e48389bf",
+      "projectId": "6c9bdff1-ab38-4141-8718-eea5a3049d6f",
+      "reporterId": "9f9c9832-86a8-4db9-9ece-4f1c27287cd3",
+      "assigneeId": null,
+      "title": "Monatsabschluss bricht bei fehlenden Kostenstellen ab",
+      "description": "Der automatische Monatsabschluss schlägt fehl, wenn Buchungen ohne Kostenstelle existieren. Fehlermeldung unklar. Erwartetes Verhalten: Warnung ausgeben, aber Abschluss fortsetzen mit Standard-Kostenstelle.",
+      "status": "IN_PROGRESS",
+      "priority": "HIGH",
+      "createdAt": "2025-12-27T06:18:46.366Z",
+      "updatedAt": null
+    },
+    {
+      "id": "4d583771-ea00-4206-8429-326c7e584621",
+      "projectId": "6c9bdff1-ab38-4141-8718-eea5a3049d6f",
+      "reporterId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "assigneeId": "9f9c9832-86a8-4db9-9ece-4f1c27287cd3",
+      "title": "Artikel-Import aus Excel schlägt bei Umlauten fehl",
+      "description": "CSV-Import von Artikeldaten schlägt fehl, wenn Produktnamen Umlaute enthalten. Encoding-Problem: Datei wird als ASCII statt UTF-8 gelesen. Import-Funktion muss UTF-8-BOM erkennen.",
+      "status": "OPEN",
+      "priority": "MEDIUM",
+      "createdAt": "2025-12-27T06:18:46.367Z",
+      "updatedAt": null
+    },
+    {
+      "id": "e66277fc-579d-4c4f-b338-9979d8bdcc00",
+      "projectId": "6c9bdff1-ab38-4141-8718-eea5a3049d6f",
+      "reporterId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "assigneeId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "title": "Lagerbestand geht bei API-Timeout verloren",
+      "description": "Wenn der Warenwirtschafts-API-Call einen Timeout hat, wird der Lagerbestand nicht aktualisiert, aber die Bestellung als \"abgeschlossen\" markiert. Führt zu Bestandsdifferenzen. Transaction-Rollback implementieren.",
+      "status": "CLOSED",
+      "priority": "HIGH",
+      "createdAt": "2025-12-27T06:18:46.368Z",
+      "updatedAt": null
+    },
+    {
+      "id": "90a07060-faa3-4e7c-8d84-9e99ba9a5898",
+      "projectId": "6c9bdff1-ab38-4141-8718-eea5a3049d6f",
+      "reporterId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "assigneeId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "title": "Dashboard-KPIs zeigen veraltete Daten",
+      "description": "Die KPI-Widgets im Dashboard (Umsatz, Gewinn, etc.) aktualisieren sich nicht automatisch. Nur manueller Refresh hilft. Real-time Updates oder zumindest automatischer Reload alle 5 Minuten gewünscht.",
+      "status": "OPEN",
+      "priority": "LOW",
+      "createdAt": "2025-12-27T06:18:46.368Z",
+      "updatedAt": null
+    },
+    {
+      "id": "aeb910ea-70de-44af-8256-0f71be6db24d",
+      "projectId": "6c9bdff1-ab38-4141-8718-eea5a3049d6f",
+      "reporterId": "9f9c9832-86a8-4db9-9ece-4f1c27287cd3",
+      "assigneeId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "title": "Druckvorschau für Lieferscheine zeigt falsches Layout",
+      "description": "Die Druckvorschau für Lieferscheine zeigt ein anderes Layout als der tatsächliche Ausdruck. Logo wird nicht angezeigt, Seitenumbrüche falsch. CSS Print-Styles überarbeiten.",
+      "status": "IN_PROGRESS",
+      "priority": "MEDIUM",
+      "createdAt": "2025-12-27T06:18:46.369Z",
+      "updatedAt": null
+    }
+  ],
+  "ticketLabels": [
+    {
+      "ticketId": "ba0981a7-1829-487c-97f4-f2fc58eb1049",
+      "labelId": "428ad2bd-e180-45ff-9bb1-591dded0dede",
+      "createdAt": "2025-12-13T23:25:46.321Z"
+    },
+    {
+      "ticketId": "ba0981a7-1829-487c-97f4-f2fc58eb1049",
+      "labelId": "76ec7f99-a754-4411-80a2-3703065863cb",
+      "createdAt": "2025-12-13T23:25:46.321Z"
+    },
+    {
+      "ticketId": "3058b893-c413-46fd-897f-c7a029dedc53",
+      "labelId": "76ec7f99-a754-4411-80a2-3703065863cb",
+      "createdAt": "2025-12-14T17:27:16.495Z"
+    }
+  ],
+  "comments": [
+    {
+      "id": "358ebd48-bd97-4528-a16a-beb313e75345",
+      "ticketId": "9094f678-8cd4-483a-bcc9-a6538470db08",
+      "authorId": "9f9c9832-86a8-4db9-9ece-4f1c27287cd3",
+      "content": "Erster.",
+      "createdAt": "2025-12-15T03:24:27.469Z",
+      "updatedAt": null
+    },
+    {
+      "id": "c07deeef-9319-46cc-acf3-1729f113eb8c",
+      "ticketId": "9094f678-8cd4-483a-bcc9-a6538470db08",
+      "authorId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "content": "Zweiter.",
+      "createdAt": "2025-12-15T03:28:49.304Z",
+      "updatedAt": null
+    },
+    {
+      "id": "eefa88c0-0b4d-4de0-9c0d-bddd29b7ce53",
+      "ticketId": "9094f678-8cd4-483a-bcc9-a6538470db08",
+      "authorId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "content": "Dritter.",
+      "createdAt": "2025-12-15T03:29:15.264Z",
+      "updatedAt": null
+    },
+    {
+      "id": "9314835c-4b02-499a-ac06-83606dfc71cf",
+      "ticketId": "9094f678-8cd4-483a-bcc9-a6538470db08",
+      "authorId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "content": "Vierter",
+      "createdAt": "2025-12-15T03:31:08.093Z",
+      "updatedAt": null
+    },
+    {
+      "id": "4689df47-dadf-4693-bcfa-df7fd7d1ef99",
+      "ticketId": "9094f678-8cd4-483a-bcc9-a6538470db08",
+      "authorId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "content": "Fünfter",
+      "createdAt": "2025-12-15T03:32:39.070Z",
+      "updatedAt": null
+    },
+    {
+      "id": "d3a70df8-439f-49e8-b8fb-b936229a2a28",
+      "ticketId": "9094f678-8cd4-483a-bcc9-a6538470db08",
+      "authorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "content": "Admin Kommentar",
+      "createdAt": "2025-12-15T03:35:17.613Z",
+      "updatedAt": null
+    }
+  ],
+  "activities": [
+    {
+      "id": "7ebdcf42-7f2f-4586-b1bb-5fbbd749fd8a",
+      "ticketId": "ba0981a7-1829-487c-97f4-f2fc58eb1049",
+      "actorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "activityType": "LABEL_ADDED",
+      "detail": {
+        "labelId": "428ad2bd-e180-45ff-9bb1-591dded0dede",
+        "labelName": "feature",
+        "labelColor": "#0000FF"
+      },
+      "createdAt": "2025-12-13T23:25:34.887Z"
+    },
+    {
+      "id": "06bae33a-c028-4568-bed6-1b6934060326",
+      "ticketId": "ba0981a7-1829-487c-97f4-f2fc58eb1049",
+      "actorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "activityType": "LABEL_ADDED",
+      "detail": {
+        "labelId": "76ec7f99-a754-4411-80a2-3703065863cb",
+        "labelName": "bug",
+        "labelColor": "#FF0000"
+      },
+      "createdAt": "2025-12-13T23:25:46.321Z"
+    },
+    {
+      "id": "92edffa7-ffc5-4d5d-a6c0-26841fe7949e",
+      "ticketId": "3058b893-c413-46fd-897f-c7a029dedc53",
+      "actorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "activityType": "LABEL_ADDED",
+      "detail": {
+        "labelId": "76ec7f99-a754-4411-80a2-3703065863cb",
+        "labelName": "bug",
+        "labelColor": "#FF0000"
+      },
+      "createdAt": "2025-12-14T17:09:24.067Z"
+    },
+    {
+      "id": "f144f3e7-22ce-4612-afd6-73521eedd5f6",
+      "ticketId": "3058b893-c413-46fd-897f-c7a029dedc53",
+      "actorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "activityType": "LABEL_REMOVED",
+      "detail": {
+        "labelId": "76ec7f99-a754-4411-80a2-3703065863cb",
+        "labelName": "bug",
+        "labelColor": "#FF0000"
+      },
+      "createdAt": "2025-12-14T17:09:35.270Z"
+    },
+    {
+      "id": "16827326-e1e4-4a5c-9852-f14da9e27c62",
+      "ticketId": "3058b893-c413-46fd-897f-c7a029dedc53",
+      "actorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "activityType": "LABEL_ADDED",
+      "detail": {
+        "labelId": "76ec7f99-a754-4411-80a2-3703065863cb",
+        "labelName": "bug",
+        "labelColor": "#FF0000"
+      },
+      "createdAt": "2025-12-14T17:11:53.516Z"
+    },
+    {
+      "id": "012ff6ee-0384-44c1-a3b3-8b92a372bfef",
+      "ticketId": "3058b893-c413-46fd-897f-c7a029dedc53",
+      "actorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "activityType": "LABEL_REMOVED",
+      "detail": {
+        "labelId": "76ec7f99-a754-4411-80a2-3703065863cb",
+        "labelName": "bug",
+        "labelColor": "#FF0000"
+      },
+      "createdAt": "2025-12-14T17:12:01.859Z"
+    },
+    {
+      "id": "5b54e5dc-284d-42cf-802a-39905a9c98dc",
+      "ticketId": "3058b893-c413-46fd-897f-c7a029dedc53",
+      "actorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "activityType": "LABEL_ADDED",
+      "detail": {
+        "labelId": "76ec7f99-a754-4411-80a2-3703065863cb",
+        "labelName": "bug",
+        "labelColor": "#FF0000"
+      },
+      "createdAt": "2025-12-14T17:13:58.748Z"
+    },
+    {
+      "id": "f1fd80c5-c610-4d54-8c63-ea9a17529c11",
+      "ticketId": "3058b893-c413-46fd-897f-c7a029dedc53",
+      "actorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "activityType": "LABEL_REMOVED",
+      "detail": {
+        "labelId": "428ad2bd-e180-45ff-9bb1-591dded0dede",
+        "labelName": "feature",
+        "labelColor": "#0000FF"
+      },
+      "createdAt": "2025-12-14T17:14:08.169Z"
+    },
+    {
+      "id": "c631bc96-91e0-4db2-a46c-20fcbdfd02a1",
+      "ticketId": "3058b893-c413-46fd-897f-c7a029dedc53",
+      "actorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "activityType": "LABEL_ADDED",
+      "detail": {
+        "labelId": "428ad2bd-e180-45ff-9bb1-591dded0dede",
+        "labelName": "feature",
+        "labelColor": "#0000FF"
+      },
+      "createdAt": "2025-12-14T17:14:55.425Z"
+    },
+    {
+      "id": "fbea5d36-3784-4342-be61-9970f48db5c0",
+      "ticketId": "3058b893-c413-46fd-897f-c7a029dedc53",
+      "actorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "activityType": "LABEL_REMOVED",
+      "detail": {
+        "labelId": "76ec7f99-a754-4411-80a2-3703065863cb",
+        "labelName": "bug",
+        "labelColor": "#FF0000"
+      },
+      "createdAt": "2025-12-14T17:15:08.371Z"
+    },
+    {
+      "id": "3a9711ad-05af-4876-9acd-0fd69fa95e58",
+      "ticketId": "3058b893-c413-46fd-897f-c7a029dedc53",
+      "actorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "activityType": "LABEL_REMOVED",
+      "detail": {
+        "labelId": "428ad2bd-e180-45ff-9bb1-591dded0dede",
+        "labelName": "feature",
+        "labelColor": "#0000FF"
+      },
+      "createdAt": "2025-12-14T17:23:36.745Z"
+    },
+    {
+      "id": "a7a2a24f-f266-442b-ace1-d55ce123c1ea",
+      "ticketId": "3058b893-c413-46fd-897f-c7a029dedc53",
+      "actorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "activityType": "LABEL_ADDED",
+      "detail": {
+        "labelId": "428ad2bd-e180-45ff-9bb1-591dded0dede",
+        "labelName": "feature",
+        "labelColor": "#0000FF"
+      },
+      "createdAt": "2025-12-14T17:23:40.867Z"
+    },
+    {
+      "id": "a14c79a3-f906-47ee-a62f-fd5c7f2f2f48",
+      "ticketId": "3058b893-c413-46fd-897f-c7a029dedc53",
+      "actorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "activityType": "LABEL_ADDED",
+      "detail": {
+        "labelId": "76ec7f99-a754-4411-80a2-3703065863cb",
+        "labelName": "bug",
+        "labelColor": "#FF0000"
+      },
+      "createdAt": "2025-12-14T17:23:42.089Z"
+    },
+    {
+      "id": "b7ff32bc-938b-453b-8ebf-5f7e52bffbbc",
+      "ticketId": "3058b893-c413-46fd-897f-c7a029dedc53",
+      "actorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "activityType": "LABEL_REMOVED",
+      "detail": {
+        "labelId": "428ad2bd-e180-45ff-9bb1-591dded0dede",
+        "labelName": "feature",
+        "labelColor": "#0000FF"
+      },
+      "createdAt": "2025-12-14T17:23:51.798Z"
+    },
+    {
+      "id": "0ed99743-aa6d-47fa-a21e-0884ac586d17",
+      "ticketId": "3058b893-c413-46fd-897f-c7a029dedc53",
+      "actorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "activityType": "LABEL_ADDED",
+      "detail": {
+        "labelId": "428ad2bd-e180-45ff-9bb1-591dded0dede",
+        "labelName": "feature",
+        "labelColor": "#0000FF"
+      },
+      "createdAt": "2025-12-14T17:23:56.287Z"
+    },
+    {
+      "id": "14e83199-d1f0-427a-8175-4c6dc257a0f2",
+      "ticketId": "3058b893-c413-46fd-897f-c7a029dedc53",
+      "actorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "activityType": "LABEL_REMOVED",
+      "detail": {
+        "labelId": "428ad2bd-e180-45ff-9bb1-591dded0dede",
+        "labelName": "feature",
+        "labelColor": "#0000FF"
+      },
+      "createdAt": "2025-12-14T17:27:16.494Z"
+    },
+    {
+      "id": "c08a3c34-d00c-48ef-a250-dab58eea6111",
+      "ticketId": "3058b893-c413-46fd-897f-c7a029dedc53",
+      "actorId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "activityType": "STATUS_CHANGE",
+      "detail": {
+        "newValue": "IN_PROGRESS",
+        "oldValue": "OPEN"
+      },
+      "createdAt": "2025-12-14T17:34:38.486Z"
+    },
+    {
+      "id": "312ce23a-50b4-4bdb-b38f-02499253c1e2",
+      "ticketId": "3058b893-c413-46fd-897f-c7a029dedc53",
+      "actorId": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+      "activityType": "STATUS_CHANGE",
+      "detail": {
+        "newValue": "RESOLVED",
+        "oldValue": "IN_PROGRESS"
+      },
+      "createdAt": "2025-12-14T17:34:49.891Z"
+    },
+    {
+      "id": "1fe8daf1-b52b-4cd9-a14b-d9e7176fc97f",
+      "ticketId": "9094f678-8cd4-483a-bcc9-a6538470db08",
+      "actorId": "f1c1ab7c-6a76-4586-9f92-2e017f1da18e",
+      "activityType": "ASSIGNEE_CHANGE",
+      "detail": {
+        "newValue": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+        "oldValue": null,
+        "newAssigneeName": "Test Developer"
+      },
+      "createdAt": "2025-12-15T03:28:33.289Z"
+    },
+    {
+      "id": "963d4046-f00a-405f-a4fc-43618dcf58e2",
+      "ticketId": "9094f678-8cd4-483a-bcc9-a6538470db08",
+      "actorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "activityType": "STATUS_CHANGE",
+      "detail": {
+        "newValue": "IN_PROGRESS",
+        "oldValue": "OPEN"
+      },
+      "createdAt": "2025-12-17T02:40:35.017Z"
+    },
+    {
+      "id": "751c3c70-9fbf-4402-9cc1-a22cf804632b",
+      "ticketId": "9094f678-8cd4-483a-bcc9-a6538470db08",
+      "actorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "activityType": "STATUS_CHANGE",
+      "detail": {
+        "newValue": "RESOLVED",
+        "oldValue": "IN_PROGRESS"
+      },
+      "createdAt": "2025-12-17T02:40:49.946Z"
+    },
+    {
+      "id": "0b5ef8f0-fb01-42ad-b8b9-54134e436113",
+      "ticketId": "9094f678-8cd4-483a-bcc9-a6538470db08",
+      "actorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "activityType": "STATUS_CHANGE",
+      "detail": {
+        "newValue": "CLOSED",
+        "oldValue": "RESOLVED"
+      },
+      "createdAt": "2025-12-17T02:42:37.127Z"
+    },
+    {
+      "id": "539a7362-05ac-4a47-a57a-cf2b8ca2a25d",
+      "ticketId": "9094f678-8cd4-483a-bcc9-a6538470db08",
+      "actorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "activityType": "ASSIGNEE_CHANGE",
+      "detail": {
+        "newValue": null,
+        "oldValue": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+        "oldAssigneeName": "Test Developer"
+      },
+      "createdAt": "2025-12-17T02:49:13.268Z"
+    },
+    {
+      "id": "ed42a6cd-db4e-4586-8d35-aa8b8c94eef2",
+      "ticketId": "9094f678-8cd4-483a-bcc9-a6538470db08",
+      "actorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "activityType": "STATUS_CHANGE",
+      "detail": {
+        "newValue": "OPEN",
+        "oldValue": "CLOSED"
+      },
+      "createdAt": "2025-12-17T02:51:45.368Z"
+    },
+    {
+      "id": "d269444d-5787-4e48-b70b-3ac1387d758c",
+      "ticketId": "9094f678-8cd4-483a-bcc9-a6538470db08",
+      "actorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "activityType": "ASSIGNEE_CHANGE",
+      "detail": {
+        "newValue": null,
+        "oldValue": null
+      },
+      "createdAt": "2025-12-17T02:51:45.371Z"
+    },
+    {
+      "id": "4afcf432-34e5-414e-b6b5-1545cd11e0cf",
+      "ticketId": "9094f678-8cd4-483a-bcc9-a6538470db08",
+      "actorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "activityType": "LABEL_ADDED",
+      "detail": {
+        "labelId": "865b86ed-ecd9-4bc5-9ef4-c6ce2a3f5959",
+        "labelName": "improvement",
+        "labelColor": "#009688"
+      },
+      "createdAt": "2025-12-17T02:58:01.262Z"
+    },
+    {
+      "id": "59288480-e96c-4eba-89db-c8461529e2aa",
+      "ticketId": "9094f678-8cd4-483a-bcc9-a6538470db08",
+      "actorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "activityType": "ASSIGNEE_CHANGE",
+      "detail": {
+        "newValue": null,
+        "oldValue": null
+      },
+      "createdAt": "2025-12-17T02:58:55.426Z"
+    },
+    {
+      "id": "d178e711-b59e-4cfb-a2ce-53e5442b2948",
+      "ticketId": "9094f678-8cd4-483a-bcc9-a6538470db08",
+      "actorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "activityType": "STATUS_CHANGE",
+      "detail": {
+        "newValue": "CLOSED",
+        "oldValue": "OPEN"
+      },
+      "createdAt": "2025-12-17T02:59:12.891Z"
+    },
+    {
+      "id": "339395f8-110a-4332-94e5-91b0bf627850",
+      "ticketId": "9094f678-8cd4-483a-bcc9-a6538470db08",
+      "actorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "activityType": "ASSIGNEE_CHANGE",
+      "detail": {
+        "newValue": null,
+        "oldValue": null
+      },
+      "createdAt": "2025-12-17T02:59:12.897Z"
+    },
+    {
+      "id": "83a5757b-749f-4f8b-8172-6355d9c35fa1",
+      "ticketId": "9094f678-8cd4-483a-bcc9-a6538470db08",
+      "actorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "activityType": "LABEL_REMOVED",
+      "detail": {
+        "labelId": "865b86ed-ecd9-4bc5-9ef4-c6ce2a3f5959",
+        "labelName": "improvement",
+        "labelColor": "#009688"
+      },
+      "createdAt": "2025-12-17T03:00:40.208Z"
+    },
+    {
+      "id": "b5ec4809-5ec3-4e19-80ff-2f6a6f1811dc",
+      "ticketId": "9094f678-8cd4-483a-bcc9-a6538470db08",
+      "actorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "activityType": "ASSIGNEE_CHANGE",
+      "detail": {
+        "newValue": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+        "oldValue": null,
+        "newAssigneeName": "Test Developer"
+      },
+      "createdAt": "2025-12-17T03:01:23.530Z"
+    },
+    {
+      "id": "b11ec154-eded-46b0-937a-39a5f057e5f7",
+      "ticketId": "9094f678-8cd4-483a-bcc9-a6538470db08",
+      "actorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "activityType": "ASSIGNEE_CHANGE",
+      "detail": {
+        "newValue": null,
+        "oldValue": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+        "oldAssigneeName": "Test Developer"
+      },
+      "createdAt": "2025-12-17T03:03:43.161Z"
+    },
+    {
+      "id": "6f22800a-c7e8-43a0-a5f7-596806fce3b5",
+      "ticketId": "9094f678-8cd4-483a-bcc9-a6538470db08",
+      "actorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "activityType": "ASSIGNEE_CHANGE",
+      "detail": {
+        "newValue": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+        "oldValue": null,
+        "newAssigneeName": "Test Developer"
+      },
+      "createdAt": "2025-12-17T03:13:55.083Z"
+    },
+    {
+      "id": "c7a8fcd8-1e93-439c-8a31-e2c4c3e2a4d1",
+      "ticketId": "d4079387-d0e4-4192-b07b-bf30f057af3c",
+      "actorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "activityType": "STATUS_CHANGE",
+      "detail": {
+        "newValue": "CLOSED",
+        "oldValue": "OPEN"
+      },
+      "createdAt": "2025-12-17T03:22:34.644Z"
+    },
+    {
+      "id": "8591482f-47cb-48a5-9ffd-bbf149ee8f88",
+      "ticketId": "d4079387-d0e4-4192-b07b-bf30f057af3c",
+      "actorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "activityType": "ASSIGNEE_CHANGE",
+      "detail": {
+        "newValue": null,
+        "oldValue": null
+      },
+      "createdAt": "2025-12-17T03:22:34.647Z"
+    },
+    {
+      "id": "382108e7-c1a3-4036-8a81-f956e599b4bc",
+      "ticketId": "d4079387-d0e4-4192-b07b-bf30f057af3c",
+      "actorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "activityType": "ASSIGNEE_CHANGE",
+      "detail": {
+        "newValue": "3e1d532d-5ae7-4a32-99ca-0b9b2f383777",
+        "oldValue": null,
+        "newAssigneeName": "Test Developer"
+      },
+      "createdAt": "2025-12-17T04:50:39.394Z"
+    },
+    {
+      "id": "6574c6f5-c5b8-4cca-9185-beb09f637783",
+      "ticketId": "ba0981a7-1829-487c-97f4-f2fc58eb1049",
+      "actorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "activityType": "STATUS_CHANGE",
+      "detail": {
+        "newValue": "CLOSED",
+        "oldValue": "OPEN"
+      },
+      "createdAt": "2025-12-17T19:27:43.332Z"
+    },
+    {
+      "id": "34e63ece-9f1c-4f55-ad02-7513126a4790",
+      "ticketId": "9094f678-8cd4-483a-bcc9-a6538470db08",
+      "actorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "activityType": "STATUS_CHANGE",
+      "detail": {
+        "newValue": "IN_PROGRESS",
+        "oldValue": "CLOSED"
+      },
+      "createdAt": "2025-12-17T19:45:53.171Z"
+    },
+    {
+      "id": "f83b514e-fb29-462e-b0ab-c9693a3aadd3",
+      "ticketId": "3058b893-c413-46fd-897f-c7a029dedc53",
+      "actorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "activityType": "STATUS_CHANGE",
+      "detail": {
+        "newValue": "CLOSED",
+        "oldValue": "RESOLVED"
+      },
+      "createdAt": "2025-12-17T19:46:41.620Z"
+    },
+    {
+      "id": "77ad3db8-a661-4581-a97c-0c59e13cb09e",
+      "ticketId": "d4079387-d0e4-4192-b07b-bf30f057af3c",
+      "actorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "activityType": "STATUS_CHANGE",
+      "detail": {
+        "newValue": "IN_PROGRESS",
+        "oldValue": "CLOSED"
+      },
+      "createdAt": "2025-12-17T19:47:33.268Z"
+    },
+    {
+      "id": "ca93843b-41c6-40a5-8b13-30da43007ec6",
+      "ticketId": "bc50ff13-3f5d-4a86-b4eb-7463e8417d17",
+      "actorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "activityType": "ASSIGNEE_CHANGE",
+      "detail": {
+        "newValue": null,
+        "oldValue": null
+      },
+      "createdAt": "2025-12-27T05:59:04.728Z"
+    },
+    {
+      "id": "7fa9b114-5029-4c8b-aead-45f5be3f9450",
+      "ticketId": "8e7d82b0-66ee-43ca-a119-680a065bcf4d",
+      "actorId": "0ecc9001-254b-4058-8455-f0fc61e531da",
+      "activityType": "ASSIGNEE_CHANGE",
+      "detail": {
+        "newValue": null,
+        "oldValue": null
+      },
+      "createdAt": "2025-12-27T06:00:29.296Z"
+    }
+  ],
+  "exportedAt": "2025-12-27T07:19:14.756Z"
+}
