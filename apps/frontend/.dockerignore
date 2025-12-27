@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+dist/
+build/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Nx
+.nx/
+
+# Test files
+**/*.spec.ts
+**/*.test.ts
+cypress/
+e2e/
+
+# Temporary files
+tmp/
+temp/
