@@ -163,7 +163,7 @@ export class TicketActivitiesService {
         ticketId,
         actorId,
         activityType: TicketActivityType.ASSIGNEE_CHANGE,
-        detail: detail as unknown as Prisma.JsonValue,
+        detail: detail as Prisma.InputJsonValue,
       },
       include: {
         actor: {
@@ -217,7 +217,7 @@ export class TicketActivitiesService {
         ticketId,
         actorId,
         activityType: TicketActivityType.LABEL_ADDED,
-        detail: detail as unknown as Prisma.JsonValue,
+        detail: detail as Prisma.InputJsonValue,
       },
       include: {
         actor: {
@@ -271,7 +271,7 @@ export class TicketActivitiesService {
         ticketId,
         actorId,
         activityType: TicketActivityType.LABEL_REMOVED,
-        detail: detail as unknown as Prisma.JsonValue,
+        detail: detail as Prisma.InputJsonValue,
       },
       include: {
         actor: {
