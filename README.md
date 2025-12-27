@@ -1,99 +1,223 @@
 # Issue Tracker 🎯
 
-A modern full-stack issue tracking application built with cutting-edge technologies.
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![Angular](https://img.shields.io/badge/Angular-20.3-red?logo=angular)](https://angular.io/)
+[![NestJS](https://img.shields.io/badge/NestJS-11-ea2845?logo=nestjs)](https://nestjs.com/)
+[![Nx](https://img.shields.io/badge/Nx-22.2-143055?logo=nx)](https://nx.dev/)
+[![Prisma](https://img.shields.io/badge/Prisma-5.11-2D3748?logo=prisma)](https://www.prisma.io/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+[![CI](https://img.shields.io/badge/CI-GitHub_Actions-2088FF?logo=github-actions)](https://github.com/features/actions)
 
-## 🏗️ Architecture
+> **A modern, enterprise-grade issue tracking application built with a fully-typed Nx monorepo architecture.**
 
-This project uses an **Nx monorepo** architecture with:
+Dieses Projekt demonstriert Best Practices für moderne Full-Stack-Entwicklung mit TypeScript, Angular, NestJS und Prisma. Es wurde entwickelt, um professionelle Software-Engineering-Prinzipien zu zeigen: Clean Architecture, SOLID-Prinzipien, JWT-basierte Authentifizierung, RBAC-Autorisierung und CI/CD-Integration.
 
-- **Frontend**: Angular 20.3 with TypeScript
-- **Backend**: NestJS 11 with TypeScript
-- **Database**: Prisma ORM with SQLite (development) / PostgreSQL (production)
-- **Testing**: Jest (unit tests) + Cypress (E2E tests)
-- **Build System**: Nx Dev Tools with Webpack
+---
 
-## 📁 Project Structure
+## 📸 Screenshots
+
+<table>
+  <tr>
+    <td width="50%">
+      <img src="docs/screenshots/dashboard.png" alt="Dashboard" width="100%"/>
+      <p align="center"><b>Dashboard Übersicht</b></p>
+    </td>
+    <td width="50%">
+      <img src="docs/screenshots/ticket-list.png" alt="Ticket Liste" width="100%"/>
+      <p align="center"><b>Ticket-Verwaltung</b></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <img src="docs/screenshots/project-detail.png" alt="Projekt Details" width="100%"/>
+      <p align="center"><b>Projekt-Detail-Ansicht</b></p>
+    </td>
+    <td width="50%">
+      <img src="docs/screenshots/ticket-detail.png" alt="Ticket Details" width="100%"/>
+      <p align="center"><b>Ticket-Bearbeitung</b></p>
+    </td>
+  </tr>
+</table>
+
+> 📝 *Screenshots werden nach Deployment hinzugefügt*
+
+---
+
+## 🚀 Live Demo
+
+🔗 **[Live Demo ansehen](https://issue-tracker-demo.example.com)** *(wird nach Deployment hinzugefügt)*
+
+**Test-Zugangsdaten:**
+- Admin: `admin@example.com` / `admin123`
+- User: `user@example.com` / `user123`
+
+---
+
+## ✨ Features
+
+### 🎯 Kernfunktionen
+
+- ✅ **Vollständiges Issue-Management** - CRUD-Operationen mit Status & Prioritäten
+- ✅ **Projekt-basierte Organisation** - Multi-Projekt-Support mit Team-Verwaltung
+- ✅ **JWT-Authentifizierung** - Sichere Token-basierte Auth mit Refresh-Tokens
+- ✅ **Rollen-basierte Autorisierung (RBAC)** - Admin, Manager, Developer, Viewer-Rollen
+- ✅ **Policy-basiertes Berechtigungssystem** - Granulare Zugriffskontrolle
+- ✅ **Kommentar-System** - Ticket-Diskussionen mit Mentions
+- ✅ **Label-Management** - Flexible Kategorisierung
+- ✅ **Dashboard & Analytics** - Echtzeit-Statistiken und Charts
+- ✅ **Responsive UI** - Angular Material Design
+
+### 🔒 Sicherheit & Performance
+
+- ✅ **Password Hashing** - bcrypt mit salting
+- ✅ **Rate Limiting** - 100 Requests/Minute mit @nestjs/throttler
+- ✅ **CORS-Konfiguration** - Sichere Cross-Origin-Anfragen
+- ✅ **Input-Validierung** - class-validator DTOs
+- ✅ **SQL Injection Protection** - Prisma ORM Prepared Statements
+- ✅ **Health Checks** - `/health` Endpoint für Monitoring
+
+### 🛠️ Developer Experience
+
+- ✅ **Nx Monorepo** - Intelligentes Caching & Task-Orchestrierung
+- ✅ **Shared Types Library** - Typsichere API-Kommunikation
+- ✅ **Hot Module Replacement** - Schnelle Entwicklungszyklen
+- ✅ **ESLint + Prettier** - Konsistente Code-Qualität
+- ✅ **Jest Testing** - Unit & Integration Tests
+- ✅ **GitHub Actions CI/CD** - Automatisierte Pipelines
+
+---
+
+## 🏗️ Architektur
+
+### Monorepo-Struktur (Nx)
 
 ```
 issue-tracker/
 ├── apps/
-│   ├── frontend/           # Angular application
-│   ├── frontend-e2e/       # Frontend E2E tests
-│   ├── backend/            # NestJS API server
-│   └── backend-e2e/        # Backend E2E tests
+│   ├── frontend/           # Angular 20.3 SPA
+│   │   ├── src/app/
+│   │   │   ├── auth/       # Authentication Module
+│   │   │   ├── dashboard/  # Dashboard & Analytics
+│   │   │   ├── projects/   # Project Management
+│   │   │   ├── tickets/    # Ticket/Issue Management
+│   │   │   └── shared/     # Shared Components & Services
+│   │   └── proxy.conf.json # Development Proxy
+│   │
+│   └── backend/            # NestJS 11 API
+│       ├── src/app/
+│       │   ├── auth/       # JWT Auth + Guards
+│       │   ├── users/      # User Management
+│       │   ├── projects/   # Project Module
+│       │   ├── tickets/    # Ticket Module
+│       │   ├── comments/   # Comment System
+│       │   └── core/       # Policies, Decorators, Filters
+│       └── prisma/         # Database Schema & Migrations
+│
 ├── libs/
-│   └── shared-types/       # Shared DTOs, types, constants (used by frontend & backend)
-├── tools/                  # Custom tools and scripts
+│   └── shared-types/       # Shared DTOs, Enums, Constants
+│       ├── auth/           # Auth DTOs
+│       ├── projects/       # Project DTOs
+│       ├── tickets/        # Ticket DTOs
+│       └── constants/      # API Routes, Limits
+│
 └── docs/                   # Documentation
+    ├── backend/            # Backend-spezifische Docs
+    ├── frontend/           # Frontend-spezifische Docs
+    └── setup/              # Setup-Anleitungen
 ```
 
-## 🚀 Features
+### Tech Stack
 
-### Current Features
+#### Frontend
+- **Angular 20.3** - Progressive Web Framework
+- **TypeScript 5.9** - Statische Typisierung
+- **Angular Material** - UI Component Library
+- **RxJS** - Reaktive Programmierung
+- **ng2-charts** - Chart.js Integration
 
-- ✅ Nx monorepo setup with Angular frontend and NestJS backend
-- ✅ Prisma ORM integration with database migrations
-- ✅ Issue management data model (CRUD operations)
-- ✅ TypeScript throughout the stack
-- ✅ Modern development tooling (ESLint, Prettier, Jest)
+#### Backend
+- **NestJS 11** - Enterprise Node.js Framework
+- **Prisma 5.11** - Type-Safe ORM
+- **PostgreSQL** - Production Database
+- **SQLite** - Development Database
+- **Passport JWT** - Authentication Strategy
+- **bcrypt** - Password Hashing
 
-### Planned Features
+#### DevOps & Tools
+- **Nx 22.2** - Monorepo Build System
+- **Webpack** - Module Bundler
+- **Jest** - Testing Framework
+- **ESLint** - Linting
+- **GitHub Actions** - CI/CD Pipelines
 
-- 🔄 REST API endpoints for issue management
-- 🔄 Angular UI for issue tracking
-- 🔄 User authentication and authorization
-- 🔄 Real-time updates with WebSockets
-- 🔄 Advanced filtering and search
-- 🔄 Email notifications
-- 🔄 Dashboard with analytics
+---
 
-## 🛠️ Technology Stack
+## 📊 Database Schema (Prisma)
 
-### Frontend
+---
 
-- **Angular 20.3** - Modern web framework
-- **TypeScript** - Type-safe JavaScript
-- **SCSS** - Enhanced CSS with variables and mixins
-- **Cypress** - End-to-end testing
+## 📊 Database Schema (Prisma)
 
-### Backend
-
-- **NestJS 11** - Progressive Node.js framework
-- **Prisma** - Next-generation ORM
-- **SQLite** - Development database
-- **Jest** - Testing framework
-- **class-validator** - DTO validation with decorators
-
-### Shared Libraries
-
-- **@issue-tracker/shared-types** - Shared DTOs, types, and constants
-  - All DTOs are defined as classes with validation decorators
-  - Backend imports DTOs directly from shared-types (no local DTOs)
-  - Constants for API routes, validation limits, error codes
-
-### Development Tools
-
-- **Nx** - Smart monorepo build system
-- **ESLint** - Code linting
-- **Prettier** - Code formatting
-- **Webpack** - Module bundler
-
-## 📊 Database Schema
+<details>
+<summary>Vollständiges ERD anzeigen</summary>
 
 ```prisma
-model Issue {
-  id          String   @id @default(cuid())
+model User {
+  id            String          @id @default(cuid())
+  email         String          @unique
+  name          String
+  password      String
+  role          Role            @default(DEVELOPER)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  tickets       Ticket[]        @relation("AssignedTickets")
+  createdTickets Ticket[]       @relation("CreatedTickets")
+  comments      Comment[]
+  projectMembers ProjectMember[]
+  refreshTokens RefreshToken[]
+}
+
+model Project {
+  id          String          @id @default(cuid())
+  name        String
+  description String?
+  key         String          @unique
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  tickets     Ticket[]
+  labels      Label[]
+  members     ProjectMember[]
+}
+
+model Ticket {
+  id          String    @id @default(cuid())
   title       String
   description String?
-  status      Status   @default(OPEN)
-  priority    Priority @default(MEDIUM)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  status      Status    @default(OPEN)
+  priority    Priority  @default(MEDIUM)
+  projectId   String
+  project     Project   @relation(fields: [projectId], references: [id])
+  assigneeId  String?
+  assignee    User?     @relation("AssignedTickets", fields: [assigneeId], references: [id])
+  creatorId   String
+  creator     User      @relation("CreatedTickets", fields: [creatorId], references: [id])
+  labels      TicketLabel[]
+  comments    Comment[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+enum Role {
+  ADMIN
+  MANAGER
+  DEVELOPER
+  VIEWER
 }
 
 enum Status {
   OPEN
   IN_PROGRESS
+  IN_REVIEW
   CLOSED
 }
 
@@ -105,134 +229,335 @@ enum Priority {
 }
 ```
 
-## 🚦 Getting Started
+</details>
 
-### Prerequisites
+---
 
-- Node.js (LTS version)
-- npm or yarn
-- Git
+## 🚦 Quick Start
 
-### Installation
+### Voraussetzungen
 
-1. **Clone the repository**
+- **Node.js** 20.x oder höher ([Download](https://nodejs.org/))
+- **npm** 10.x oder höher
+- **Git** ([Download](https://git-scm.com/))
+- **PostgreSQL** (optional für Production) ([Download](https://www.postgresql.org/))
 
-   ```bash
-   git clone https://github.com/Ademdkr/issue-tracker.git
-   cd issue-tracker
-   ```
+### Installation in 3 Schritten
 
-2. **Install dependencies**
-
-   ```bash
-   npm install --legacy-peer-deps
-   ```
-
-3. **Setup the database**
-
-   ```bash
-   cd apps/backend
-   npx prisma generate
-   npx prisma migrate dev
-   ```
-
-4. **Start the development servers**
-
-   ```bash
-   # Backend (from root directory)
-   npx nx serve backend
-
-   # Frontend (in another terminal)
-   npx nx serve frontend
-   ```
-
-### Development URLs
-
-- **Frontend**: http://localhost:4200
-- **Backend API**: http://localhost:3000/api
-- **Prisma Studio**: `npx prisma studio` (from apps/backend)
-
-## 📚 Available Scripts
-
-### Development
+#### 1️⃣ Repository klonen
 
 ```bash
-# Start backend
-npx nx serve backend
-
-# Start frontend
-npx nx serve frontend
-
-# Build all projects
-npx nx build backend
-npx nx build frontend
+git clone https://github.com/Ademdkr/issue-tracker.git
+cd issue-tracker
 ```
 
-### Testing
+#### 2️⃣ Dependencies installieren
 
 ```bash
-# Run unit tests
+npm install --legacy-peer-deps
+```
+
+> **Hinweis:** Das Flag `--legacy-peer-deps` ist aktuell für Angular 20.3 erforderlich.
+
+#### 3️⃣ Datenbank initialisieren
+
+```bash
+# Prisma Client generieren
+npx prisma generate
+
+# Datenbank-Migrationen ausführen
+npx prisma migrate dev
+
+# (Optional) Seed-Daten laden
+npx prisma db seed
+```
+
+### 🎬 Anwendung starten
+
+**Option A: Beide Server gleichzeitig** (empfohlen für Development)
+
+```bash
+# Terminal 1: Backend starten (Port 3000)
+npx nx serve backend
+
+# Terminal 2: Frontend starten (Port 4200)
+npx nx serve frontend
+```
+
+**Option B: Mit wait-on** (automatisiert)
+
+```bash
+# Backend starten und warten bis verfügbar
+npm run backend:dev
+
+# In neuem Terminal: Frontend starten
+npm run frontend:dev
+```
+
+### 🌐 URLs nach Start
+
+| Service | URL | Beschreibung |
+|---------|-----|--------------|
+| **Frontend** | http://localhost:4200 | Angular SPA |
+| **Backend API** | http://localhost:3000/api | REST API |
+| **API Docs** | http://localhost:3000/api/docs | Swagger UI |
+| **Health Check** | http://localhost:3000/health | Health Endpoint |
+| **Prisma Studio** | http://localhost:5555 | DB-Browser (`npx prisma studio`) |
+
+---
+
+## 📚 API-Dokumentation
+
+Die REST API ist vollständig mit **Swagger/OpenAPI** dokumentiert.
+
+### Zugriff auf Swagger UI
+
+1. Backend starten: `npx nx serve backend`
+2. Öffne http://localhost:3000/api/docs
+3. Authentifizierung: Nutze den "Authorize"-Button mit deinem JWT-Token
+
+### API-Endpunkte Übersicht
+
+| Modul | Endpunkt | Methoden | Auth erforderlich |
+|-------|----------|----------|-------------------|
+| **Auth** | `/api/auth` | `POST /login`, `POST /register`, `POST /refresh` | ❌ |
+| **Users** | `/api/users` | `GET`, `GET /:id`, `PATCH /:id`, `DELETE /:id` | ✅ |
+| **Projects** | `/api/projects` | `GET`, `POST`, `GET /:id`, `PATCH /:id`, `DELETE /:id` | ✅ |
+| **Tickets** | `/api/tickets` | `GET`, `POST`, `GET /:id`, `PATCH /:id`, `DELETE /:id` | ✅ |
+| **Comments** | `/api/comments` | `GET`, `POST`, `DELETE /:id` | ✅ |
+| **Labels** | `/api/labels` | `GET`, `POST`, `PATCH /:id`, `DELETE /:id` | ✅ |
+
+**Beispiel-Request:**
+
+```bash
+# Login
+curl -X POST http://localhost:3000/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email": "admin@example.com", "password": "admin123"}'
+
+# Ticket erstellen (mit JWT Token)
+curl -X POST http://localhost:3000/api/tickets \
+  -H "Authorization: Bearer <your-jwt-token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Bug Fix",
+    "description": "Fix login error",
+    "projectId": "project-id",
+    "priority": "HIGH"
+  }'
+```
+
+---
+
+## 🧪 Testing
+
+### Unit Tests
+
+```bash
+# Backend Tests
 npx nx test backend
+
+# Frontend Tests
 npx nx test frontend
 
-# Run E2E tests
+# Mit Coverage-Report
+npx nx test backend --coverage
+npx nx test frontend --coverage
+```
+
+### E2E Tests
+
+```bash
+# Backend E2E Tests
 npx nx e2e backend-e2e
+
+# Frontend E2E Tests (Cypress)
 npx nx e2e frontend-e2e
 ```
 
-### Database Operations
+### Test-Coverage anzeigen
 
 ```bash
-# Generate Prisma client
-npx prisma generate
+# Nach dem Test mit --coverage
+open coverage/apps/backend/index.html  # macOS
+start coverage/apps/backend/index.html # Windows
+```
 
-# Create and run migration
-npx prisma migrate dev --name <migration-name>
+---
 
-# Open Prisma Studio
-npx prisma studio
+## 🛠️ Development Scripts
 
-# Reset database (development only!)
-npx prisma migrate reset
+### Build & Deploy
+
+```bash
+# Production Build
+npx nx build backend --configuration=production
+npx nx build frontend --configuration=production
+
+# Build für alle Projekte
+npx nx run-many -t build --all
+
+# Build nur geänderte Projekte
+npx nx affected -t build
 ```
 
 ### Code Quality
 
 ```bash
-# Lint all projects
+# Linting
 npx nx lint backend
 npx nx lint frontend
+npx nx run-many -t lint --all
 
-# Format code
-npx nx format
+# Formatting
+npx nx format:write  # Auto-fix
+npx nx format:check  # Nur prüfen
 
-# Show project graph
-npx nx graph
+# Type-Checking
+npx nx run backend:tsc
 ```
 
-## 📖 Documentation
+### Datenbank-Operationen
 
-- [Setup Guide](./SETUP_ANLEITUNG.md) - Detailed setup instructions (German)
-- [Prisma Setup](./apps/backend/PRISMA_SETUP.md) - Database setup guide
+```bash
+# Neue Migration erstellen
+npx prisma migrate dev --name <migration-name>
 
-## 🤝 Contributing
+# Migration auf Production anwenden
+npx prisma migrate deploy
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+# Prisma Studio öffnen (DB-Browser)
+npx prisma studio
 
-## 📝 License
+# Datenbank zurücksetzen (⚠️ nur Development!)
+npx prisma migrate reset
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+# Seed-Daten laden
+npx prisma db seed
+```
 
-## 🔗 Links
+### Nx Utilities
 
-- **Repository**: [GitHub](https://github.com/Ademdkr/issue-tracker)
-- **Issues**: [GitHub Issues](https://github.com/Ademdkr/issue-tracker/issues)
-- **Documentation**: [Nx Docs](https://nx.dev/), [NestJS Docs](https://nestjs.com/), [Angular Docs](https://angular.io/)
+```bash
+# Projekt-Abhängigkeiten visualisieren
+npx nx graph
+
+# Betroffene Projekte anzeigen
+npx nx affected:graph
+
+# Cache löschen
+npx nx reset
+```
 
 ---
 
-**Built with ❤️ using Nx, Angular, NestJS, and Prisma**
+## 📖 Dokumentation
+
+### Setup-Anleitungen
+
+- 📘 [Setup-Anleitung (Deutsch)](./docs/setup/SETUP_ANLEITUNG.md)
+- 📘 [Prisma Setup](./docs/setup/PRISMA_SETUP_ANLEITUNG.md)
+- 📘 [Docker Setup](./docs/setup/DOCKER_SETUP_ANLEITUNG.md)
+- 📘 [GitHub Setup](./docs/setup/GITHUB_ANLEITUNG.md)
+
+### Architektur & Design
+
+- 🏗️ [System-Architektur](./docs/ARCHITECTURE.md) *(wird erstellt)*
+- 🏗️ [Backend-Mapping-Strategie](./docs/backend/MAPPING_STRATEGY.md)
+- 🏗️ [Policy-System](./docs/backend/policy/policy-system-implementation.md)
+- 🏗️ [Frontend-Struktur](./docs/frontend/folder-structure.md)
+
+### Feature-Dokumentation
+
+- 🔐 [JWT-Authentifizierung](./docs/backend/auth/jwt-implementation-guide.md)
+- 🔐 [Authorization & Guards](./docs/backend/auth/authentication-guards.md)
+- 🎫 [Ticket-Management](./docs/TICKET_TABLE_IMPLEMENTATION_GUIDE.md)
+- 📊 [Dashboard-Implementierung](./docs/PROJECT_DETAIL_IMPLEMENTATION_GUIDE.md)
+
+### CI/CD & Deployment
+
+- 🚀 [CI/CD Setup](./CI_CD_SETUP.md)
+- 🚀 [CI Quickstart](./CI_QUICKSTART.md)
+- 🚀 [Production Readiness](./PRODUCTION_READINESS.md)
+- 🚀 [Performance-Optimierungen](./PERFORMANCE_OPTIMIZATIONS.md)
+
+---
+
+## 🤝 Contributing
+
+Contributions sind willkommen! Bitte lies die [CONTRIBUTING.md](./CONTRIBUTING.md) *(wird erstellt)* für Details zum Code of Conduct und Pull Request Prozess.
+
+### Development Workflow
+
+1. **Fork** das Repository
+2. **Branch erstellen**: `git checkout -b feature/amazing-feature`
+3. **Änderungen committen**: `git commit -m 'feat: add amazing feature'`
+4. **Push to Branch**: `git push origin feature/amazing-feature`
+5. **Pull Request** öffnen
+
+### Commit-Konventionen
+
+Wir nutzen [Conventional Commits](https://www.conventionalcommits.org/):
+
+```
+feat: neue Feature
+fix: Bug-Fix
+docs: Dokumentation
+style: Formatierung
+refactor: Code-Umstrukturierung
+test: Tests hinzufügen
+chore: Build-Prozess, Dependencies
+```
+
+---
+
+## 📝 License
+
+Dieses Projekt ist unter der **MIT License** lizenziert - siehe [LICENSE](./LICENSE) für Details.
+
+---
+
+## 👨‍💻 Autor
+
+**Adem Decker**
+- GitHub: [@Ademdkr](https://github.com/Ademdkr)
+- LinkedIn: [Adem Decker](https://linkedin.com/in/adem-decker) *(Platzhalter - bitte anpassen)*
+- Portfolio: [ademdecker.dev](https://ademdecker.dev) *(Platzhalter - bitte anpassen)*
+
+---
+
+## 🙏 Acknowledgments
+
+- **Nx Team** - Für das großartige Monorepo-Tool
+- **NestJS Team** - Für das Enterprise-Framework
+- **Prisma Team** - Für das moderne ORM
+- **Angular Team** - Für das robuste Frontend-Framework
+
+---
+
+## 🔗 Links & Ressourcen
+
+### Projekt
+
+- 📦 [npm Package](https://www.npmjs.com/package/@issue-tracker/source) *(falls veröffentlicht)*
+- 📊 [GitHub Issues](https://github.com/Ademdkr/issue-tracker/issues)
+- 🔀 [Pull Requests](https://github.com/Ademdkr/issue-tracker/pulls)
+- 📈 [Projekt-Board](https://github.com/users/Ademdkr/projects) *(optional)*
+
+### Technologie-Dokumentation
+
+- [Nx Documentation](https://nx.dev/)
+- [NestJS Documentation](https://nestjs.com/)
+- [Angular Documentation](https://angular.io/)
+- [Prisma Documentation](https://www.prisma.io/docs)
+- [TypeScript Documentation](https://www.typescriptlang.org/docs/)
+
+---
+
+<div align="center">
+
+**⭐ Wenn dir dieses Projekt gefällt, gib ihm einen Star auf GitHub! ⭐**
+
+Built with ❤️ using **Nx**, **Angular**, **NestJS**, and **Prisma**
+
+</div>
