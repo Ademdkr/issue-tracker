@@ -4,10 +4,10 @@
 
 Wir unterstützen aktiv die folgenden Versionen mit Sicherheitsupdates:
 
-| Version | Unterstützt          |
-| ------- | -------------------- |
-| 1.x.x   | :white_check_mark:   |
-| < 1.0   | :x:                  |
+| Version | Unterstützt        |
+| ------- | ------------------ |
+| 1.x.x   | :white_check_mark: |
+| < 1.0   | :x:                |
 
 ## Sicherheitslücken melden
 

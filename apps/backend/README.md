@@ -73,6 +73,7 @@ http://localhost:3000/api/docs
 ```
 
 ### Features der API-Docs:
+
 - ✅ Interaktive API-Exploration
 - ✅ Request/Response Schemas
 - ✅ JWT-Authentication Testing
@@ -131,6 +132,7 @@ curl -X POST http://localhost:3000/api/auth/login \
 ```
 
 Response:
+
 ```json
 {
   "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
@@ -152,12 +154,12 @@ curl -X GET http://localhost:3000/api/tickets \
 
 ## 🎭 Rollen & Berechtigungen
 
-| Rolle | Rechte |
-|-------|--------|
-| **REPORTER** | Tickets erstellen, eigene bearbeiten, kommentieren |
-| **DEVELOPER** | + Priorität setzen, selbst zuweisen, Status ändern |
-| **MANAGER** | + Anderen zuweisen, Mitglieder verwalten, Labels verwalten |
-| **ADMIN** | Alle Rechte + User-Verwaltung |
+| Rolle         | Rechte                                                     |
+| ------------- | ---------------------------------------------------------- |
+| **REPORTER**  | Tickets erstellen, eigene bearbeiten, kommentieren         |
+| **DEVELOPER** | + Priorität setzen, selbst zuweisen, Status ändern         |
+| **MANAGER**   | + Anderen zuweisen, Mitglieder verwalten, Labels verwalten |
+| **ADMIN**     | Alle Rechte + User-Verwaltung                              |
 
 ## 🛠️ Entwicklung
 
@@ -237,6 +239,7 @@ curl http://localhost:3000/api/health
 ```
 
 Response:
+
 ```json
 {
   "status": "ok",

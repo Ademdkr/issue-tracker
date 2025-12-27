@@ -39,7 +39,6 @@ Dieses Projekt demonstriert Best Practices für moderne Full-Stack-Entwicklung m
   </tr>
 </table>
 
-
 ---
 
 ## ✨ Features
@@ -516,11 +515,11 @@ Dieses Projekt ist unter der **MIT License** lizenziert - siehe [LICENSE](./LICE
 
 ## 👨‍💻 Autor
 
-**Adem Decker**
+**Adem Dokur**
 
 - GitHub: [@Ademdkr](https://github.com/Ademdkr)
-- LinkedIn: [Adem Decker](https://linkedin.com/in/adem-decker) _(Platzhalter - bitte anpassen)_
-- Portfolio: [ademdecker.dev](https://ademdecker.dev) _(Platzhalter - bitte anpassen)_
+- LinkedIn: [Adem Dokur](https://linkedin.com/in/adem-decker) _(Platzhalter - bitte anpassen)_
+- Portfolio: [ademdokur.dev](https://ademdokur.dev) _(Platzhalter - bitte anpassen)_
 
 ---
 

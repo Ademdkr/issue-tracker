@@ -36,6 +36,7 @@ und dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 ### Hinzugefügt
 
 - Vollständiges Issue-Management System
+
   - CRUD-Operationen für Tickets
   - Status & Prioritäten-Verwaltung
   - Label-System
@@ -43,22 +44,26 @@ und dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
   - Activity-Tracking
 
 - Projekt-Management
+
   - Projekt CRUD-Operationen
   - Mitglieder-Verwaltung
   - Rollenbasierte Zugriffskontrolle
 
 - Authentifizierung & Autorisierung
+
   - JWT-basierte Authentifizierung
   - Refresh Token Mechanismus
   - RBAC (Reporter, Developer, Manager, Admin)
   - Policy-basiertes Authorization System
 
 - Dashboard
+
   - Statistik-Übersicht
   - Ticket-Verteilung Charts
   - Activity-Feed
 
 - CI/CD Pipeline
+
   - GitHub Actions Workflows
   - Automated Testing
   - Code Quality Checks

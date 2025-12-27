@@ -25,13 +25,13 @@ Die Environment-Variablen sind bereits konfiguriert in:
 // apps/frontend/src/environments/environment.development.ts
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:3000/api'
+  apiUrl: 'http://localhost:3000/api',
 };
 
 // apps/frontend/src/environments/environment.ts
 export const environment = {
   production: true,
-  apiUrl: '/api'  // Production nutzt Relative URLs
+  apiUrl: '/api', // Production nutzt Relative URLs
 };
 ```
 
@@ -50,23 +50,27 @@ Frontend läuft auf: **http://localhost:4200**
 ## 📱 Features
 
 ### Authentifizierung
+
 - ✅ Login/Logout mit JWT
 - ✅ Automatische Token-Speicherung (localStorage)
 - ✅ Auth Guard für geschützte Routes
 - ✅ Redirect nach Login
 
 ### Dashboard
+
 - ✅ Projekt- & Ticket-Statistiken
 - ✅ Chart-Visualisierungen (ApexCharts)
 - ✅ Quick Actions
 
 ### Projekt-Management
+
 - ✅ Projekt-Liste mit Filtern
 - ✅ Projekt-Details mit Tabs
 - ✅ Mitglieder-Verwaltung
 - ✅ Label-Verwaltung
 
 ### Ticket-Management
+
 - ✅ Ticket-Liste mit Sortierung & Filterung
 - ✅ Ticket-Details mit Tabs (Overview, Comments, Activity)
 - ✅ Inline-Editing von Tickets
@@ -74,6 +78,7 @@ Frontend läuft auf: **http://localhost:4200**
 - ✅ Label-Tagging
 
 ### Kommentar-System
+
 - ✅ Kommentare erstellen/bearbeiten/löschen
 - ✅ Rich-Text-Editor (geplant)
 - ✅ Real-time Updates (geplant mit WebSockets)
@@ -100,10 +105,11 @@ export class Dashboard { }
 export class TicketsService {
   private ticketsSignal = signal<Ticket[]>([]);
   tickets = this.ticketsSignal.asReadonly();
-  
+
   loadTickets(): void {
-    this.http.get<Ticket[]>('/api/tickets')
-      .subscribe(tickets => this.ticketsSignal.set(tickets));
+    this.http
+      .get<Ticket[]>('/api/tickets')
+      .subscribe((tickets) => this.ticketsSignal.set(tickets));
   }
 }
 ```
@@ -112,12 +118,15 @@ export class TicketsService {
 
 ```typescript
 // HTTP Requests
-this.ticketsService.getTickets().pipe(
-  catchError(err => {
-    this.errorService.handleHttpError(err, 'Fehler beim Laden der Tickets');
-    return of([]);
-  })
-).subscribe(tickets => this.tickets = tickets);
+this.ticketsService
+  .getTickets()
+  .pipe(
+    catchError((err) => {
+      this.errorService.handleHttpError(err, 'Fehler beim Laden der Tickets');
+      return of([]);
+    })
+  )
+  .subscribe((tickets) => (this.tickets = tickets));
 ```
 
 ### Dependency Injection via inject()
@@ -185,9 +194,14 @@ Custom Material Theme in `styles.scss`:
 
 $primary: mat.define-palette(mat.$indigo-palette);
 $accent: mat.define-palette(mat.$pink-palette);
-$theme: mat.define-light-theme((
-  color: (primary: $primary, accent: $accent)
-));
+$theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $primary,
+      accent: $accent,
+    ),
+  )
+);
 
 @include mat.all-component-themes($theme);
 ```
@@ -223,9 +237,9 @@ sequenceDiagram
     AuthService->>AuthService: currentUserSignal.set(user)
     AuthService-->>Login Component: Success
     Login Component->>Router: navigate('/dashboard')
-    
+
     Note over User,AuthGuard: Bei geschützten Routes
-    
+
     User->>Router: Navigate to /tickets
     Router->>AuthGuard: canActivate()
     AuthGuard->>AuthService: isAuthenticated()
@@ -239,7 +253,7 @@ sequenceDiagram
 // Conditional Rendering basierend auf User-Rolle
 export class ProjectDetail {
   currentUser = inject(AuthService).currentUser;
-  
+
   canManageMembers(): boolean {
     const role = this.currentUser()?.role;
     return role === UserRole.MANAGER || role === UserRole.ADMIN;
@@ -250,9 +264,9 @@ export class ProjectDetail {
 ```html
 <!-- Template -->
 @if (canManageMembers()) {
-  <button mat-raised-button (click)="openMembersDialog()">
-    Mitglieder verwalten
-  </button>
+<button mat-raised-button (click)="openMembersDialog()">
+  Mitglieder verwalten
+</button>
 }
 ```
 
@@ -264,17 +278,17 @@ export class ProjectDetail {
 @Injectable({ providedIn: 'root' })
 export class ErrorService {
   private snackBar = inject(MatSnackBar);
-  
+
   handleHttpError(error: HttpErrorResponse, context: string): void {
     const message = this.extractErrorMessage(error);
     this.showError(`${context}: ${message}`);
     this.logError(context, error);
   }
-  
+
   showError(message: string): void {
     this.snackBar.open(message, 'Schließen', {
       duration: 5000,
-      panelClass: ['error-snackbar']
+      panelClass: ['error-snackbar'],
     });
   }
 }
@@ -284,10 +298,13 @@ export class ErrorService {
 
 ```typescript
 this.ticketsService.updateTicket(id, dto).subscribe({
-  next: (ticket) => this.ticket = ticket,
+  next: (ticket) => (this.ticket = ticket),
   error: (err) => {
-    inject(ErrorService).handleHttpError(err, 'Fehler beim Aktualisieren des Tickets');
-  }
+    inject(ErrorService).handleHttpError(
+      err,
+      'Fehler beim Aktualisieren des Tickets'
+    );
+  },
 });
 ```
 
@@ -411,8 +428,8 @@ npx webpack-bundle-analyzer dist/apps/frontend/browser/stats.json
 import { tap } from 'rxjs/operators';
 
 this.tickets$ = this.ticketsService.getTickets().pipe(
-  tap(tickets => console.log('Loaded tickets:', tickets)),
-  catchError(err => {
+  tap((tickets) => console.log('Loaded tickets:', tickets)),
+  catchError((err) => {
     console.error('Error:', err);
     return of([]);
   })

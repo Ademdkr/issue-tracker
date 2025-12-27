@@ -8,19 +8,19 @@ Im Interesse eines offenen und einladenden Umfelds verpflichten wir uns als Mitw
 
 Beispiele für Verhaltensweisen, die zur Schaffung eines positiven Umfelds beitragen:
 
-* Verwendung einer einladenden und inklusiven Sprache
-* Respektvoller Umgang mit unterschiedlichen Standpunkten und Erfahrungen
-* Konstruktive Kritik annehmen
-* Fokus auf das Beste für die Community
-* Empathie gegenüber anderen Community-Mitgliedern zeigen
+- Verwendung einer einladenden und inklusiven Sprache
+- Respektvoller Umgang mit unterschiedlichen Standpunkten und Erfahrungen
+- Konstruktive Kritik annehmen
+- Fokus auf das Beste für die Community
+- Empathie gegenüber anderen Community-Mitgliedern zeigen
 
 Beispiele für inakzeptables Verhalten:
 
-* Verwendung sexualisierter Sprache oder Bilder und unerwünschte sexuelle Aufmerksamkeit oder Annäherungsversuche
-* Trolling, beleidigende/abwertende Kommentare und persönliche oder politische Angriffe
-* Öffentliche oder private Belästigung
-* Veröffentlichung privater Informationen anderer ohne ausdrückliche Erlaubnis
-* Anderes Verhalten, das in einem professionellen Umfeld als unangemessen angesehen werden könnte
+- Verwendung sexualisierter Sprache oder Bilder und unerwünschte sexuelle Aufmerksamkeit oder Annäherungsversuche
+- Trolling, beleidigende/abwertende Kommentare und persönliche oder politische Angriffe
+- Öffentliche oder private Belästigung
+- Veröffentlichung privater Informationen anderer ohne ausdrückliche Erlaubnis
+- Anderes Verhalten, das in einem professionellen Umfeld als unangemessen angesehen werden könnte
 
 ## Unsere Verantwortlichkeiten
 

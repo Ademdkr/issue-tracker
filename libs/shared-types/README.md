@@ -49,10 +49,10 @@ libs/shared-types/src/lib/
 ```typescript
 // User Roles (RBAC)
 export enum UserRole {
-  REPORTER = 'REPORTER',     // Kann Tickets erstellen
-  DEVELOPER = 'DEVELOPER',   // Kann Tickets bearbeiten
-  MANAGER = 'MANAGER',       // Kann Projekt verwalten
-  ADMIN = 'ADMIN'           // Alle Rechte
+  REPORTER = 'REPORTER', // Kann Tickets erstellen
+  DEVELOPER = 'DEVELOPER', // Kann Tickets bearbeiten
+  MANAGER = 'MANAGER', // Kann Projekt verwalten
+  ADMIN = 'ADMIN', // Alle Rechte
 }
 
 // Ticket Status
@@ -61,7 +61,7 @@ export enum TicketStatus {
   IN_PROGRESS = 'IN_PROGRESS',
   IN_REVIEW = 'IN_REVIEW',
   RESOLVED = 'RESOLVED',
-  CLOSED = 'CLOSED'
+  CLOSED = 'CLOSED',
 }
 
 // Ticket Priority
@@ -69,7 +69,7 @@ export enum TicketPriority {
   LOW = 'LOW',
   MEDIUM = 'MEDIUM',
   HIGH = 'HIGH',
-  CRITICAL = 'CRITICAL'
+  CRITICAL = 'CRITICAL',
 }
 ```
 
@@ -187,8 +187,8 @@ export class TicketsService {
         title: dto.title,
         description: dto.description,
         status: TicketStatus.OPEN,
-        priority: dto.priority || TicketPriority.MEDIUM
-      }
+        priority: dto.priority || TicketPriority.MEDIUM,
+      },
     });
   }
 }
@@ -214,12 +214,12 @@ import { TicketStatus, TicketPriority } from '@issue-tracker/shared-types';
 export class TicketFormComponent {
   statusOptions = Object.values(TicketStatus);
   priorityOptions = Object.values(TicketPriority);
-  
+
   onSubmit(form: FormGroup) {
     const dto: CreateTicketDto = {
       title: form.value.title,
       description: form.value.description,
-      priority: form.value.priority
+      priority: form.value.priority,
     };
     // Compile-time check: alle required properties müssen gesetzt sein
   }
@@ -262,8 +262,8 @@ import { CreateTicketDto } from '@issue-tracker/shared-types';
 export enum TicketStatus {
   OPEN = 'OPEN',
   IN_PROGRESS = 'IN_PROGRESS',
-  COMPLETED = 'COMPLETED',  // NEU: renamed from RESOLVED
-  CLOSED = 'CLOSED'
+  COMPLETED = 'COMPLETED', // NEU: renamed from RESOLVED
+  CLOSED = 'CLOSED',
 }
 
 // TypeScript zeigt SOFORT Fehler in:
@@ -299,7 +299,7 @@ npx nx run shared-types:type-check
 graph LR
     Backend[Backend NestJS] --> SharedTypes[shared-types]
     Frontend[Frontend Angular] --> SharedTypes
-    
+
     SharedTypes --> Enums[enums/]
     SharedTypes --> Models[models/]
     SharedTypes --> DTOs[dtos/]
