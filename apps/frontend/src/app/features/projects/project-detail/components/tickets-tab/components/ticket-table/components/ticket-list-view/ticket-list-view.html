@@ -36,7 +36,7 @@
         @if (isEmptyRow(ticket)) {
         <span class="empty-cell">-</span>
         } @else {
-        <mat-chip [color]="getStatusColor(ticket.status)">
+        <mat-chip [class]="'status-' + ticket.status.toLowerCase()">
           {{ticket.status}}
         </mat-chip>
         }
@@ -50,7 +50,7 @@
         @if (isEmptyRow(ticket)) {
         <span class="empty-cell">-</span>
         } @else {
-        <mat-chip [color]="getPriorityColor(ticket.priority)">
+        <mat-chip [class]="'priority-' + ticket.priority.toLowerCase()">
           {{ticket.priority}}
         </mat-chip>
         }

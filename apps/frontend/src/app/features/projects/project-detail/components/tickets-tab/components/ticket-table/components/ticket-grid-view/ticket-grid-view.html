@@ -6,7 +6,7 @@
       <mat-card-title>
         <div class="card-title-row">
           <span class="ticket-title-text">{{ ticket.title }}</span>
-          <mat-chip [color]="getStatusColor(ticket.status)">
+          <mat-chip [class]="'status-' + ticket.status.toLowerCase()">
             {{ ticket.status }}
           </mat-chip>
         </div>
@@ -29,7 +29,7 @@
       <!-- Priority -->
       <div class="card-field">
         <mat-icon class="field-icon">flag</mat-icon>
-        <mat-chip [color]="getPriorityColor(ticket.priority)">
+        <mat-chip [class]="'priority-' + ticket.priority.toLowerCase()">
           {{ ticket.priority }}
         </mat-chip>
       </div>

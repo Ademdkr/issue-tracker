@@ -245,13 +245,9 @@ export class Layout implements OnInit {
       .update(this.selectedProject.id, { status: newStatus as any })
       .subscribe({
         next: () => {
-          this.snackBar.open(
-            `Projekt erfolgreich ${actionText}`,
-            'Schließen',
-            {
-              duration: 3000,
-            }
-          );
+          this.snackBar.open(`Projekt erfolgreich ${actionText}`, 'Schließen', {
+            duration: 3000,
+          });
           this.selectedProject!.status = newStatus as any;
           this.projectsService.notifyProjectCreated(); // Trigger reload
         },

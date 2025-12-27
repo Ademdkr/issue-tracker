@@ -163,8 +163,11 @@
         (click)="onToggleStatus()"
         class="toggle-status-button"
       >
-        <mat-icon>{{ project.status === 'OPEN' ? 'lock' : 'lock_open' }}</mat-icon>
-        {{ project.status === 'OPEN' ? 'Projekt schließen' : 'Projekt wieder öffnen' }}
+        <mat-icon
+          >{{ project.status === 'OPEN' ? 'lock' : 'lock_open' }}</mat-icon
+        >
+        {{ project.status === 'OPEN' ? 'Projekt schließen' : 'Projekt wieder
+        öffnen' }}
       </button>
 
       <button

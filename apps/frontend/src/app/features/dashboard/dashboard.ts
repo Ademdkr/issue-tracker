@@ -81,7 +81,7 @@ export class Dashboard implements OnInit {
       },
       title: {
         display: true,
-        text: 'Projekte nach Ticket-Anzahl',
+        text: 'Ticket-Anzahl nach Projekten',
       },
     },
   };
