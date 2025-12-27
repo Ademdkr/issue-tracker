@@ -52,9 +52,15 @@ export class DashboardService {
       });
       return projects.map((p) => p.id);
     } else if (userRole === UserRole.REPORTER) {
-      // Reporter sieht nur eigene Projekte
+      // Reporter sieht eigene Projekte + Projekte mit eigenen Tickets (als Reporter oder Assignee)
       const projects = await this.prisma.project.findMany({
-        where: { createdBy: userId },
+        where: {
+          OR: [
+            { createdBy: userId },
+            { tickets: { some: { reporterId: userId } } },
+            { tickets: { some: { assigneeId: userId } } },
+          ],
+        },
         select: { id: true },
       });
       return projects.map((p) => p.id);
