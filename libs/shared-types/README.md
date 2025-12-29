@@ -2,17 +2,17 @@
 
 Shared TypeScript type definitions and contracts for the Issue Tracker monorepo.
 
-## 🎯 Zweck
+## 🎯 Purpose
 
-Diese Library stellt **typsichere Schnittstellen** zwischen Backend (NestJS) und Frontend (Angular) bereit und garantiert:
+This library provides **type-safe interfaces** between Backend (NestJS) and Frontend (Angular) and guarantees:
 
-- ✅ **Single Source of Truth** für alle API-Contracts
-- ✅ **Compile-Time Type Safety** über Projekt-Grenzen hinweg
-- ✅ **Keine Type-Duplikation** zwischen Frontend und Backend
-- ✅ **Refactoring-Sicherheit** - Änderungen werden sofort in beiden Apps sichtbar
-- ✅ **Automatische IntelliSense** in beiden Projekten
+- ✅ **Single Source of Truth** for all API contracts
+- ✅ **Compile-Time Type Safety** across project boundaries
+- ✅ **No Type Duplication** between Frontend and Backend
+- ✅ **Refactoring Safety** - Changes are immediately visible in both apps
+- ✅ **Automatic IntelliSense** in both projects
 
-## 📁 Struktur
+## 📁 Structure
 
 ```
 libs/shared-types/src/lib/
@@ -42,17 +42,17 @@ libs/shared-types/src/lib/
     └── type-guards.ts  # isUser(), isTicket(), etc.
 ```
 
-## 🔑 Kern-Typen
+## 🔑 Core Types
 
 ### Enums
 
 ```typescript
 // User Roles (RBAC)
 export enum UserRole {
-  REPORTER = 'REPORTER', // Kann Tickets erstellen
-  DEVELOPER = 'DEVELOPER', // Kann Tickets bearbeiten
-  MANAGER = 'MANAGER', // Kann Projekt verwalten
-  ADMIN = 'ADMIN', // Alle Rechte
+  REPORTER = 'REPORTER', // Can create tickets
+  DEVELOPER = 'DEVELOPER', // Can edit tickets
+  MANAGER = 'MANAGER', // Can manage projects
+  ADMIN = 'ADMIN', // All rights
 }
 
 // Ticket Status
@@ -159,9 +159,9 @@ export interface TicketWithDetails {
 }
 ```
 
-## 🔄 Verwendung
+## 🔄 Usage
 
-### Im Backend (NestJS)
+### In Backend (NestJS)
 
 ```typescript
 // Controller
@@ -181,7 +181,7 @@ import { TicketStatus, TicketPriority } from '@issue-tracker/shared-types';
 @Injectable()
 export class TicketsService {
   async create(dto: CreateTicketDto): Promise<Ticket> {
-    // TypeScript kennt alle Properties von CreateTicketDto
+    // TypeScript knows all properties of CreateTicketDto
     return this.prisma.ticket.create({
       data: {
         title: dto.title,
@@ -194,7 +194,7 @@ export class TicketsService {
 }
 ```
 
-### Im Frontend (Angular)
+### In Frontend (Angular)
 
 ```typescript
 // Service
@@ -203,7 +203,7 @@ import { CreateTicketDto, Ticket } from '@issue-tracker/shared-types';
 @Injectable()
 export class TicketsService {
   createTicket(dto: CreateTicketDto): Observable<Ticket> {
-    // TypeScript validiert automatisch dass dto alle required fields hat
+    // TypeScript automatically validates that dto has all required fields
     return this.http.post<Ticket>('/api/tickets', dto);
   }
 }
@@ -221,72 +221,72 @@ export class TicketFormComponent {
       description: form.value.description,
       priority: form.value.priority,
     };
-    // Compile-time check: alle required properties müssen gesetzt sein
+    // Compile-time check: all required properties must be set
   }
 }
 ```
 
-## ✨ Vorteile
+## ✨ Benefits
 
-### 1. Type Safety über API-Grenzen
+### 1. Type Safety Across API Boundaries
 
 ```typescript
-// ❌ VORHER: Duplikation & Fehleranfälligkeit
+// ❌ BEFORE: Duplication & Error-Prone
 // Backend
 interface CreateTicketDto {
   title: string;
   description: string;
 }
 
-// Frontend (separat definiert!)
+// Frontend (defined separately!)
 interface CreateTicketRequest {
   title: string;
   description: string;
 }
 
-// Problem: Änderung im Backend → Frontend bricht ERST zur Runtime!
+// Problem: Changes in Backend → Frontend breaks ONLY at runtime!
 ```
 
 ```typescript
-// ✅ NACHHER: Shared Type
-// Backend & Frontend nutzen DIESELBE Definition
+// ✅ AFTER: Shared Type
+// Backend & Frontend use the SAME definition
 import { CreateTicketDto } from '@issue-tracker/shared-types';
 
-// Änderung → Compile-Fehler in beiden Projekten sofort sichtbar!
+// Changes → Compile errors in both projects immediately visible!
 ```
 
-### 2. Refactoring-Sicherheit
+### 2. Refactoring Safety
 
 ```typescript
-// Enum-Änderung in shared-types
+// Enum change in shared-types
 export enum TicketStatus {
   OPEN = 'OPEN',
   IN_PROGRESS = 'IN_PROGRESS',
-  COMPLETED = 'COMPLETED', // NEU: renamed from RESOLVED
+  COMPLETED = 'COMPLETED', // NEW: renamed from RESOLVED
   CLOSED = 'CLOSED',
 }
 
-// TypeScript zeigt SOFORT Fehler in:
+// TypeScript shows errors IMMEDIATELY in:
 // - Backend Controllers
 // - Backend Services
 // - Frontend Components
 // - Frontend Services
-// → Kein vergessener Code!
+// → No forgotten code!
 ```
 
 ### 3. IntelliSense & Autocomplete
 
-- IDE schlägt automatisch alle Properties vor
-- Typo-Fehler werden verhindert
-- API-Contracts sind selbst-dokumentierend
+- IDE automatically suggests all properties
+- Typo errors are prevented
+- API contracts are self-documenting
 
 ## 🏗️ Build & Development
 
 ```bash
-# Library bauen
+# Build library
 npx nx build shared-types
 
-# Tests ausführen
+# Run tests
 npx nx test shared-types
 
 # Type-Check
@@ -306,28 +306,28 @@ graph LR
     SharedTypes --> API[api/]
 ```
 
-## 📝 Konventionen
+## 📝 Conventions
 
 ### Naming
 
-- **Models**: `*.model.ts` - Domain Entities (z.B. `User`, `Ticket`)
-- **DTOs**: `*.dto.ts` - API Payloads (z.B. `CreateTicketDto`, `UpdateUserDto`)
-- **Enums**: `*.enums.ts` - Enumerations (z.B. `UserRole`, `TicketStatus`)
-- **Responses**: `responses.ts` - API Response Types (z.B. `LoginResponse`)
+- **Models**: `*.model.ts` - Domain Entities (e.g. `User`, `Ticket`)
+- **DTOs**: `*.dto.ts` - API Payloads (e.g. `CreateTicketDto`, `UpdateUserDto`)
+- **Enums**: `*.enums.ts` - Enumerations (e.g. `UserRole`, `TicketStatus`)
+- **Responses**: `responses.ts` - API Response Types (e.g. `LoginResponse`)
 
 ### Best Practices
 
-1. **Keine Business-Logic** - Nur Type Definitions & Interfaces
-2. **Immutability** - Prefer `readonly` für Properties
-3. **Optionale Properties** - Nutze `?` für optionale Felder
-4. **Type Aliases** - Nutze `type` für Union Types, `interface` für Objects
-5. **Barrel Exports** - Nutze `index.ts` für saubere Imports
+1. **No Business Logic** - Only Type Definitions & Interfaces
+2. **Immutability** - Prefer `readonly` for properties
+3. **Optional Properties** - Use `?` for optional fields
+4. **Type Aliases** - Use `type` for Union Types, `interface` for Objects
+5. **Barrel Exports** - Use `index.ts` for clean imports
 
-## 🔗 Externe Dependencies
+## 🔗 External Dependencies
 
-Diese Library hat **KEINE** Runtime-Dependencies - nur TypeScript Types.
+This library has **NO** runtime dependencies - only TypeScript types.
 
-## 📚 Weiterführende Dokumentation
+## 📚 Additional Documentation
 
 - [Shared Types Consistency Guide](../../docs/guides/shared-types/shared-types-consistency.md)
 - [Backend Architecture](../../docs/guides/backend/architecture.md)
@@ -335,12 +335,12 @@ Diese Library hat **KEINE** Runtime-Dependencies - nur TypeScript Types.
 
 ## 🤝 Contributing
 
-Bei Änderungen an Shared Types:
+When making changes to Shared Types:
 
-1. **Prüfe Impact**: `npx nx affected:graph`
-2. **Update beide Apps**: Backend + Frontend anpassen
-3. **Tests aktualisieren**: Unit Tests in beiden Projekten
-4. **Dokumentation**: README bei Breaking Changes aktualisieren
+1. **Check Impact**: `npx nx affected:graph`
+2. **Update Both Apps**: Adjust Backend + Frontend
+3. **Update Tests**: Unit tests in both projects
+4. **Documentation**: Update README for breaking changes
 
 ---
 
