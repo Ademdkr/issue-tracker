@@ -102,12 +102,9 @@ ENV NODE_ENV=production \
 # Expose port (Render uses PORT env variable)
 EXPOSE 3000
 
-# Health check optimized for Render
-EXPOSE 3000
-
-# Start the application with startup script
-CMD ["./start.sh
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
   CMD node -e "require('http').get('http://localhost:3000/api/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
 
-# Generate Prisma Client at runtime (skip ERD generator in production) and start the application
-CMD ["sh", "-c", "npx prisma generate --schema=./prisma/schema.prisma --generator client && node dist/main.js"]
+# Start the application with startup script
+CMD ["sh", "./start.sh"]
