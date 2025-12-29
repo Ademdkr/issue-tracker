@@ -46,7 +46,8 @@ RUN apk add --no-cache openssl curl
 # Production dependencies only
 COPY package*.json ./
 RUN npm ci --only=production --legacy-peer-deps && \
-  npm cache clean --force
+  npm cache clean --force && \
+  rm -rf node_modules/.prisma node_modules/@prisma/client/.prisma
 
 # Copy compiled app
 COPY --from=build /app/dist/apps/backend ./dist
@@ -70,5 +71,5 @@ EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
   CMD node -e "require('http').get('http://localhost:3000/api/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
 
-# Generate ONLY Prisma Client at startup (skip ERD generator in production)
-CMD npx prisma generate --generator client && node dist/main.js
+# Startup: Remove any cached Prisma Client, regenerate with production DATABASE_URL, run app
+CMD sh -c 'echo "=== DATABASE_URL Check ===" && echo "${DATABASE_URL}" | sed "s/:\/\/[^:]*:[^@]*@/:\/\/***:***@/" && echo "=== Cleaning old Prisma Client ===" && rm -rf node_modules/.prisma node_modules/@prisma/client/.prisma && echo "=== Generating fresh Prisma Client ===" && npx prisma generate --generator client && echo "=== Starting NestJS ===" && node dist/main.js'
