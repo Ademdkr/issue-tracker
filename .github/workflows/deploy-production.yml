@@ -55,10 +55,10 @@ jobs:
             echo "✅ Backend deployment triggered"
             curl -X POST "$FRONTEND_HOOK"
             echo "✅ Frontend deployment triggered"
-            
+
             echo "⏳ Waiting 300 seconds for deployments to complete..."
             sleep 300
-            
+
             echo "🏥 Running health check..."
             if curl --fail --retry 5 --retry-delay 15 https://issue-tracker.ademdokur.dev/api/health; then
               echo "✅ Health check passed - Backend is ready!"

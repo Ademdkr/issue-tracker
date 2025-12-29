@@ -2,7 +2,7 @@ name: CI
 
 # Temporär deaktiviert - nur deploy-production.yml aktiv
 on:
-  workflow_dispatch:  # Nur manuell ausführbar
+  workflow_dispatch: # Nur manuell ausführbar
   # push:
   #   branches:
   #     - master

@@ -45,7 +45,8 @@ COPY libs ./libs
 # Create docs directory for Prisma ERD generator
 RUN mkdir -p docs/architecture
 
-# Generate Prisma Client
+# Generate Prisma Client with dummy DATABASE_URL (will be regenerated at runtime)
+ENV DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy"
 RUN npx prisma generate --schema=./apps/backend/prisma/schema.prisma
 
 # Build backend
