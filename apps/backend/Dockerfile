@@ -104,5 +104,5 @@ EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
   CMD node -e "require('http').get('http://localhost:3000/api/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
 
-# Generate Prisma Client at runtime with actual DATABASE_URL and start the application
-CMD ["sh", "-c", "npx prisma generate --schema=./prisma/schema.prisma && node dist/main.js"]
+# Generate Prisma Client at runtime (skip ERD generator in production) and start the application
+CMD ["sh", "-c", "npx prisma generate --schema=./prisma/schema.prisma --generator client && node dist/main.js"]
