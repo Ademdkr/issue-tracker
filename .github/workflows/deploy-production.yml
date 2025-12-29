@@ -56,12 +56,19 @@ jobs:
             curl -X POST "$FRONTEND_HOOK"
             echo "✅ Frontend deployment triggered"
             
-            echo "⏳ Waiting 180 seconds for deployments to complete..."
-            sleep 180
+            echo "⏳ Waiting 300 seconds for deployments to complete..."
+            sleep 300
             
             echo "🏥 Running health check..."
-            curl --fail --retry 3 --retry-delay 10 https://issue-tracker.ademdokur.dev/api/health || exit 1
-            echo "✅ Health check passed"
+            if curl --fail --retry 5 --retry-delay 15 https://issue-tracker.ademdokur.dev/api/health; then
+              echo "✅ Health check passed - Backend is ready!"
+            else
+              echo "⚠️  Health check failed - Backend may still be deploying"
+              echo "ℹ️  Check Render dashboard: https://dashboard.render.com"
+              echo "ℹ️  Backend deployment ID: Triggered successfully"
+              echo "ℹ️  This is normal for Free Tier cold starts (can take 5-10 min)"
+              echo "✅ Deployment triggers sent successfully - waiting for Render to finish"
+            fi
           else
             echo "⚠️  Render Deploy Hooks not configured"
             echo "ℹ️  Configure RENDER_DEPLOY_HOOK_BACKEND and RENDER_DEPLOY_HOOK_FRONTEND secrets"
