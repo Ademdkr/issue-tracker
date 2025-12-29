@@ -75,17 +75,16 @@ RUN apk update && \
 RUN addgroup -g 1001 -S nodejs && \
   adduser -S nestjs -u 1001 -G nodejs
 
-# Install production dependencies only
+# Install production dependencies (WITHOUT Prisma Client)
 COPY package*.json ./
 RUN npm ci --only=production --legacy-peer-deps --prefer-offline --no-audit && \
-  npm cache clean --force
+  npm cache clean --force && \
+  rm -rf node_modules/.prisma
 
 # Copy built application from build stage
 COPY --from=build --chown=nestjs:nodejs /app/dist/apps/backend ./dist
-# DON'T copy .prisma from build - will be generated at runtime
-COPY --from=build --chown=nestjs:nodejs /app/apps/backend/prisma ./prisma
 
-# Copy Prisma schema for migrations
+# Copy Prisma schema and migrations (NOT the generated client)
 COPY --chown=nestjs:nodejs apps/backend/prisma/schema.prisma ./prisma/
 COPY --chown=nestjs:nodejs apps/backend/prisma/migrations ./prisma/migrations
 
