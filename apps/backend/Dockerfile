@@ -84,6 +84,10 @@ COPY --from=build --chown=nestjs:nodejs /app/node_modules/@prisma ./node_modules
 COPY --chown=nestjs:nodejs apps/backend/prisma/schema.prisma ./prisma/
 COPY --chown=nestjs:nodejs apps/backend/prisma/migrations ./prisma/migrations
 
+# Copy startup script
+COPY --chown=nestjs:nodejs apps/backend/start.sh ./start.sh
+RUN chmod +x ./start.sh
+
 # Set proper permissions
 RUN chown -R nestjs:nodejs /app
 
@@ -101,8 +105,8 @@ EXPOSE 3000
 # Health check optimized for Render
 EXPOSE 3000
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+# Start the application with startup script
+CMD ["./start.sh
   CMD node -e "require('http').get('http://localhost:3000/api/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
 
 # Generate Prisma Client at runtime (skip ERD generator in production) and start the application
