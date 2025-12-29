@@ -1,16 +1,18 @@
 name: CI
 
+# Temporär deaktiviert - nur deploy-production.yml aktiv
 on:
-  push:
-    branches:
-      - master
-      - main
-      - develop
-  pull_request:
-    branches:
-      - master
-      - main
-      - develop
+  workflow_dispatch:  # Nur manuell ausführbar
+  # push:
+  #   branches:
+  #     - master
+  #     - main
+  #     - develop
+  # pull_request:
+  #   branches:
+  #     - master
+  #     - main
+  #     - develop
 
 # Cancel in-progress runs when a new workflow with the same group name is triggered
 concurrency:
