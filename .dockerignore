@@ -3,6 +3,14 @@ node_modules
 npm-debug.log
 yarn-error.log
 
+# Environment files (NEVER copy to Docker)
+.env
+.env.*
+!.env.example
+apps/backend/.env
+apps/backend/.env.*
+!apps/backend/.env.example
+
 # Build outputs
 dist
 tmp
