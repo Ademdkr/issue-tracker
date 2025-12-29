@@ -38,8 +38,13 @@ RUN npm ci --legacy-peer-deps --prefer-offline --no-audit
 FROM dependencies AS build
 WORKDIR /app
 
-# Copy source code
-COPY apps/backend ./apps/backend
+# Copy source code (exclude .env files)
+COPY apps/backend/src ./apps/backend/src
+COPY apps/backend/prisma ./apps/backend/prisma
+COPY apps/backend/*.json ./apps/backend/
+COPY apps/backend/*.js ./apps/backend/
+COPY apps/backend/*.mjs ./apps/backend/
+COPY apps/backend/start.sh ./apps/backend/
 COPY libs ./libs
 
 # Create docs directory for Prisma ERD generator
