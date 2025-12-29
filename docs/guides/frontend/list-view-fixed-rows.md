@@ -67,7 +67,15 @@ export class TicketListView implements OnChanges, AfterViewInit {
   // Typ ändern zu TableTicket
   dataSource = new MatTableDataSource<TableTicket>([]);
 
-  displayedColumns: string[] = ['title', 'status', 'priority', 'assignee', 'reporterId', 'createdAt', 'updatedAt'];
+  displayedColumns: string[] = [
+    'title',
+    'status',
+    'priority',
+    'assignee',
+    'reporterId',
+    'createdAt',
+    'updatedAt',
+  ];
 
   private readonly FIXED_ROW_COUNT = 10;
 
@@ -106,10 +114,13 @@ export class TicketListView implements OnChanges, AfterViewInit {
     const emptyRowsNeeded = this.FIXED_ROW_COUNT - currentCount;
 
     // Erstelle leere Zeilen
-    const emptyRows: EmptyTicketRow[] = Array.from({ length: emptyRowsNeeded }, (_, index) => ({
-      id: `empty-${index}`,
-      isEmpty: true,
-    }));
+    const emptyRows: EmptyTicketRow[] = Array.from(
+      { length: emptyRowsNeeded },
+      (_, index) => ({
+        id: `empty-${index}`,
+        isEmpty: true,
+      })
+    );
 
     // Kombiniere echte Tickets mit leeren Zeilen
     return [...tickets, ...emptyRows];
@@ -190,7 +201,9 @@ Jede Spalte muss nun prüfen, ob es sich um eine leere Zeile handelt:
         @if (isEmptyRow(ticket)) {
         <span class="empty-cell">-</span>
         } @else {
-        <mat-chip [color]="getStatusColor(ticket.status)"> {{ticket.status}} </mat-chip>
+        <mat-chip [color]="getStatusColor(ticket.status)">
+          {{ticket.status}}
+        </mat-chip>
         }
       </td>
     </ng-container>
@@ -202,7 +215,9 @@ Jede Spalte muss nun prüfen, ob es sich um eine leere Zeile handelt:
         @if (isEmptyRow(ticket)) {
         <span class="empty-cell">-</span>
         } @else {
-        <mat-chip [color]="getPriorityColor(ticket.priority)"> {{ticket.priority}} </mat-chip>
+        <mat-chip [color]="getPriorityColor(ticket.priority)">
+          {{ticket.priority}}
+        </mat-chip>
         }
       </td>
     </ng-container>
@@ -248,10 +263,20 @@ Jede Spalte muss nun prüfen, ob es sich um eine leere Zeile handelt:
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;" [class.ticket-row]="!isEmptyRow(row)" [class.empty-row]="isEmptyRow(row)" (click)="onRowClick(row)"></tr>
+    <tr
+      mat-row
+      *matRowDef="let row; columns: displayedColumns;"
+      [class.ticket-row]="!isEmptyRow(row)"
+      [class.empty-row]="isEmptyRow(row)"
+      (click)="onRowClick(row)"
+    ></tr>
   </table>
 
-  <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="25" showFirstLastButtons></mat-paginator>
+  <mat-paginator
+    [pageSizeOptions]="[10, 25, 50, 100]"
+    [pageSize]="25"
+    showFirstLastButtons
+  ></mat-paginator>
 </div>
 ```
 
@@ -306,7 +331,11 @@ Wenn du Pagination verwendest und immer 10 Zeilen pro Seite zeigen willst:
 **ticket-list-view.html:**
 
 ```html
-<mat-paginator [pageSizeOptions]="[10]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+<mat-paginator
+  [pageSizeOptions]="[10]"
+  [pageSize]="10"
+  showFirstLastButtons
+></mat-paginator>
 ```
 
 **ticket-list-view.ts:**

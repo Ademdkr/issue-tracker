@@ -296,7 +296,10 @@ private extractProjectId(params: Record<string, unknown>): string {
 #### Zugriffsprüfung via ProjectsService
 
 ```typescript
-const hasAccess = await this.projectsService.hasProjectAccess(projectId, user.id);
+const hasAccess = await this.projectsService.hasProjectAccess(
+  projectId,
+  user.id
+);
 ```
 
 **Was macht `hasProjectAccess()`?**
@@ -397,7 +400,9 @@ describe('CurrentUserGuard', () => {
       headers: {}, // ← Kein x-user-id Header
     });
 
-    await expect(guard.canActivate(context)).rejects.toThrow(UnauthorizedException);
+    await expect(guard.canActivate(context)).rejects.toThrow(
+      UnauthorizedException
+    );
   });
 
   it('should set request.user when valid user ID', async () => {
@@ -440,7 +445,9 @@ describe('ProjectAccessGuard', () => {
       params: { id: 'project-id' },
     });
 
-    await expect(guard.canActivate(context)).rejects.toThrow(ForbiddenException);
+    await expect(guard.canActivate(context)).rejects.toThrow(
+      ForbiddenException
+    );
   });
 });
 ```

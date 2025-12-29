@@ -52,9 +52,9 @@
               'Passwort ' + (hidePassword ? 'anzeigen' : 'verbergen')
             "
           >
-            <mat-icon>{{
-              hidePassword ? 'visibility_off' : 'visibility'
-            }}</mat-icon>
+            <mat-icon
+              >{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon
+            >
           </button>
           <mat-error
             *ngIf="

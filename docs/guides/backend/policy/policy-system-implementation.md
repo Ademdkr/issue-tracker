@@ -158,7 +158,8 @@ class DeleteTicketPolicyHandler extends PolicyHandler<Ticket> {
 ### Syntax
 
 ```typescript
-export const CheckPolicies = (...handlers: PolicyHandlerClass[]) => Reflect.metadata(CHECK_POLICIES_KEY, handlers);
+export const CheckPolicies = (...handlers: PolicyHandlerClass[]) =>
+  Reflect.metadata(CHECK_POLICIES_KEY, handlers);
 ```
 
 ### Syntax-Erklärung
@@ -260,7 +261,10 @@ Beide zusammen ermöglichen dynamisches Policy-Loading.
 #### Schritt 1: Policy Handler Classes aus Metadaten holen
 
 ```typescript
-const policyHandlers = this.reflector.get<PolicyHandlerClass[]>(CHECK_POLICIES_KEY, context.getHandler());
+const policyHandlers = this.reflector.get<PolicyHandlerClass[]>(
+  CHECK_POLICIES_KEY,
+  context.getHandler()
+);
 ```
 
 **Was passiert hier?**
@@ -404,7 +408,9 @@ Bei 3 Policies:
 
 ```typescript
 if (!allowed) {
-  throw new ForbiddenException(`Access denied: ${HandlerClass.name} policy failed`);
+  throw new ForbiddenException(
+    `Access denied: ${HandlerClass.name} policy failed`
+  );
 }
 ```
 
@@ -560,12 +566,16 @@ export class AuthModule {}
 ```typescript
 // Konfigurationsfehler (sollte nie in Production passieren)
 if (!handler) {
-  throw new Error(`Policy handler ${HandlerClass.name} not found in DI container`);
+  throw new Error(
+    `Policy handler ${HandlerClass.name} not found in DI container`
+  );
 }
 
 // Runtime-Fehler (erwarteter Fehlerfall)
 if (!allowed) {
-  throw new ForbiddenException(`Access denied: ${HandlerClass.name} policy failed`);
+  throw new ForbiddenException(
+    `Access denied: ${HandlerClass.name} policy failed`
+  );
 }
 ```
 

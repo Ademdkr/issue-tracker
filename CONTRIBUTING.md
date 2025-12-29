@@ -39,22 +39,26 @@ Dieses Projekt folgt dem [Contributor Covenant Code of Conduct](./CODE_OF_CONDUC
 1. **Fork das Repository** auf GitHub
 
 2. **Clone deinen Fork**
+
    ```bash
    git clone https://github.com/DEIN-USERNAME/issue-tracker.git
    cd issue-tracker
    ```
 
 3. **Upstream Remote hinzufügen**
+
    ```bash
    git remote add upstream https://github.com/Ademdkr/issue-tracker.git
    ```
 
 4. **Dependencies installieren**
+
    ```bash
    npm install --legacy-peer-deps
    ```
 
 5. **Datenbank initialisieren**
+
    ```bash
    npx prisma generate
    npx prisma migrate dev
@@ -62,6 +66,7 @@ Dieses Projekt folgt dem [Contributor Covenant Code of Conduct](./CODE_OF_CONDUC
    ```
 
 6. **Development Server starten**
+
    ```bash
    # Terminal 1: Backend
    npx nx serve backend
@@ -85,6 +90,7 @@ git checkout -b feature/deine-feature-beschreibung
 ```
 
 **Branch-Naming-Konventionen:**
+
 - `feature/` - Neue Features
 - `fix/` - Bug-Fixes
 - `docs/` - Dokumentation
@@ -93,6 +99,7 @@ git checkout -b feature/deine-feature-beschreibung
 - `chore/` - Build-Prozess, Dependencies
 
 **Beispiele:**
+
 ```bash
 git checkout -b feature/add-ticket-filters
 git checkout -b fix/login-validation-error
@@ -155,6 +162,7 @@ Erstelle dann einen Pull Request auf GitHub.
 - **Enums** vermeiden, nutze Union Types
 
 **Gut:**
+
 ```typescript
 interface User {
   id: string;
@@ -168,9 +176,11 @@ function getUserById(id: string): Promise<User | null> {
 ```
 
 **Schlecht:**
+
 ```typescript
-function getUser(id) {  // ❌ Fehlende Typen
-  return users.find(u => u.id === id);
+function getUser(id) {
+  // ❌ Fehlende Typen
+  return users.find((u) => u.id === id);
 }
 ```
 
@@ -184,6 +194,7 @@ function getUser(id) {  // ❌ Fehlende Typen
 - **Exception Filters** für Error Handling
 
 **Beispiel:**
+
 ```typescript
 // ✅ Gut
 import { CreateTicketDto } from '@issue-tracker/shared-types';
@@ -209,6 +220,7 @@ export class TicketsController {
 - **Typed Services** mit Interfaces
 
 **Beispiel:**
+
 ```typescript
 // ✅ Gut
 @Component({
@@ -216,7 +228,7 @@ export class TicketsController {
   standalone: true,
   imports: [CommonModule, MatTableModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `...`
+  template: `...`,
 })
 export class TicketListComponent implements OnInit {
   tickets$ = this.ticketService.getTickets();
@@ -307,26 +319,32 @@ Bevor du einen PR öffnest, stelle sicher:
 
 ```markdown
 ## Beschreibung
+
 Kurze Beschreibung der Änderungen.
 
 ## Typ der Änderung
+
 - [ ] Bug-Fix
 - [ ] Neues Feature
 - [ ] Breaking Change
 - [ ] Dokumentation
 
 ## Änderungen
+
 - Ändert X
 - Fügt Y hinzu
 - Entfernt Z
 
 ## Testing
+
 Wie wurde getestet?
 
 ## Screenshots (falls UI-Änderungen)
+
 Füge Screenshots hinzu.
 
 ## Checklist
+
 - [ ] Tests hinzugefügt
 - [ ] Dokumentation aktualisiert
 - [ ] Keine Breaking Changes (oder dokumentiert)
@@ -369,6 +387,7 @@ describe('TicketListComponent', () => {
 - **Critical Paths** (Auth, Payments) 90%+
 
 Coverage prüfen:
+
 ```bash
 npx nx test backend --coverage
 npx nx test frontend --coverage
@@ -449,6 +468,7 @@ Feature-Ideen sind willkommen! Bitte:
 ## 📞 Fragen?
 
 Bei Fragen:
+
 - 💬 Öffne ein [GitHub Discussion](https://github.com/Ademdkr/issue-tracker/discussions)
 - 📧 Kontaktiere [@Ademdkr](https://github.com/Ademdkr)
 

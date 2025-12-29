@@ -180,7 +180,12 @@ export class AuthService {
 **Nachher:**
 
 ```typescript
-import { User, UserRole, LoginDto, LoginResponse } from '@issue-tracker/shared-types';
+import {
+  User,
+  UserRole,
+  LoginDto,
+  LoginResponse,
+} from '@issue-tracker/shared-types';
 
 // LoginResponse Interface entfernt!
 
@@ -207,7 +212,10 @@ export class AuthService {
 **Vorher:**
 
 ```typescript
-import { AuthService, LoginResponse } from '../../../core/services/auth.service';
+import {
+  AuthService,
+  LoginResponse,
+} from '../../../core/services/auth.service';
 ```
 
 **Nachher:**

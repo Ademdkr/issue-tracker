@@ -41,7 +41,10 @@ export class TicketsService {
 
   constructor(private http: HttpClient) {}
 
-  findAllByProject(projectId: string, filters?: TicketFilters): Observable<Ticket[]> {
+  findAllByProject(
+    projectId: string,
+    filters?: TicketFilters
+  ): Observable<Ticket[]> {
     let params = new HttpParams().set('projectId', projectId);
 
     if (filters) {
@@ -83,7 +86,10 @@ import { takeUntil, debounceTime } from 'rxjs/operators';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
 import { TicketsService } from '../../../../../core/services/tickets.service';
-import { Ticket, TicketFilters as TicketFiltersType } from '@issue-tracker/shared-types';
+import {
+  Ticket,
+  TicketFilters as TicketFiltersType,
+} from '@issue-tracker/shared-types';
 import { TicketFilters as TicketFiltersComponent } from './components/ticket-filters/ticket-filters';
 import { TicketViewToggle } from './components/ticket-view-toggle/ticket-view-toggle';
 import { TicketTable } from './components/ticket-table/ticket-table';
@@ -118,10 +124,12 @@ export class TicketsTab implements OnInit, OnDestroy {
 
   constructor(private ticketsService: TicketsService) {
     // Debounce filter changes
-    this.filterSubject$.pipe(debounceTime(300), takeUntil(this.destroy$)).subscribe((filters) => {
-      this.currentFilters = filters;
-      this.loadTickets();
-    });
+    this.filterSubject$
+      .pipe(debounceTime(300), takeUntil(this.destroy$))
+      .subscribe((filters) => {
+        this.currentFilters = filters;
+        this.loadTickets();
+      });
   }
 
   ngOnInit(): void {
@@ -185,9 +193,14 @@ Das `TicketFilters` Interface aus shared-types wird als `TicketFiltersType` impo
 <div class="tickets-tab-container">
   <!-- Filter-Section -->
   <div class="filters-section">
-    <app-ticket-filters (filtersChange)="onFiltersChange($event)"></app-ticket-filters>
+    <app-ticket-filters
+      (filtersChange)="onFiltersChange($event)"
+    ></app-ticket-filters>
 
-    <app-ticket-view-toggle [viewMode]="viewMode" (viewModeChange)="onViewModeChange($event)"></app-ticket-view-toggle>
+    <app-ticket-view-toggle
+      [viewMode]="viewMode"
+      (viewModeChange)="onViewModeChange($event)"
+    ></app-ticket-view-toggle>
   </div>
 
   <!-- Loading State -->
@@ -202,14 +215,20 @@ Das `TicketFilters` Interface aus shared-types wird als `TicketFiltersType` impo
   @if (error && !isLoading) {
   <div class="error-container">
     <p class="error-message">{{error}}</p>
-    <button mat-raised-button color="primary" (click)="loadTickets()">Erneut versuchen</button>
+    <button mat-raised-button color="primary" (click)="loadTickets()">
+      Erneut versuchen
+    </button>
   </div>
   }
 
   <!-- Tickets Table -->
   @if (!isLoading && !error) {
   <div class="table-container">
-    <app-ticket-table [tickets]="filteredTickets" [viewMode]="viewMode" (ticketClick)="onTicketClick($event)"></app-ticket-table>
+    <app-ticket-table
+      [tickets]="filteredTickets"
+      [viewMode]="viewMode"
+      (ticketClick)="onTicketClick($event)"
+    ></app-ticket-table>
   </div>
   }
 </div>
@@ -286,7 +305,14 @@ import { TicketFilters as TicketFiltersType } from '@issue-tracker/shared-types'
 @Component({
   selector: 'app-ticket-filters',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatSelectModule, MatInputModule, MatIconModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    MatIconModule,
+  ],
   templateUrl: './ticket-filters.html',
   styleUrl: './ticket-filters.scss',
 })
@@ -324,7 +350,9 @@ export class TicketFilters {
 
   constructor() {
     // Emit filters on any change
-    this.filterForm.valueChanges.pipe(debounceTime(300)).subscribe(() => this.emitFilters());
+    this.filterForm.valueChanges
+      .pipe(debounceTime(300))
+      .subscribe(() => this.emitFilters());
   }
 
   emitFilters(): void {
@@ -334,7 +362,10 @@ export class TicketFilters {
       status: formValue.status || undefined,
       priority: formValue.priority || undefined,
       assigneeId: formValue.assigneeId || undefined,
-      labelIds: formValue.labelIds && formValue.labelIds.length > 0 ? formValue.labelIds : undefined,
+      labelIds:
+        formValue.labelIds && formValue.labelIds.length > 0
+          ? formValue.labelIds
+          : undefined,
       search: formValue.search || undefined,
     };
 
@@ -370,7 +401,11 @@ export class TicketFilters {
   <!-- Suche -->
   <mat-form-field appearance="outline" class="search-field">
     <mat-label>Tickets durchsuchen</mat-label>
-    <input matInput formControlName="search" placeholder="Titel oder Beschreibung..." />
+    <input
+      matInput
+      formControlName="search"
+      placeholder="Titel oder Beschreibung..."
+    />
     <mat-icon matPrefix>search</mat-icon>
   </mat-form-field>
 
@@ -378,7 +413,9 @@ export class TicketFilters {
   <mat-form-field appearance="outline">
     <mat-label>Status</mat-label>
     <mat-select formControlName="status">
-      <mat-option *ngFor="let option of statusOptions" [value]="option.value"> {{ option.label }} </mat-option>
+      <mat-option *ngFor="let option of statusOptions" [value]="option.value">
+        {{ option.label }}
+      </mat-option>
     </mat-select>
   </mat-form-field>
 
@@ -386,7 +423,9 @@ export class TicketFilters {
   <mat-form-field appearance="outline">
     <mat-label>Priorität</mat-label>
     <mat-select formControlName="priority">
-      <mat-option *ngFor="let option of priorityOptions" [value]="option.value"> {{ option.label }} </mat-option>
+      <mat-option *ngFor="let option of priorityOptions" [value]="option.value">
+        {{ option.label }}
+      </mat-option>
     </mat-select>
   </mat-form-field>
 
@@ -394,7 +433,9 @@ export class TicketFilters {
   <mat-form-field appearance="outline">
     <mat-label>Zuständig</mat-label>
     <mat-select formControlName="assigneeId">
-      <mat-option *ngFor="let option of assigneeOptions" [value]="option.value"> {{ option.label }} </mat-option>
+      <mat-option *ngFor="let option of assigneeOptions" [value]="option.value">
+        {{ option.label }}
+      </mat-option>
     </mat-select>
   </mat-form-field>
 
@@ -402,12 +443,19 @@ export class TicketFilters {
   <mat-form-field appearance="outline">
     <mat-label>Labels</mat-label>
     <mat-select formControlName="labelIds" multiple>
-      <mat-option *ngFor="let option of labelOptions" [value]="option.value"> {{ option.label }} </mat-option>
+      <mat-option *ngFor="let option of labelOptions" [value]="option.value">
+        {{ option.label }}
+      </mat-option>
     </mat-select>
   </mat-form-field>
 
   <!-- Reset Button -->
-  <button mat-button type="button" (click)="resetFilters()" class="reset-button">
+  <button
+    mat-button
+    type="button"
+    (click)="resetFilters()"
+    class="reset-button"
+  >
     <mat-icon>clear</mat-icon>
     Filter zurücksetzen
   </button>
@@ -452,7 +500,15 @@ Material Table mit Sorting und Pagination.
 ```typescript
 // ticket-table.ts
 
-import { Component, Input, Output, EventEmitter, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  ViewChild,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatSortModule, MatSort } from '@angular/material/sort';
@@ -463,7 +519,14 @@ import { Ticket } from '@issue-tracker/shared-types';
 
 @Component({
   selector: 'app-ticket-table',
-  imports: [CommonModule, MatTableModule, MatSortModule, MatPaginatorModule, MatChipsModule, MatIconModule],
+  imports: [
+    CommonModule,
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule,
+    MatChipsModule,
+    MatIconModule,
+  ],
   templateUrl: './ticket-table.html',
   styleUrl: './ticket-table.scss',
 })
@@ -476,7 +539,16 @@ export class TicketTable implements OnChanges {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   dataSource = new MatTableDataSource<Ticket>([]);
-  displayedColumns: string[] = ['title', 'status', 'priority', 'assignee', 'labels', 'reporterId', 'createdAt', 'updatedAt'];
+  displayedColumns: string[] = [
+    'title',
+    'status',
+    'priority',
+    'assignee',
+    'labels',
+    'reporterId',
+    'createdAt',
+    'updatedAt',
+  ];
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['tickets']) {
@@ -551,7 +623,9 @@ export class TicketTable implements OnChanges {
     <ng-container matColumnDef="status">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
       <td mat-cell *matCellDef="let ticket">
-        <mat-chip [color]="getStatusColor(ticket.status)"> {{ ticket.status }} </mat-chip>
+        <mat-chip [color]="getStatusColor(ticket.status)">
+          {{ ticket.status }}
+        </mat-chip>
       </td>
     </ng-container>
 
@@ -559,14 +633,18 @@ export class TicketTable implements OnChanges {
     <ng-container matColumnDef="priority">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Priorität</th>
       <td mat-cell *matCellDef="let ticket">
-        <mat-chip [color]="getPriorityColor(ticket.priority)"> {{ ticket.priority }} </mat-chip>
+        <mat-chip [color]="getPriorityColor(ticket.priority)">
+          {{ ticket.priority }}
+        </mat-chip>
       </td>
     </ng-container>
 
     <!-- Assignee Column -->
     <ng-container matColumnDef="assignee">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Zuständig</th>
-      <td mat-cell *matCellDef="let ticket">{{ ticket.assignee?.name || 'Nicht zugewiesen' }}</td>
+      <td mat-cell *matCellDef="let ticket">
+        {{ ticket.assignee?.name || 'Nicht zugewiesen' }}
+      </td>
     </ng-container>
 
     <!-- Labels Column -->
@@ -574,7 +652,12 @@ export class TicketTable implements OnChanges {
       <th mat-header-cell *matHeaderCellDef>Labels</th>
       <td mat-cell *matCellDef="let ticket">
         <div class="labels-container">
-          <mat-chip *ngFor="let label of ticket.labels" [style.background-color]="label.color"> {{ label.name }} </mat-chip>
+          <mat-chip
+            *ngFor="let label of ticket.labels"
+            [style.background-color]="label.color"
+          >
+            {{ label.name }}
+          </mat-chip>
         </div>
       </td>
     </ng-container>
@@ -582,15 +665,26 @@ export class TicketTable implements OnChanges {
     <!-- Updated At Column -->
     <ng-container matColumnDef="updatedAt">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Aktualisiert</th>
-      <td mat-cell *matCellDef="let ticket">{{ ticket.updatedAt | date:'short' }}</td>
+      <td mat-cell *matCellDef="let ticket">
+        {{ ticket.updatedAt | date:'short' }}
+      </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="ticket-row" (click)="onRowClick(row)"></tr>
+    <tr
+      mat-row
+      *matRowDef="let row; columns: displayedColumns;"
+      class="ticket-row"
+      (click)="onRowClick(row)"
+    ></tr>
   </table>
 
   <!-- Paginator -->
-  <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="25" showFirstLastButtons></mat-paginator>
+  <mat-paginator
+    [pageSizeOptions]="[10, 25, 50, 100]"
+    [pageSize]="25"
+    showFirstLastButtons
+  ></mat-paginator>
 </div>
 ```
 
@@ -685,7 +779,11 @@ export class TicketViewToggleComponent {
 ```html
 <!-- ticket-view-toggle.html -->
 
-<mat-button-toggle-group [value]="viewMode" (change)="onViewModeChange($event.value)" aria-label="Ansichtsmodus">
+<mat-button-toggle-group
+  [value]="viewMode"
+  (change)="onViewModeChange($event.value)"
+  aria-label="Ansichtsmodus"
+>
   <mat-button-toggle value="list">
     <mat-icon>view_list</mat-icon>
     Liste

@@ -174,7 +174,11 @@ deleteLabel(projectId: string, labelId: string): Observable<void>
     <div class="label-chip" [style.background-color]="label.color">
       <span class="label-name">{{ label.name }}</span>
       <div class="label-actions">
-        <button mat-icon-button (click)="openEditDialog(label)" class="action-btn">
+        <button
+          mat-icon-button
+          (click)="openEditDialog(label)"
+          class="action-btn"
+        >
           <mat-icon>edit</mat-icon>
         </button>
         <button mat-icon-button (click)="deleteLabel(label)" class="action-btn">
@@ -204,18 +208,27 @@ deleteLabel(projectId: string, labelId: string): Observable<void>
     <!-- Farbauswahl Grid -->
     <div class="color-grid">
       @for (color of predefinedColors; track color) {
-      <button type="button" [class.selected]="labelForm.get('color')?.value === color" [style.background-color]="color" (click)="onColorSelect(color)"></button>
+      <button
+        type="button"
+        [class.selected]="labelForm.get('color')?.value === color"
+        [style.background-color]="color"
+        (click)="onColorSelect(color)"
+      ></button>
       }
     </div>
 
     <!-- Vorschau -->
-    <div class="preview-chip" [style.background-color]="...">{{ labelForm.get('name')?.value || 'Label Name' }}</div>
+    <div class="preview-chip" [style.background-color]="...">
+      {{ labelForm.get('name')?.value || 'Label Name' }}
+    </div>
   </form>
 </mat-dialog-content>
 
 <mat-dialog-actions>
   <button mat-button (click)="onCancel()">Abbrechen</button>
-  <button mat-raised-button (click)="onSubmit()">{{ isEditMode ? 'Speichern' : 'Erstellen' }}</button>
+  <button mat-raised-button (click)="onSubmit()">
+    {{ isEditMode ? 'Speichern' : 'Erstellen' }}
+  </button>
 </mat-dialog-actions>
 ```
 

@@ -243,7 +243,11 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <button [class]="'btn btn-' + variant" [disabled]="disabled" (click)="clicked.emit()">
+    <button
+      [class]="'btn btn-' + variant"
+      [disabled]="disabled"
+      (click)="clicked.emit()"
+    >
       {{ label }}
     </button>
   `,
@@ -286,7 +290,12 @@ import { ButtonComponent } from '../../../shared/components/button/button.compon
   imports: [ButtonComponent],
   template: `
     <h1>Projects</h1>
-    <app-button label="Neues Projekt" variant="primary" (clicked)="createProject()"> </app-button>
+    <app-button
+      label="Neues Projekt"
+      variant="primary"
+      (clicked)="createProject()"
+    >
+    </app-button>
   `,
 })
 export class ProjectListComponent {
@@ -409,16 +418,25 @@ import { authGuard } from '../../core/guards/auth.guard';
 export const PROJECTS_ROUTES: Routes = [
   {
     path: '',
-    loadComponent: () => import('./project-list/project-list.component').then((m) => m.ProjectListComponent),
+    loadComponent: () =>
+      import('./project-list/project-list.component').then(
+        (m) => m.ProjectListComponent
+      ),
   },
   {
     path: 'create',
-    loadComponent: () => import('./project-create/project-create.component').then((m) => m.ProjectCreateComponent),
+    loadComponent: () =>
+      import('./project-create/project-create.component').then(
+        (m) => m.ProjectCreateComponent
+      ),
     canActivate: [authGuard],
   },
   {
     path: ':id',
-    loadComponent: () => import('./project-detail/project-detail.component').then((m) => m.ProjectDetailComponent),
+    loadComponent: () =>
+      import('./project-detail/project-detail.component').then(
+        (m) => m.ProjectDetailComponent
+      ),
   },
 ];
 ```
@@ -432,7 +450,10 @@ import { LayoutComponent } from './core/layout/layout.component';
 export const routes: Routes = [
   {
     path: 'login',
-    loadComponent: () => import('./features/auth/login/login.component').then((m) => m.LoginComponent),
+    loadComponent: () =>
+      import('./features/auth/login/login.component').then(
+        (m) => m.LoginComponent
+      ),
   },
   {
     path: '',
@@ -441,15 +462,24 @@ export const routes: Routes = [
     children: [
       {
         path: 'dashboard',
-        loadChildren: () => import('./features/dashboard/dashboard.routes').then((m) => m.DASHBOARD_ROUTES),
+        loadChildren: () =>
+          import('./features/dashboard/dashboard.routes').then(
+            (m) => m.DASHBOARD_ROUTES
+          ),
       },
       {
         path: 'projects',
-        loadChildren: () => import('./features/projects/projects.routes').then((m) => m.PROJECTS_ROUTES),
+        loadChildren: () =>
+          import('./features/projects/projects.routes').then(
+            (m) => m.PROJECTS_ROUTES
+          ),
       },
       {
         path: 'tickets',
-        loadChildren: () => import('./features/tickets/tickets.routes').then((m) => m.TICKETS_ROUTES),
+        loadChildren: () =>
+          import('./features/tickets/tickets.routes').then(
+            (m) => m.TICKETS_ROUTES
+          ),
       },
       {
         path: '',
@@ -558,7 +588,14 @@ import { MatButtonModule } from '@angular/material/button';
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [RouterOutlet, MatToolbarModule, MatSidenavModule, MatListModule, MatIconModule, MatButtonModule],
+  imports: [
+    RouterOutlet,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatListModule,
+    MatIconModule,
+    MatButtonModule,
+  ],
   template: `
     <mat-toolbar color="primary">
       <button mat-icon-button (click)="drawer.toggle()">
@@ -635,7 +672,10 @@ export const routes: Routes = [
   // Public Routes (ohne Layout)
   {
     path: 'login',
-    loadComponent: () => import('./features/auth/login/login.component').then((m) => m.LoginComponent),
+    loadComponent: () =>
+      import('./features/auth/login/login.component').then(
+        (m) => m.LoginComponent
+      ),
   },
 
   // Protected Routes (mit Layout)
@@ -646,19 +686,29 @@ export const routes: Routes = [
     children: [
       {
         path: 'dashboard',
-        loadChildren: () => import('./features/dashboard/dashboard.routes').then((m) => m.DASHBOARD_ROUTES),
+        loadChildren: () =>
+          import('./features/dashboard/dashboard.routes').then(
+            (m) => m.DASHBOARD_ROUTES
+          ),
       },
       {
         path: 'projects',
-        loadChildren: () => import('./features/projects/projects.routes').then((m) => m.PROJECTS_ROUTES),
+        loadChildren: () =>
+          import('./features/projects/projects.routes').then(
+            (m) => m.PROJECTS_ROUTES
+          ),
       },
       {
         path: 'tickets',
-        loadChildren: () => import('./features/tickets/tickets.routes').then((m) => m.TICKETS_ROUTES),
+        loadChildren: () =>
+          import('./features/tickets/tickets.routes').then(
+            (m) => m.TICKETS_ROUTES
+          ),
       },
       {
         path: 'users',
-        loadChildren: () => import('./features/users/users.routes').then((m) => m.USERS_ROUTES),
+        loadChildren: () =>
+          import('./features/users/users.routes').then((m) => m.USERS_ROUTES),
         canActivate: [authGuard],
         data: { roles: ['ADMIN'] },
       },
@@ -719,7 +769,11 @@ import { ProjectCardComponent } from '../../../shared/components/project-card/pr
     <h1>Projects</h1>
 
     <div class="project-grid">
-      <app-project-card *ngFor="let project of projects" [project]="project" (clicked)="openProject(project.id)" />
+      <app-project-card
+        *ngFor="let project of projects"
+        [project]="project"
+        (clicked)="openProject(project.id)"
+      />
     </div>
   `,
 })

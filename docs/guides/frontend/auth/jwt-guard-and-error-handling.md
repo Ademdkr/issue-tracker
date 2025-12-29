@@ -77,7 +77,10 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
   canActivate(context: ExecutionContext) {
     // Prüfe ob Route als @Public() markiert ist
-    const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [context.getHandler(), context.getClass()]);
+    const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
 
     if (isPublic) {
       return true; // Kein JWT erforderlich
@@ -106,7 +109,14 @@ import { JwtAuthGuard } from '../auth'; // Statt CurrentUserGuard
 import { PrismaModule } from '../database';
 
 @Module({
-  imports: [PrismaModule, AuthModule, UsersModule, ProjectsModule, TicketsModule, CommentsModule],
+  imports: [
+    PrismaModule,
+    AuthModule,
+    UsersModule,
+    ProjectsModule,
+    TicketsModule,
+    CommentsModule,
+  ],
   controllers: [AppController],
   providers: [
     AppService,
@@ -293,7 +303,8 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         // Server-seitiger Fehler
         switch (error.status) {
           case 401:
-            errorMessage = 'Sitzung abgelaufen. Bitte melden Sie sich erneut an.';
+            errorMessage =
+              'Sitzung abgelaufen. Bitte melden Sie sich erneut an.';
             // Token ungültig → Logout
             localStorage.removeItem('jwt_token');
             localStorage.removeItem('current_user');
@@ -317,17 +328,20 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
                 errorMessage = error.error.message;
               }
             } else {
-              errorMessage = 'Ungültige Eingabe. Bitte überprüfen Sie Ihre Daten.';
+              errorMessage =
+                'Ungültige Eingabe. Bitte überprüfen Sie Ihre Daten.';
             }
             break;
 
           case 500:
-            errorMessage = 'Server-Fehler. Bitte versuchen Sie es später erneut.';
+            errorMessage =
+              'Server-Fehler. Bitte versuchen Sie es später erneut.';
             break;
 
           case 0:
             // Network Error (Backend nicht erreichbar)
-            errorMessage = 'Keine Verbindung zum Server. Bitte überprüfen Sie Ihre Internetverbindung.';
+            errorMessage =
+              'Keine Verbindung zum Server. Bitte überprüfen Sie Ihre Internetverbindung.';
             break;
 
           default:
@@ -556,7 +570,10 @@ Body: { email: 'invalid-email', password: '123' }  // Zu kurz
 
 ```json
 {
-  "message": ["email must be an email", "password must be at least 8 characters long"],
+  "message": [
+    "email must be an email",
+    "password must be at least 8 characters long"
+  ],
   "statusCode": 400
 }
 ```

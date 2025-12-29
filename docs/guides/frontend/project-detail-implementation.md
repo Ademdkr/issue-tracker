@@ -83,7 +83,14 @@ import { Project } from '@issue-tracker/shared-types';
 @Component({
   selector: 'app-project-detail',
   standalone: true,
-  imports: [CommonModule, MatTabsModule, MatProgressSpinnerModule, MatButtonModule, MatIconModule, MatSnackBarModule],
+  imports: [
+    CommonModule,
+    MatTabsModule,
+    MatProgressSpinnerModule,
+    MatButtonModule,
+    MatIconModule,
+    MatSnackBarModule,
+  ],
   templateUrl: './project-detail.html',
   styleUrl: './project-detail.scss',
 })
@@ -164,7 +171,11 @@ export class ProjectDetail implements OnInit, OnDestroy {
   <div *ngIf="!isLoading && error" class="error-container">
     <mat-icon class="error-icon">error_outline</mat-icon>
     <h3>{{ error }}</h3>
-    <button mat-raised-button color="primary" (click)="loadProject(project?.id || '')">
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="loadProject(project?.id || '')"
+    >
       <mat-icon>refresh</mat-icon>
       Erneut versuchen
     </button>
@@ -191,7 +202,10 @@ export class ProjectDetail implements OnInit, OnDestroy {
         <div class="tab-content">
           <!-- Hier später: <app-tickets-tab [projectId]="project.id" /> -->
           <p>Tickets-Tab Placeholder</p>
-          <p class="placeholder-info">Hier werden alle Tickets des Projekts angezeigt mit Filtern für Status, Priorität, Assignee und Labels.</p>
+          <p class="placeholder-info">
+            Hier werden alle Tickets des Projekts angezeigt mit Filtern für
+            Status, Priorität, Assignee und Labels.
+          </p>
         </div>
       </mat-tab>
 
@@ -200,7 +214,9 @@ export class ProjectDetail implements OnInit, OnDestroy {
         <div class="tab-content">
           <!-- Hier später: <app-management-tab [projectId]="project.id" /> -->
           <p>Verwaltungs-Tab Placeholder</p>
-          <p class="placeholder-info">Hier können Projektmitglieder und Labels verwaltet werden.</p>
+          <p class="placeholder-info">
+            Hier können Projektmitglieder und Labels verwaltet werden.
+          </p>
         </div>
       </mat-tab>
     </mat-tab-group>
@@ -349,11 +365,17 @@ export class ProjectsService {
     return this.http.post<Project>(this.apiUrl, data);
   }
 
-  update(id: string, data: Partial<ProjectSummary>): Observable<ProjectSummary> {
+  update(
+    id: string,
+    data: Partial<ProjectSummary>
+  ): Observable<ProjectSummary> {
     return this.http.patch<ProjectSummary>(`${this.apiUrl}/${id}`, data);
   }
 
-  adminUpdate(id: string, data: Partial<ProjectSummary>): Observable<ProjectSummary> {
+  adminUpdate(
+    id: string,
+    data: Partial<ProjectSummary>
+  ): Observable<ProjectSummary> {
     return this.http.patch<ProjectSummary>(`${this.apiUrl}/${id}/admin`, data);
   }
 
@@ -567,7 +589,10 @@ Die Navigation ist bereits implementiert in `projects.html`:
 Alle Routen verwenden bereits Lazy Loading:
 
 ```typescript
-loadComponent: () => import('./features/projects/project-detail/project-detail').then((m) => m.ProjectDetail);
+loadComponent: () =>
+  import('./features/projects/project-detail/project-detail').then(
+    (m) => m.ProjectDetail
+  );
 ```
 
 ### **4. Tab-Content erst bei Bedarf laden**
