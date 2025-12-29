@@ -300,7 +300,10 @@ import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 
 @Injectable()
-export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
+export class PrismaService
+  extends PrismaClient
+  implements OnModuleInit, OnModuleDestroy
+{
   async onModuleInit() {
     await this.$connect();
   }
@@ -345,7 +348,15 @@ export class IssuesService {
     });
   }
 
-  async updateIssue(id: string, data: { title?: string; description?: string; status?: Status; priority?: Priority }) {
+  async updateIssue(
+    id: string,
+    data: {
+      title?: string;
+      description?: string;
+      status?: Status;
+      priority?: Priority;
+    }
+  ) {
     return this.prisma.issue.update({
       where: { id },
       data,

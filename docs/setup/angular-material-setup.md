@@ -48,7 +48,12 @@ npm install @angular/animations@~20.3.0 --legacy-peer-deps
 
 // Define custom color palettes
 $issue-tracker-primary: mat.m2-define-palette(mat.$m2-indigo-palette);
-$issue-tracker-accent: mat.m2-define-palette(mat.$m2-pink-palette, A200, A100, A400);
+$issue-tracker-accent: mat.m2-define-palette(
+  mat.$m2-pink-palette,
+  A200,
+  A100,
+  A400
+);
 $issue-tracker-warn: mat.m2-define-palette(mat.$m2-red-palette);
 
 // Create light theme
@@ -107,10 +112,16 @@ export const appConfig: ApplicationConfig = {
 <head>
   <!-- Google Fonts - Roboto -->
   <link rel="preconnect" href="https://fonts.gstatic.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+    rel="stylesheet"
+  />
 
   <!-- Material Icons -->
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    rel="stylesheet"
+  />
 </head>
 ```
 
@@ -180,7 +191,9 @@ import { MatInputModule } from '@angular/material/input';
     <mat-form-field appearance="outline">
       <mat-label>Email</mat-label>
       <input matInput type="email" formControlName="email" />
-      <mat-error *ngIf="emailControl.hasError('required')"> Email ist erforderlich </mat-error>
+      <mat-error *ngIf="emailControl.hasError('required')">
+        Email ist erforderlich
+      </mat-error>
     </mat-form-field>
   `,
 })
@@ -244,7 +257,27 @@ Für den Issue Tracker werden folgende Module häufig benötigt:
 
 ```typescript
 // Shared Material Modules (für viele Components)
-export const MATERIAL_MODULES = [MatButtonModule, MatIconModule, MatCardModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatTableModule, MatPaginatorModule, MatSortModule, MatDialogModule, MatSnackBarModule, MatChipsModule, MatMenuModule, MatToolbarModule, MatSidenavModule, MatListModule, MatBadgeModule, MatTooltipModule, MatProgressSpinnerModule];
+export const MATERIAL_MODULES = [
+  MatButtonModule,
+  MatIconModule,
+  MatCardModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatSelectModule,
+  MatTableModule,
+  MatPaginatorModule,
+  MatSortModule,
+  MatDialogModule,
+  MatSnackBarModule,
+  MatChipsModule,
+  MatMenuModule,
+  MatToolbarModule,
+  MatSidenavModule,
+  MatListModule,
+  MatBadgeModule,
+  MatTooltipModule,
+  MatProgressSpinnerModule,
+];
 ```
 
 **Tipp:** Erstelle eine `shared-material.module.ts` oder barrel-export für häufig verwendete Module.
@@ -315,7 +348,9 @@ Material Components sind standardmäßig responsive. Zusätzliche Features:
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 export class ResponsiveComponent {
-  isMobile$ = this.breakpointObserver.observe([Breakpoints.Handset]).pipe(map((result) => result.matches));
+  isMobile$ = this.breakpointObserver
+    .observe([Breakpoints.Handset])
+    .pipe(map((result) => result.matches));
 
   constructor(private breakpointObserver: BreakpointObserver) {}
 }

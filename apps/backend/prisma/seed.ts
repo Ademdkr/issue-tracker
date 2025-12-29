@@ -7,14 +7,16 @@ import {
 } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { Logger } from './logger';
+import { config } from 'dotenv';
+import { resolve } from 'path';
 
-const prisma = new PrismaClient({
-  datasources: {
-    db: {
-      url: 'postgresql://postgres:1234@localhost:5435/issue_tracker_db',
-    },
-  },
-});
+// Lade .env Datei vom Root-Verzeichnis
+const envPath = resolve(__dirname, '../../../.env');
+config({ path: envPath });
+
+console.log('[DEBUG] DATABASE_URL:', process.env.DATABASE_URL);
+
+const prisma = new PrismaClient();
 
 const logger = new Logger('Seed');
 

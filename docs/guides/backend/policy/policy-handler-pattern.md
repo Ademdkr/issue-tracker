@@ -138,7 +138,9 @@ abstract class PolicyHandler implements IPolicyHandler {
   protected logger = new Logger(PolicyHandler.name);
 
   protected log(action: string, user: User, allowed: boolean): void {
-    this.logger.log(`User ${user.email} ${allowed ? 'allowed' : 'denied'} for ${action}`);
+    this.logger.log(
+      `User ${user.email} ${allowed ? 'allowed' : 'denied'} for ${action}`
+    );
   }
 
   // ABSTRAKTE Methode - muss implementiert werden
@@ -251,7 +253,11 @@ abstract class PolicyHandler {
 
 ```typescript
 abstract class PolicyHandler {
-  protected async audit(user: User, action: string, allowed: boolean): Promise<void> {
+  protected async audit(
+    user: User,
+    action: string,
+    allowed: boolean
+  ): Promise<void> {
     await this.auditService.log({
       userId: user.id,
       action,

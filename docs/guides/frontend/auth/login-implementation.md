@@ -228,7 +228,8 @@ export const appRoutes: Route[] = [
   {
     path: 'projects',
     canActivate: [authGuard],
-    loadComponent: () => import('./features/projects/project-list/project-list.component'),
+    loadComponent: () =>
+      import('./features/projects/project-list/project-list.component'),
   },
 
   // Wildcard → Login
@@ -356,7 +357,17 @@ Passwort: Admin123!
 **Import in `login.component.ts`:**
 
 ```typescript
-imports: [CommonModule, ReactiveFormsModule, MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, MatProgressSpinnerModule, MatSnackBarModule];
+imports: [
+  CommonModule,
+  ReactiveFormsModule,
+  MatCardModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatButtonModule,
+  MatIconModule,
+  MatProgressSpinnerModule,
+  MatSnackBarModule,
+];
 ```
 
 ---

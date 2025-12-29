@@ -88,7 +88,10 @@ export class MembersTable implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if ((changes['projectId'] && !changes['projectId'].firstChange) || (changes['type'] && !changes['type'].firstChange)) {
+    if (
+      (changes['projectId'] && !changes['projectId'].firstChange) ||
+      (changes['type'] && !changes['type'].firstChange)
+    ) {
       this.loadData();
       this.selection.clear(); // Clear selection beim Reload
     }
@@ -102,14 +105,23 @@ export class MembersTable implements OnInit, OnChanges {
     if (this.type === 'members') {
       this.projectsService
         .findProjectMembers(this.projectId)
-        .pipe(map((members) => members.map((m) => m.user).filter((u) => u !== undefined) as User[]))
+        .pipe(
+          map(
+            (members) =>
+              members
+                .map((m) => m.user)
+                .filter((u) => u !== undefined) as User[]
+          )
+        )
         .subscribe((users) => {
           this.dataSource.data = users;
         });
     } else {
-      this.projectsService.findAvailableUsers(this.projectId).subscribe((users) => {
-        this.dataSource.data = users as User[];
-      });
+      this.projectsService
+        .findAvailableUsers(this.projectId)
+        .subscribe((users) => {
+          this.dataSource.data = users as User[];
+        });
     }
   }
 
@@ -157,17 +169,31 @@ export class MembersTable implements OnInit, OnChanges {
     <!-- Checkbox Column -->
     <ng-container matColumnDef="select">
       <th mat-header-cell *matHeaderCellDef>
-        <mat-checkbox (change)="$event ? toggleAllRows() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()"> </mat-checkbox>
+        <mat-checkbox
+          (change)="$event ? toggleAllRows() : null"
+          [checked]="selection.hasValue() && isAllSelected()"
+          [indeterminate]="selection.hasValue() && !isAllSelected()"
+          [aria-label]="checkboxLabel()"
+        >
+        </mat-checkbox>
       </th>
       <td mat-cell *matCellDef="let row">
-        <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)"> </mat-checkbox>
+        <mat-checkbox
+          (click)="$event.stopPropagation()"
+          (change)="$event ? selection.toggle(row) : null"
+          [checked]="selection.isSelected(row)"
+          [aria-label]="checkboxLabel(row)"
+        >
+        </mat-checkbox>
       </td>
     </ng-container>
 
     <!-- Name Column -->
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef>Name</th>
-      <td mat-cell *matCellDef="let member">{{ member.name }} {{ member.surname }}</td>
+      <td mat-cell *matCellDef="let member">
+        {{ member.name }} {{ member.surname }}
+      </td>
     </ng-container>
 
     <!-- Email Column -->
@@ -183,7 +209,12 @@ export class MembersTable implements OnInit, OnChanges {
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;" [class.selected-row]="selection.isSelected(row)" (click)="selection.toggle(row)"></tr>
+    <tr
+      mat-row
+      *matRowDef="let row; columns: displayedColumns;"
+      [class.selected-row]="selection.isSelected(row)"
+      (click)="selection.toggle(row)"
+    ></tr>
   </table>
 </div>
 ```
@@ -272,7 +303,13 @@ export class ManageMembers {
     this.isLoading = true;
     try {
       // Füge alle ausgewählten User hinzu
-      await Promise.all(this.selectedAvailableUsers.map((user) => this.projectsService.addProjectMember(this.projectId, user.id).toPromise()));
+      await Promise.all(
+        this.selectedAvailableUsers.map((user) =>
+          this.projectsService
+            .addProjectMember(this.projectId, user.id)
+            .toPromise()
+        )
+      );
 
       // Refresh beide Tabellen
       this.availableUsersTable.loadData();
@@ -294,7 +331,13 @@ export class ManageMembers {
     this.isLoading = true;
     try {
       // Entferne alle ausgewählten User
-      await Promise.all(this.selectedProjectMembers.map((user) => this.projectsService.removeProjectMember(this.projectId, user.id).toPromise()));
+      await Promise.all(
+        this.selectedProjectMembers.map((user) =>
+          this.projectsService
+            .removeProjectMember(this.projectId, user.id)
+            .toPromise()
+        )
+      );
 
       // Refresh beide Tabellen
       this.availableUsersTable.loadData();
@@ -323,19 +366,34 @@ export class ManageMembers {
   <!-- Verfügbare Nutzer -->
   <div class="available-users">
     <h3>Verfügbare Nutzer</h3>
-    <app-members-table #availableUsersTable [projectId]="projectId" [type]="'available'" (selectionChange)="onAvailableUsersSelectionChange($event)"></app-members-table>
+    <app-members-table
+      #availableUsersTable
+      [projectId]="projectId"
+      [type]="'available'"
+      (selectionChange)="onAvailableUsersSelectionChange($event)"
+    ></app-members-table>
   </div>
 
   <!-- Steuerungselemente -->
   <div class="controls-group">
-    <button mat-raised-button color="primary" [disabled]="selectedAvailableUsers.length === 0 || isLoading" (click)="addMembers()">
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="selectedAvailableUsers.length === 0 || isLoading"
+      (click)="addMembers()"
+    >
       <mat-icon>arrow_forward</mat-icon>
       Hinzufügen @if (selectedAvailableUsers.length > 0) {
       <span class="badge">({{ selectedAvailableUsers.length }})</span>
       }
     </button>
 
-    <button mat-raised-button color="warn" [disabled]="selectedProjectMembers.length === 0 || isLoading" (click)="removeMembers()">
+    <button
+      mat-raised-button
+      color="warn"
+      [disabled]="selectedProjectMembers.length === 0 || isLoading"
+      (click)="removeMembers()"
+    >
       <mat-icon>arrow_back</mat-icon>
       Entfernen @if (selectedProjectMembers.length > 0) {
       <span class="badge">({{ selectedProjectMembers.length }})</span>
@@ -346,7 +404,12 @@ export class ManageMembers {
   <!-- Projektmitglieder -->
   <div class="project-members">
     <h3>Projektmitglieder</h3>
-    <app-members-table #projectMembersTable [projectId]="projectId" [type]="'members'" (selectionChange)="onProjectMembersSelectionChange($event)"></app-members-table>
+    <app-members-table
+      #projectMembersTable
+      [projectId]="projectId"
+      [type]="'members'"
+      (selectionChange)="onProjectMembersSelectionChange($event)"
+    ></app-members-table>
   </div>
 </div>
 ```
@@ -508,13 +571,23 @@ export class ManageMembers {
   <!-- ... Search field ... -->
 
   <div class="action-buttons">
-    <button mat-raised-button color="primary" [disabled]="selectedAvailableUsers.length === 0 || isLoading" (click)="addMembers()">
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="selectedAvailableUsers.length === 0 || isLoading"
+      (click)="addMembers()"
+    >
       @if (isLoading) {
       <mat-spinner diameter="20"></mat-spinner>
       } @else { Hinzufügen ({{ selectedAvailableUsers.length }}) }
     </button>
 
-    <button mat-raised-button color="warn" [disabled]="selectedProjectMembers.length === 0 || isLoading" (click)="removeMembers()">
+    <button
+      mat-raised-button
+      color="warn"
+      [disabled]="selectedProjectMembers.length === 0 || isLoading"
+      (click)="removeMembers()"
+    >
       @if (isLoading) {
       <mat-spinner diameter="20"></mat-spinner>
       } @else { Entfernen ({{ selectedProjectMembers.length }}) }

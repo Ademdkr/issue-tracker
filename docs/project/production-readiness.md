@@ -112,7 +112,10 @@ logger: ['error', 'warn', 'log', 'debug', 'verbose'];
 #### Production-CORS:
 
 ```typescript
-const allowedOrigins = process.env.NODE_ENV === 'production' ? [process.env.FRONTEND_URL || 'https://issue-tracker.example.com'] : ['http://localhost:4200', 'http://localhost:4201'];
+const allowedOrigins =
+  process.env.NODE_ENV === 'production'
+    ? [process.env.FRONTEND_URL || 'https://issue-tracker.example.com']
+    : ['http://localhost:4200', 'http://localhost:4201'];
 ```
 
 ## 🔒 Security Improvements

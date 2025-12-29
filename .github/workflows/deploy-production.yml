@@ -1,13 +1,9 @@
 name: Deploy to Production
 
-# DEPLOYMENT DEAKTIVIERT - Workflow wird nicht automatisch ausgeführt
-# Um zu aktivieren: Entferne die Kommentare bei 'on:'
 on:
-  # push:
-  #   branches:
-  #     - main
-  #   tags:
-  #     - 'v*.*.*'
+  push:
+    branches:
+      - master
   workflow_dispatch:
 
 env:
@@ -44,38 +40,30 @@ jobs:
       - name: Build backend for production
         run: npx nx build backend --configuration=production
 
-      - name: Run database migrations (with backup)
+      # Deployment via Render Deploy Hooks
+      - name: Trigger Render Backend Deployment
         run: |
-          echo "Creating database backup..."
-          # Backup command hier
-          npx prisma migrate deploy
-        # env:
-        #   DATABASE_URL: ${{ secrets.PRODUCTION_DATABASE_URL }} # In GitHub Settings > Secrets konfigurieren
+          curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_BACKEND }}
+          echo "Backend deployment triggered on Render"
 
-      # Deployment-Schritte
-      - name: Deploy frontend
+      - name: Trigger Render Frontend Deployment
         run: |
-          echo "Deploying frontend to production..."
-          # Beispiel: aws s3 sync dist/apps/frontend s3://production-bucket
+          curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_FRONTEND }}
+          echo "Frontend deployment triggered on Render"
 
-      - name: Deploy backend
+      - name: Wait for deployments
         run: |
-          echo "Deploying backend to production..."
-          # Beispiel: docker build & push, kubectl apply, etc.
+          echo "Waiting 60 seconds for Render deployments to start..."
+          sleep 60
 
       - name: Health check
         run: |
-          echo "Running health checks..."
-          # curl https://issue-tracker.example.com/api/health
+          echo "Running health check..."
+          curl --fail https://issue-tracker.ademdokur.dev/api/health || exit 1
 
       - name: Notify deployment success
         if: success()
         run: |
-          echo "Production deployment successful!"
-          # Benachrichtigungen hier
-
-      - name: Rollback on failure
-        if: failure()
-        run: |
-          echo "Deployment failed, initiating rollback..."
-          # Rollback-Schritte hier
+          echo "✅ Production deployment successful!"
+          echo "Frontend: https://issue-tracker.ademdokur.dev"
+          echo "API: https://issue-tracker.ademdokur.dev/api"

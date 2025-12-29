@@ -129,7 +129,9 @@ export class AuthController {
   @Public() // Öffentlich zugänglich ohne Authentication
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  async login(@Body(new ValidationPipe()) loginDto: LoginDto): Promise<LoginResponse> {
+  async login(
+    @Body(new ValidationPipe()) loginDto: LoginDto
+  ): Promise<LoginResponse> {
     return this.authService.login(loginDto.email, loginDto.password);
   }
 }
@@ -154,7 +156,10 @@ export class CurrentUserGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     // Prüfe ob Route als @Public() markiert ist
-    const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [context.getHandler(), context.getClass()]);
+    const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
 
     if (isPublic) {
       return true; // Keine Authentication erforderlich
@@ -231,14 +236,16 @@ export class AuthService {
   private readonly API_URL = environment.apiUrl; // Konfigurierbar!
 
   login(credentials: LoginDto): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.API_URL}/auth/login`, credentials).pipe(
-      tap((response) => {
-        this.setToken(response.access_token);
-        this.setUser(response.user);
-        this.isAuthenticatedSubject.next(true);
-        this.currentUserSubject.next(response.user);
-      })
-    );
+    return this.http
+      .post<LoginResponse>(`${this.API_URL}/auth/login`, credentials)
+      .pipe(
+        tap((response) => {
+          this.setToken(response.access_token);
+          this.setUser(response.user);
+          this.isAuthenticatedSubject.next(true);
+          this.currentUserSubject.next(response.user);
+        })
+      );
   }
 }
 ```

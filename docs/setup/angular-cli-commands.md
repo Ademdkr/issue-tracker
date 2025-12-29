@@ -454,7 +454,10 @@ npx webpack-bundle-analyzer dist/apps/frontend/stats.json
 export const appRoutes: Route[] = [
   {
     path: 'projects',
-    loadComponent: () => import('./features/projects/project-list/project-list.component').then((m) => m.ProjectListComponent),
+    loadComponent: () =>
+      import('./features/projects/project-list/project-list.component').then(
+        (m) => m.ProjectListComponent
+      ),
   },
 ];
 ```

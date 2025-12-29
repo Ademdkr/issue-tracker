@@ -66,12 +66,16 @@ export const appRoutes: Route[] = [
   },
   {
     path: 'login',
-    loadComponent: () => import('./features/auth/login/login').then((m) => m.Login),
+    loadComponent: () =>
+      import('./features/auth/login/login').then((m) => m.Login),
   },
   {
     path: 'projects',
     canActivate: [authGuard],
-    loadComponent: () => import('./features/projects/project-list/project-list').then((m) => m.ProjectList),
+    loadComponent: () =>
+      import('./features/projects/project-list/project-list').then(
+        (m) => m.ProjectList
+      ),
   },
   {
     path: '**',
@@ -95,7 +99,8 @@ export const appRoutes: Route[] = [
   // Login Route (public, ohne Layout)
   {
     path: 'login',
-    loadComponent: () => import('./features/auth/login/login').then((m) => m.Login),
+    loadComponent: () =>
+      import('./features/auth/login/login').then((m) => m.Login),
   },
 
   // Layout Route (Wrapper für alle geschützten Seiten)
@@ -106,7 +111,10 @@ export const appRoutes: Route[] = [
     children: [
       {
         path: 'projects',
-        loadComponent: () => import('./features/projects/project-list/project-list').then((m) => m.ProjectList),
+        loadComponent: () =>
+          import('./features/projects/project-list/project-list').then(
+            (m) => m.ProjectList
+          ),
       },
       {
         path: '',
@@ -654,7 +662,10 @@ Alle werden **automatisch** mit Layout angezeigt!
 **Material Sidenav Modi:**
 
 ```html
-<mat-sidenav [mode]="mobileQuery.matches ? 'over' : 'side'" [opened]="!mobileQuery.matches"></mat-sidenav>
+<mat-sidenav
+  [mode]="mobileQuery.matches ? 'over' : 'side'"
+  [opened]="!mobileQuery.matches"
+></mat-sidenav>
 ```
 
 **TypeScript:**

@@ -43,7 +43,7 @@ graph TB
     NestJS --> Guards
     Guards --> JWT
     Guards --> Policies
-    
+
     NestJS --> AuthModule
     NestJS --> UsersModule
     NestJS --> ProjectsModule
@@ -51,7 +51,7 @@ graph TB
     NestJS --> CommentsModule
     NestJS --> LabelsModule
     NestJS --> ActivitiesModule
-    
+
     AuthModule --> PrismaService
     UsersModule --> PrismaService
     ProjectsModule --> PrismaService
@@ -59,7 +59,7 @@ graph TB
     CommentsModule --> PrismaService
     LabelsModule --> PrismaService
     ActivitiesModule --> PrismaService
-    
+
     PrismaService --> Prisma
     Prisma --> PostgreSQL
 ```
@@ -112,9 +112,9 @@ sequenceDiagram
     JwtService-->>AuthService: access_token
     AuthService-->>AuthController: {access_token, user}
     AuthController-->>Client: LoginResponse
-    
+
     Note over Client: Store token in localStorage
-    
+
     Client->>AuthController: GET /tickets<br/>Authorization: Bearer <token>
     AuthController->>JwtService: verify(token)
     JwtService-->>AuthController: payload
@@ -125,12 +125,12 @@ sequenceDiagram
 
 ### 2. RBAC (Role-Based Access Control)
 
-| Rolle      | Beschreibung | Berechtigungen |
-|------------|--------------|----------------|
-| **Reporter** | Basis-Nutzer | - Tickets erstellen (nur title/description)<br/>- Eigene Tickets bearbeiten<br/>- Kommentare schreiben |
-| **Developer** | Entwickler | - Reporter Rechte +<br/>- Tickets sich selbst zuweisen<br/>- Priorität setzen<br/>- Status ändern |
-| **Manager** | Projekt-Manager | - Developer Rechte +<br/>- Tickets anderen zuweisen<br/>- Projekt-Mitglieder verwalten<br/>- Labels verwalten |
-| **Admin** | System-Admin | - Alle Rechte<br/>- User-Verwaltung<br/>- Projekt slug ändern |
+| Rolle         | Beschreibung    | Berechtigungen                                                                                                |
+| ------------- | --------------- | ------------------------------------------------------------------------------------------------------------- |
+| **Reporter**  | Basis-Nutzer    | - Tickets erstellen (nur title/description)<br/>- Eigene Tickets bearbeiten<br/>- Kommentare schreiben        |
+| **Developer** | Entwickler      | - Reporter Rechte +<br/>- Tickets sich selbst zuweisen<br/>- Priorität setzen<br/>- Status ändern             |
+| **Manager**   | Projekt-Manager | - Developer Rechte +<br/>- Tickets anderen zuweisen<br/>- Projekt-Mitglieder verwalten<br/>- Labels verwalten |
+| **Admin**     | System-Admin    | - Alle Rechte<br/>- User-Verwaltung<br/>- Projekt slug ändern                                                 |
 
 ### 3. Policy-basierte Authorization
 
@@ -141,15 +141,14 @@ export class UpdateTicketPolicyHandler {
   canUpdate(user: User, ticket: Ticket): boolean {
     // Admin: Alle Rechte
     if (user.role === UserRole.ADMIN) return true;
-    
+
     // Reporter: Nur eigene Tickets
     if (user.role === UserRole.REPORTER) {
       return ticket.reporterId === user.id;
     }
-    
+
     // Developer/Manager: Eigene + zugewiesene
-    return ticket.reporterId === user.id || 
-           ticket.assigneeId === user.id;
+    return ticket.reporterId === user.id || ticket.assigneeId === user.id;
   }
 }
 ```
@@ -163,17 +162,17 @@ erDiagram
     User ||--o{ Ticket : "assigned to"
     User ||--o{ Comment : "writes"
     User ||--o{ TicketActivity : "creates"
-    
+
     Project ||--o{ ProjectMember : "has"
     Project ||--o{ Ticket : "contains"
     Project ||--o{ Label : "defines"
-    
+
     Ticket ||--o{ Comment : "has"
     Ticket ||--o{ TicketActivity : "tracks"
     Ticket ||--o{ TicketLabel : "tagged with"
-    
+
     Label ||--o{ TicketLabel : "applied to"
-    
+
     User {
         string id PK
         string email UK
@@ -183,7 +182,7 @@ erDiagram
         UserRole role
         datetime createdAt
     }
-    
+
     Project {
         string id PK
         string name
@@ -191,14 +190,14 @@ erDiagram
         string slug UK
         datetime createdAt
     }
-    
+
     ProjectMember {
         string id PK
         string projectId FK
         string userId FK
         datetime assignedAt
     }
-    
+
     Ticket {
         string id PK
         string projectId FK
@@ -211,7 +210,7 @@ erDiagram
         datetime createdAt
         datetime updatedAt
     }
-    
+
     Label {
         string id PK
         string projectId FK
@@ -219,7 +218,7 @@ erDiagram
         string color
         datetime createdAt
     }
-    
+
     Comment {
         string id PK
         string ticketId FK
@@ -228,7 +227,7 @@ erDiagram
         datetime createdAt
         datetime updatedAt
     }
-    
+
     TicketActivity {
         string id PK
         string ticketId FK
@@ -261,26 +260,31 @@ graph LR
 ## 🛡️ Security Features
 
 ### Input Validation
+
 - **ValidationPipe** mit `class-validator` DTOs
 - **Whitelist**: Unbekannte Properties werden entfernt
 - **Transform**: Automatische Type Conversion
 
 ### Authentication
+
 - **bcrypt** für Password Hashing (Salting + 10 Rounds)
 - **JWT** mit 512-bit Secret (HS256 Algorithm)
 - **Token Expiration**: 1 Stunde Access Token
 
 ### Authorization
+
 - **Guards**: Route-Level Protection
 - **Policies**: Business-Logic-Level Authorization
 - **RBAC**: Rollenbasierte Zugriffskontrolle
 
 ### CORS
+
 - **Allowed Origins**: Whitelist für Frontend-URLs
 - **Credentials**: Cookie/Auth Header Support
 - **Methods**: Nur benötigte HTTP-Methoden
 
 ### Rate Limiting
+
 - **100 Requests/Minute** pro IP
 - Schutz vor DDoS und Brute-Force
 
@@ -289,11 +293,13 @@ graph LR
 Die vollständige API-Dokumentation ist via Swagger UI verfügbar:
 
 **Development:**
+
 ```
 http://localhost:3000/api/docs
 ```
 
 **Features:**
+
 - ✅ Interaktive API-Exploration
 - ✅ Request/Response Schemas
 - ✅ JWT-Authentication Testing
@@ -303,15 +309,18 @@ http://localhost:3000/api/docs
 ## 🚀 Performance-Optimierungen
 
 ### Database
+
 - **Connection Pooling** via Prisma (max 10 Connections)
 - **Query Optimization** mit Prisma `select` und `include`
 - **Indizes** auf häufig verwendete Felder (email, slug, projectId, etc.)
 
 ### Caching
+
 - **JWT Payload** wird nicht bei jedem Request validiert (stateless)
 - **Prisma Query Engine** cached Prepared Statements
 
 ### Logging
+
 - **Production**: Nur errors, warnings, logs
 - **Development**: Full debug output
 - **Structured Logging** für bessere Filterbarkeit

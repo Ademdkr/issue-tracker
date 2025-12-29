@@ -102,12 +102,18 @@ Die Komponente wurde in separate Child-Komponenten aufgeteilt für bessere Wartb
 <div class="ticket-views">
   <!-- List View: Material Table -->
   @if (viewMode === 'list') {
-  <app-ticket-list-view [tickets]="tickets" (ticketClick)="onTicketClick($event)"></app-ticket-list-view>
+  <app-ticket-list-view
+    [tickets]="tickets"
+    (ticketClick)="onTicketClick($event)"
+  ></app-ticket-list-view>
   }
 
   <!-- Grid View: Card Grid -->
   @if (viewMode === 'grid') {
-  <app-ticket-grid-view [tickets]="tickets" (ticketClick)="onTicketClick($event)"></app-ticket-grid-view>
+  <app-ticket-grid-view
+    [tickets]="tickets"
+    (ticketClick)="onTicketClick($event)"
+  ></app-ticket-grid-view>
   }
 </div>
 ```
@@ -156,7 +162,9 @@ export class TicketTable {
       <mat-card-title>
         <div class="title-row">
           <span class="ticket-id">#{{ ticket.id }}</span>
-          <mat-chip [color]="getStatusColor(ticket.status)"> {{ ticket.status }} </mat-chip>
+          <mat-chip [color]="getStatusColor(ticket.status)">
+            {{ ticket.status }}
+          </mat-chip>
         </div>
       </mat-card-title>
       <mat-card-subtitle>{{ ticket.title }}</mat-card-subtitle>
@@ -167,7 +175,9 @@ export class TicketTable {
       <!-- Priorität -->
       <div class="card-field">
         <mat-icon class="field-icon">flag</mat-icon>
-        <mat-chip [color]="getPriorityColor(ticket.priority)"> {{ ticket.priority }} </mat-chip>
+        <mat-chip [color]="getPriorityColor(ticket.priority)">
+          {{ ticket.priority }}
+        </mat-chip>
       </div>
 
       <!-- Assignee (verwendet assignee Objekt aus TicketWithDetails) -->
@@ -226,7 +236,14 @@ import { TicketWithDetails } from '@issue-tracker/shared-types';
 @Component({
   selector: 'app-ticket-list-view',
   standalone: true,
-  imports: [CommonModule, MatTableModule, MatSortModule, MatPaginatorModule, MatChipsModule, MatIconModule],
+  imports: [
+    CommonModule,
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule,
+    MatChipsModule,
+    MatIconModule,
+  ],
   // ...
 })
 export class TicketListView implements OnChanges, AfterViewInit {
@@ -237,7 +254,15 @@ export class TicketListView implements OnChanges, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   dataSource = new MatTableDataSource<TicketWithDetails>([]);
-  displayedColumns: string[] = ['title', 'status', 'priority', 'assignee', 'reporterId', 'createdAt', 'updatedAt']; // Labels entfernt
+  displayedColumns: string[] = [
+    'title',
+    'status',
+    'priority',
+    'assignee',
+    'reporterId',
+    'createdAt',
+    'updatedAt',
+  ]; // Labels entfernt
 }
 ```
 
@@ -448,7 +473,11 @@ Da List und Grid separate Komponenten sind, hat jede ihren eigenen Paginator:
 **ticket-list-view.html:**
 
 ```html
-<mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="25" showFirstLastButtons></mat-paginator>
+<mat-paginator
+  [pageSizeOptions]="[10, 25, 50, 100]"
+  [pageSize]="25"
+  showFirstLastButtons
+></mat-paginator>
 ```
 
 **ticket-grid-view.html:**
@@ -515,7 +544,10 @@ ticket-list-view / ticket-grid-view (Presentation)
 <div class="grid-controls">
   <mat-form-field appearance="outline" class="sort-field">
     <mat-label>Sortieren nach</mat-label>
-    <mat-select [(value)]="currentSort" (selectionChange)="onSortChange($event)">
+    <mat-select
+      [(value)]="currentSort"
+      (selectionChange)="onSortChange($event)"
+    >
       <mat-option value="title-asc">Titel (A-Z)</mat-option>
       <mat-option value="title-desc">Titel (Z-A)</mat-option>
       <mat-option value="createdAt-desc">Neueste zuerst</mat-option>
