@@ -7,14 +7,14 @@ DEVELOPER developer
 MANAGER manager
 ADMIN admin
         }
-
+    
 
 
         ProjectStatus {
             OPEN open
 CLOSED closed
         }
-
+    
 
 
         TicketStatus {
@@ -23,7 +23,7 @@ IN_PROGRESS in_progress
 RESOLVED resolved
 CLOSED closed
         }
-
+    
 
 
         TicketPriority {
@@ -32,7 +32,7 @@ MEDIUM medium
 HIGH high
 CRITICAL critical
         }
-
+    
 
 
         TicketActivityType {
@@ -41,88 +41,88 @@ ASSIGNEE_CHANGE assignee_change
 LABEL_ADDED label_added
 LABEL_REMOVED label_removed
         }
-
+    
   "users" {
     String id "🗝️"
-    String name
-    String surname
-    String email
-    String password_hash
-    UserRole role
-    DateTime created_at
+    String name 
+    String surname 
+    String email 
+    String password_hash 
+    UserRole role 
+    DateTime created_at 
     }
-
+  
 
   "projects" {
     String id "🗝️"
-    String created_by
-    String name
-    String description
-    String slug
-    ProjectStatus status
-    DateTime created_at
+    String created_by 
+    String name 
+    String description 
+    String slug 
+    ProjectStatus status 
+    DateTime created_at 
     DateTime updated_at "❓"
     }
-
+  
 
   "labels" {
     String id "🗝️"
-    String project_id
-    String name
-    String color
-    DateTime created_at
+    String project_id 
+    String name 
+    String color 
+    DateTime created_at 
     DateTime updated_at "❓"
     }
-
+  
 
   "tickets" {
     String id "🗝️"
-    String project_id
-    String reporter_id
+    String project_id 
+    String reporter_id 
     String assignee_id "❓"
-    String title
-    String description
-    TicketStatus status
-    TicketPriority priority
-    DateTime created_at
+    String title 
+    String description 
+    TicketStatus status 
+    TicketPriority priority 
+    DateTime created_at 
     DateTime updated_at "❓"
     }
-
+  
 
   "ticket_labels" {
-    String ticket_id
-    String label_id
-    DateTime created_at
+    String ticket_id 
+    String label_id 
+    DateTime created_at 
     }
-
+  
 
   "project_members" {
-    String project_id
-    String user_id
-    String added_by
-    DateTime added_at
+    String project_id 
+    String user_id 
+    String added_by 
+    DateTime added_at 
     }
-
+  
 
   "comments" {
     String id "🗝️"
-    String ticket_id
-    String author_id
-    String content
-    DateTime created_at
+    String ticket_id 
+    String author_id 
+    String content 
+    DateTime created_at 
     DateTime updated_at "❓"
     }
-
+  
 
   "ticket_activity" {
     String id "🗝️"
-    String ticket_id
-    String actor_id
-    TicketActivityType activity_type
-    Json detail
-    DateTime created_at
+    String ticket_id 
+    String actor_id 
+    TicketActivityType activity_type 
+    Json detail 
+    DateTime created_at 
     }
-
+  
     "users" |o--|| "UserRole" : "enum:role"
     "projects" |o--|| "ProjectStatus" : "enum:status"
     "projects" }o--|| users : "creator"
