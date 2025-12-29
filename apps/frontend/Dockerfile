@@ -2,7 +2,7 @@
 # Multi-stage build for minimal image size with Nginx
 
 # Stage 1: Base - Install dependencies
-FROM node:20.11.0-alpine3.19 AS base
+FROM node:20.19.0-alpine3.20 AS base
 WORKDIR /app
 
 # Install security updates and required build tools

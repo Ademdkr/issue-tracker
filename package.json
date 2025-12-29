@@ -3,6 +3,15 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "dev": "nx run-many -t serve --projects=backend,frontend --parallel",
+    "dev:backend": "nx serve backend",
+    "dev:frontend": "nx serve frontend",
+    "dev:db:start": "docker-compose -f docker-compose.dev.yml up -d",
+    "dev:db:stop": "docker-compose -f docker-compose.dev.yml down",
+    "dev:db:logs": "docker-compose -f docker-compose.dev.yml logs -f",
+    "prod:local": "docker-compose up --build",
+    "prod:local:detached": "docker-compose up --build -d",
+    "prod:local:down": "docker-compose down",
     "ci:lint": "nx affected -t lint --parallel=3",
     "ci:build": "nx affected -t build --parallel=3",
     "ci:check": "npm run ci:lint && npm run ci:build",
@@ -22,6 +31,7 @@
     "docker:build:all": "npm run docker:build:backend && npm run docker:build:frontend",
     "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down",
+    "docker:down:dev": "docker-compose -f docker-compose.dev.yml down",
     "docker:logs": "docker-compose logs -f",
     "prisma:generate": "npx prisma generate --schema=./apps/backend/prisma/schema.prisma",
     "prisma:migrate": "npx prisma migrate deploy --schema=./apps/backend/prisma/schema.prisma",
@@ -33,7 +43,7 @@
   },
   "private": true,
   "prisma": {
-    "seed": "ts-node prisma/seed.ts"
+    "seed": "ts-node apps/backend/prisma/seed.ts"
   },
   "dependencies": {
     "@angular/animations": "~20.3.0",
@@ -55,7 +65,7 @@
     "@nestjs/platform-express": "^11.0.0",
     "@nestjs/swagger": "^11.2.3",
     "@nestjs/throttler": "^6.5.0",
-    "@prisma/client": "^5.11.0",
+    "@prisma/client": "^5.22.0",
     "axios": "^1.6.0",
     "bcrypt": "^6.0.0",
     "chart.js": "^4.5.1",

@@ -2,7 +2,7 @@
 # Multi-stage build for minimal image size and maximum security
 
 # Stage 1: Base - Install dependencies
-FROM node:20.11.0-alpine3.19 AS base
+FROM node:20.19.0-alpine3.20 AS base
 WORKDIR /app
 
 # Install security updates and required build tools
@@ -42,6 +42,9 @@ WORKDIR /app
 COPY apps/backend ./apps/backend
 COPY libs ./libs
 
+# Create docs directory for Prisma ERD generator
+RUN mkdir -p docs/architecture
+
 # Generate Prisma Client
 RUN npx prisma generate --schema=./apps/backend/prisma/schema.prisma
 
@@ -49,7 +52,7 @@ RUN npx prisma generate --schema=./apps/backend/prisma/schema.prisma
 RUN npx nx build backend --configuration=production
 
 # Stage 4: Production - Final lightweight image
-FROM node:20.11.0-alpine3.19 AS production
+FROM node:20.19.0-alpine3.20 AS production
 WORKDIR /app
 
 # Install security updates and runtime dependencies

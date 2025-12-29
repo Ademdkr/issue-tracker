@@ -60,7 +60,12 @@ async function bootstrap() {
   // CORS aktivieren für Frontend-Zugriff
   const allowedOrigins =
     process.env.NODE_ENV === 'production'
-      ? [process.env.FRONTEND_URL || 'https://issue-tracker.example.com']
+      ? [
+          process.env.FRONTEND_URL || 'https://issue-tracker.ademdokur.dev',
+          'https://issue-tracker.ademdokur.dev',
+          // Render Backend URL für Health Checks
+          'https://issue-tracker-frontend-1tn2.onrender.com',
+        ]
       : ['http://localhost:4200', 'http://localhost:4201'];
 
   app.enableCors({
@@ -78,8 +83,8 @@ async function bootstrap() {
     })
   );
 
-  // Swagger API-Dokumentation (nur in Development)
-  if (environment === 'development') {
+  // Swagger API-Dokumentation (nur in Development, NIE in Production)
+  if (process.env.NODE_ENV !== 'production') {
     const config = new DocumentBuilder()
       .setTitle('Issue Tracker API')
       .setDescription(
@@ -130,6 +135,8 @@ async function bootstrap() {
       `📚 Swagger API Docs: http://localhost:${port}/${globalPrefix}/docs`,
       'Bootstrap'
     );
+  } else {
+    Logger.log('📚 Swagger disabled in production', 'Bootstrap');
   }
 
   await app.listen(port);

@@ -40,7 +40,7 @@ services:
     plan: free # oder starter/standard
     region: frankfurt # oder oregon
     databaseName: issue_tracker_db
-    databaseUser: postgres
+    databaseUser: issue_tracker_user
     ipAllowList: [] # Leer = alle Render Services
 
   # Backend API (NestJS)
@@ -168,8 +168,9 @@ openssl rand -base64 32
 3. Konfiguration:
    - **Name**: `issue-tracker-db`
    - **Database**: `issue_tracker_db`
-   - **User**: `postgres`
+   - **User**: `issue_tracker_user` (NICHT "postgres" - ist nicht erlaubt)
    - **Region**: `Frankfurt` (EU) oder `Oregon` (US)
+   - **PostgreSQL Version**: `16` (empfohlen - neueste stabile Version)
    - **Plan**: `Free` (oder `Starter` für Backups)
 4. Klicke **"Create Database"**
 5. Warte bis Status `Available` ist
@@ -195,23 +196,32 @@ openssl rand -base64 32
 
    **Build & Deploy**:
 
-   - **Build Command**:
-     ```bash
-     npm ci && npx prisma generate --schema=./apps/backend/prisma/schema.prisma && npx nx build backend --configuration=production
-     ```
-   - **Start Command**:
-     ```bash
-     npx prisma migrate deploy --schema=./apps/backend/prisma/schema.prisma && node dist/apps/backend/main.js
-     ```
+   - **Build Command**: Leer lassen (kommt aus Dockerfile)
+   - **Start Command**: Leer lassen (kommt aus Dockerfile)
+
+   ℹ️ _Bei Docker-Deployment werden Build/Start Commands automatisch aus dem Dockerfile übernommen_
 
    **Advanced Settings**:
 
    - **Health Check Path**: `/api/health`
-   - **Auto-Deploy**: `Yes`
+   - **Auto-Deploy**: `On commit` (deployed bei jedem Push auf master)
 
-4. Environment Variables hinzufügen (siehe Abschnitt 1.2)
-5. Für `DATABASE_URL`: Wähle **"Add from Database"** → `issue-tracker-db` → `Internal Connection String`
-6. Klicke **"Create Web Service"**
+4. Environment Variables hinzufügen (siehe Abschnitt 1.2):
+
+   **Erforderliche Variables:**
+
+   - `NODE_ENV` = `production`
+   - `PORT` = `3000`
+   - `DATABASE_URL` = **"Add from Database"** → `issue-tracker-db` → `Internal Connection String`
+   - `JWT_SECRET` = (generiert mit `openssl rand -base64 32`)
+   - `JWT_REFRESH_SECRET` = (generiert mit `openssl rand -base64 32`)
+   - `JWT_EXPIRES_IN` = `15m`
+   - `JWT_REFRESH_EXPIRES_IN` = `7d`
+   - `FRONTEND_URL` = `https://issue-tracker.ademdokur.dev`
+   - `CORS_ORIGINS` = `https://issue-tracker.ademdokur.dev`
+
+5. Klicke **"Create Web Service"**
+6. **Wichtig:** Notiere die Backend Service URL (z.B. `https://issue-tracker-backend-kxzv.onrender.com`) für Nginx Config
 
 **Status**: ⏳ Backend wird deployed
 
@@ -233,21 +243,26 @@ openssl rand -base64 32
 
    **Build & Deploy**:
 
-   - **Build Command**:
-     ```bash
-     npm ci && npx nx build frontend --configuration=production
-     ```
-   - **Start Command**: (automatisch von Nginx Docker Image)
+   - **Build Command**: Leer lassen (kommt aus Dockerfile)
+   - **Start Command**: Leer lassen (kommt aus Dockerfile)
+
+   ℹ️ _Bei Docker-Deployment werden Build/Start Commands automatisch aus dem Dockerfile übernommen_
 
    **Advanced Settings**:
 
-   - **Auto-Deploy**: `Yes`
+   - **Auto-Deploy**: `On commit` (deployed bei jedem Push auf master)
 
 4. Environment Variables:
 
-   - `BACKEND_URL`: Backend Service URL (intern)
+   - `API_URL`: Nicht mehr benötigt (API läuft über /api Proxy)
 
-5. Klicke **"Create Web Service"**
+5. **Wichtig - Nach Backend-Erstellung:**
+
+   - Kopiere die Backend Service URL (z.B. `https://issue-tracker-backend-kxzv.onrender.com`)
+   - Aktualisiere `apps/frontend/nginx.conf` → Zeile 92: `proxy_pass https://[DEINE-BACKEND-URL];`
+   - Commit und Push die Änderung
+
+6. Klicke **"Create Web Service"**
 
 **Status**: ⏳ Frontend wird deployed
 
@@ -255,38 +270,61 @@ openssl rand -base64 32
 
 ## Phase 3: Domain-Konfiguration
 
-### 3.1 DNS-Einträge bei Domain-Provider setzen
+### 3.1 DNS-Einträge bei Cloudflare setzen
 
-Bei deinem DNS-Provider (z.B. Namecheap, GoDaddy, Cloudflare):
+Bei Cloudflare DNS-Management für `ademdokur.dev`:
 
-1. Gehe zu DNS-Einstellungen für `ademdokur.dev`
-2. Füge folgende Records hinzu:
+⚠️ **WICHTIG:** Dein Portfolio läuft bereits auf `ademdokur.dev` - ändere den Root-Record (A/CNAME für `@` oder `ademdokur.dev`) **NICHT**!
 
-   **Für Frontend**:
+1. Logge dich bei [Cloudflare Dashboard](https://dash.cloudflare.com) ein
+2. Wähle deine Domain `ademdokur.dev`
+3. Gehe zu **DNS** → **Records**
+4. Füge **nur** folgenden **neuen** DNS-Record hinzu:
+
+   **Für Issue Tracker (Subdomain)**:
 
    ```
    Type: CNAME
    Name: issue-tracker
-   Value: <render-frontend-url>.onrender.com
-   TTL: 3600
+   Target: <render-frontend-url>.onrender.com (ohne https://)
+   Proxy status: DNS only (Wolke GRAU) - WICHTIG!
+   TTL: Auto
    ```
 
-   **Für Backend API** (optional, wenn separate Domain gewünscht):
+   ℹ️ **Backend-Zugriff:** Das Backend ist über `issue-tracker.ademdokur.dev/api` erreichbar (Nginx Proxy im Frontend)
 
-   ```
-   Type: CNAME
-   Name: api.issue-tracker
-   Value: <render-backend-url>.onrender.com
-   TTL: 3600
-   ```
+5. Klicke **"Save"**
 
-3. Speichern und auf DNS-Propagierung warten (bis zu 48h, meist < 1h)
+**Was du NICHT tun solltest:**
+
+- ❌ Root-Domain Record (`@` oder `ademdokur.dev`) ändern
+- ❌ Bestehende DNS-Einträge löschen
+- ❌ A-Record für `ademdokur.dev` modifizieren
+
+**Nach dem Hinzufügen:**
+
+- ✅ `ademdokur.dev` → Dein Portfolio (bleibt unverändert)
+- ✅ `issue-tracker.ademdokur.dev` → Issue Tracker (neu)
+
+⚠️ **WICHTIG - Cloudflare Proxy:**
+
+- Setze Proxy Status auf **"DNS only"** (graue Wolke ☁️)
+- **NICHT** "Proxied" (orange Wolke 🟠) - sonst funktioniert Render SSL nicht!
+- Nach erfolgreicher SSL-Einrichtung kannst du optional auf Proxied umschalten
 
 **Render URL finden**:
 
-- Im Render Dashboard → Service → Settings → "Your service is live at..."
+- Im Render Dashboard → Service → oben rechts siehst du die URL
+- Beispiel: `issue-tracker-backend-abc123.onrender.com`
+- Nutze nur den Hostname (ohne `https://`)
 
-**Status**: ⏳ DNS wird propagiert
+**DNS-Propagierung prüfen**:
+
+```bash
+nslookup issue-tracker.ademdokur.dev
+```
+
+**Status**: ⏳ DNS wird propagiert (Cloudflare ist meist schnell: 1-5 Minuten)
 
 ---
 
@@ -307,26 +345,16 @@ Bei deinem DNS-Provider (z.B. Namecheap, GoDaddy, Cloudflare):
 1. Gehe zu `issue-tracker-backend` Service
 2. Wiederhole Schritte für: `api.issue-tracker.ademdokur.dev`
 
-**Alternative**: Backend über Frontend Nginx Proxy erreichbar machen:
+**Alternative**: Backend über Frontend Nginx Proxy erreich, ca. 5-10 Minuten) 7. Status sollte `Active` mit grünem Haken sein
 
-- Frontend leitet `/api/*` an Backend weiter
-- Nur eine Domain erforderlich
-
-**Status**: ⏳ SSL-Zertifikate werden generiert
-
----
-
-## Phase 4: CI/CD Pipeline
-
-### 4.1 Render Auto-Deploy aktivieren
+ℹ️ **Backend:** Keine separate Domain nötig - läuft über `issue-tracker.ademdokur.dev/api` (Nginx Proxy)ivieren
 
 Auto-Deploy ist bereits in Phase 2 aktiviert worden. Verifiziere:
 
 1. Gehe zu Service → **"Settings"** → **"Build & Deploy"**
 2. Prüfe:
-   - ✅ **Auto-Deploy**: `Yes`
+   - ✅ **Auto-Deploy**: `On commit`
    - ✅ **Branch**: `master`
-   - ✅ **Deploy on push**: Aktiviert
 
 Bei jedem Push/Merge auf `master` wird automatisch deployed.
 
