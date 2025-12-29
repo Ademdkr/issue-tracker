@@ -10,7 +10,7 @@ import { PrismaService } from '../database';
 // Slug-Generator Service für automatische Projekt-Abkürzungen
 import { SlugGeneratorService } from './slug-generator.service';
 // Prisma-generierte Typen für typsichere Datenbankoperationen
-import { Project as PrismaProject } from '@prisma/client';
+import { Project as PrismaProject, ProjectStatus } from '@prisma/client';
 // Shared Types für einheitliche Typen zwischen Backend und Frontend
 import {
   Project,
@@ -292,7 +292,7 @@ export class ProjectsService {
       name?: string;
       description?: string;
       slug?: string;
-      status?: string;
+      status?: ProjectStatus;
       updatedAt?: Date;
     } = {};
 
@@ -320,11 +320,6 @@ export class ProjectsService {
       updateProjectDto.status !== currentProject.status
     ) {
       updateData.status = updateProjectDto.status;
-      hasChanges = true;
-    }
-      updateProjectDto.description !== currentProject.description
-    ) {
-      updateData.description = updateProjectDto.description;
       hasChanges = true;
     }
 
