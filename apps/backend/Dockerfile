@@ -61,25 +61,14 @@ RUN addgroup -g 1001 nodejs && \
 
 USER nestjs
 
-ENV NODE_ENV=production
-ENV PORT=3000
-
-EXPOSE 3000
-
-# Simple startup: Generate Prisma Client, then run app
-CMD npx prisma generate && node dist/main.js
-
-# Set production environment variables
 ENV NODE_ENV=production \
   NODE_OPTIONS="--max-old-space-size=512" \
   PORT=3000
 
-# Expose port (Render uses PORT env variable)
 EXPOSE 3000
 
-# Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
   CMD node -e "require('http').get('http://localhost:3000/api/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
 
-# Start the application with startup script
-CMD ["sh", "./start.sh"]
+# Generate Prisma Client at startup, then run app
+CMD npx prisma generate && node dist/main.js
