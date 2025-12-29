@@ -197,8 +197,7 @@ export class TicketsService {
     const isReporter = user.role === UserRole.REPORTER;
     const isDeveloper = user.role === UserRole.DEVELOPER;
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let whereCondition: any = {};
+    let whereCondition: Record<string, unknown> = {};
 
     // Rollenbasierte Basis-Filterung
     if (isAdmin || isManager) {
@@ -549,8 +548,7 @@ export class TicketsService {
     }
 
     // 3. Update-Daten vorbereiten
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const updateData: any = {
+    const updateData: Record<string, unknown> = {
       updatedAt: new Date(), // Setze immer den Zeitstempel
     };
 

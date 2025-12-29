@@ -5,6 +5,7 @@
 
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app/core/app.module';
 
 /**
@@ -42,6 +43,10 @@ async function bootstrap() {
   // Validiere Environment vor App-Erstellung
   validateEnvironment();
 
+  // Environment Variablen früh deklarieren
+  const port = process.env.PORT || 3000;
+  const environment = process.env.NODE_ENV || 'development';
+
   const app = await NestFactory.create(AppModule, {
     logger:
       process.env.NODE_ENV === 'production'
@@ -73,8 +78,59 @@ async function bootstrap() {
     })
   );
 
-  const port = process.env.PORT || 3000;
-  const environment = process.env.NODE_ENV || 'development';
+  // Swagger API-Dokumentation (nur in Development)
+  if (environment === 'development') {
+    const config = new DocumentBuilder()
+      .setTitle('Issue Tracker API')
+      .setDescription(
+        'REST API für Issue Tracker - Enterprise Issue Management System mit JWT Auth, RBAC und Policy-basierter Autorisierung'
+      )
+      .setVersion('1.0')
+      .setContact(
+        'Adem Dokur',
+        'https://github.com/Ademdkr/issue-tracker',
+        'adem.dokur@outlook.de'
+      )
+      .setLicense('MIT', 'https://opensource.org/licenses/MIT')
+      .addBearerAuth(
+        {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+          name: 'Authorization',
+          description: 'JWT Access Token (erhalten via /api/auth/login)',
+          in: 'header',
+        },
+        'JWT-auth'
+      )
+      .addTag('auth', 'Authentifizierung & Token-Management')
+      .addTag('users', 'Benutzerverwaltung')
+      .addTag('projects', 'Projektverwaltung')
+      .addTag('tickets', 'Ticket/Issue-Management')
+      .addTag('comments', 'Kommentar-System')
+      .addTag('labels', 'Label-Verwaltung')
+      .addTag('health', 'Health Checks & Monitoring')
+      .addServer('http://localhost:3000', 'Development Server')
+      .addServer('https://api.issue-tracker.example.com', 'Production Server')
+      .build();
+
+    const document = SwaggerModule.createDocument(app, config);
+    SwaggerModule.setup('api/docs', app, document, {
+      customSiteTitle: 'Issue Tracker API Docs',
+      customfavIcon: 'https://nestjs.com/img/logo-small.svg',
+      customCss: '.swagger-ui .topbar { display: none }',
+      swaggerOptions: {
+        persistAuthorization: true,
+        tagsSorter: 'alpha',
+        operationsSorter: 'alpha',
+      },
+    });
+
+    Logger.log(
+      `📚 Swagger API Docs: http://localhost:${port}/${globalPrefix}/docs`,
+      'Bootstrap'
+    );
+  }
 
   await app.listen(port);
 

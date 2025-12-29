@@ -41,6 +41,26 @@ export class TicketGridView {
     return colors[priority] || 'default';
   }
 
+  getStatusLabel(status: string): string {
+    const labels: Record<string, string> = {
+      OPEN: 'Offen',
+      IN_PROGRESS: 'In Bearbeitung',
+      RESOLVED: 'Gelöst',
+      CLOSED: 'Abgeschlossen',
+    };
+    return labels[status] || status;
+  }
+
+  getPriorityLabel(priority: string): string {
+    const labels: Record<string, string> = {
+      LOW: 'Niedrig',
+      MEDIUM: 'Mittel',
+      HIGH: 'Hoch',
+      CRITICAL: 'Kritisch',
+    };
+    return labels[priority] || priority;
+  }
+
   trackByTicketId(index: number, ticket: TicketWithDetails): string {
     return ticket.id;
   }

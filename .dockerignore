@@ -1,0 +1,82 @@
+# Node modules
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Build outputs
+dist
+tmp
+out-tsc
+.nx/cache
+.nx/workspace-data
+.angular
+
+# Environment files
+.env
+.env.local
+.env.*.local
+.env.docker
+.env.test
+.env.development
+
+# IDE
+.vscode
+.idea
+.project
+.classpath
+.c9
+*.launch
+.settings
+*.sublime-workspace
+*.swp
+*.swo
+*~
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+*.md
+!README.md
+docs
+CONTRIBUTING.md
+CODE_OF_CONDUCT.md
+SECURITY.md
+CHANGELOG.md
+LICENSE
+
+# Test files
+*.spec.ts
+*.test.ts
+**/__tests__
+**/__mocks__
+coverage
+.nyc_output
+/coverage
+testem.log
+
+# CI/CD
+.github
+.gitlab-ci.yml
+.circleci
+.travis.yml
+
+# OS files
+.DS_Store
+Thumbs.db
+.sass-cache
+
+# Docker (prevent recursion)
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# AI Tools
+.gemini
+.cursor
+
+# Logs
+logs
+*.log

@@ -10,7 +10,7 @@ import { PrismaService } from '../database';
 // Slug-Generator Service für automatische Projekt-Abkürzungen
 import { SlugGeneratorService } from './slug-generator.service';
 // Prisma-generierte Typen für typsichere Datenbankoperationen
-import { Project as PrismaProject } from '@prisma/client';
+import { Project as PrismaProject, ProjectStatus } from '@prisma/client';
 // Shared Types für einheitliche Typen zwischen Backend und Frontend
 import {
   Project,
@@ -151,7 +151,7 @@ export class ProjectsService {
     search?: string
   ): Promise<ProjectSummary[]> {
     // Erstelle die Where-Clause basierend auf Rolle und Suche
-    const whereConditions: any[] = [];
+    const whereConditions: Record<string, unknown>[] = [];
 
     // Rollenberechtigung: Developer/Reporter sehen nur ihre Projekte
     if (userRole !== UserRole.ADMIN && userRole !== UserRole.MANAGER) {
@@ -292,6 +292,7 @@ export class ProjectsService {
       name?: string;
       description?: string;
       slug?: string;
+      status?: ProjectStatus;
       updatedAt?: Date;
     } = {};
 
@@ -311,6 +312,14 @@ export class ProjectsService {
       updateProjectDto.description !== currentProject.description
     ) {
       updateData.description = updateProjectDto.description;
+      hasChanges = true;
+    }
+
+    if (
+      updateProjectDto.status !== undefined &&
+      updateProjectDto.status !== currentProject.status
+    ) {
+      updateData.status = updateProjectDto.status;
       hasChanges = true;
     }
 

@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { TicketsService } from '../../../../../core/services/tickets.service';
 import { ProjectsService } from '../../../../../core/services/projects.service';
+import { ErrorService } from '../../../../../core/services/error.service';
 import { TicketDialogService } from '../../../../../core/services/ticket-dialog.service';
 import {
   TicketWithDetails,
@@ -94,8 +95,11 @@ export class TicketsTab implements OnInit, OnDestroy {
         next: (project: Project) => {
           this.project = project;
         },
-        error: (err: Error) => {
-          console.error('Error loading project:', err);
+        error: (err) => {
+          inject(ErrorService).handleHttpError(
+            err,
+            'Fehler beim Laden des Projekts'
+          );
         },
       });
   }
@@ -119,7 +123,10 @@ export class TicketsTab implements OnInit, OnDestroy {
         },
         error: (err) => {
           this.error = 'Fehler beim Laden der Tickets.';
-          console.error('Error loading tickets:', err);
+          inject(ErrorService).handleHttpError(
+            err,
+            'Fehler beim Laden der Tickets'
+          );
           this.isLoading = false;
         },
       });

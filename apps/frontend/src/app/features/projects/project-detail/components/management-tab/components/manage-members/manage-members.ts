@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { MembersTable } from './components/members-table/members-table';
 import { User } from '@issue-tracker/shared-types';
 import { ProjectsService } from 'apps/frontend/src/app/core/services/projects.service';
+import { ErrorService } from 'apps/frontend/src/app/core/services/error.service';
 
 @Component({
   selector: 'app-manage-members',
@@ -78,7 +79,10 @@ export class ManageMembers {
       this.availableUsersTable.clearSelection();
       this.selectedAvailableUsers = [];
     } catch (error) {
-      console.error('Error adding members:', error);
+      inject(ErrorService).handleError(
+        error,
+        'Fehler beim Hinzufügen der Mitglieder'
+      );
     } finally {
       this.isLoading = false;
     }
@@ -106,7 +110,10 @@ export class ManageMembers {
       this.projectMembersTable.clearSelection();
       this.selectedProjectMembers = [];
     } catch (error) {
-      console.error('Error removing members:', error);
+      inject(ErrorService).handleError(
+        error,
+        'Fehler beim Entfernen der Mitglieder'
+      );
     } finally {
       this.isLoading = false;
     }

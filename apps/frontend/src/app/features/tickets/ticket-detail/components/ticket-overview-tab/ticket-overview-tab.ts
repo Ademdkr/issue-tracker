@@ -31,6 +31,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { TicketsService } from '../../../../../core/services/tickets.service';
 import { ProjectsService } from '../../../../../core/services/projects.service';
 import { AuthService } from '../../../../../core/services/auth.service';
+import { ErrorService } from '../../../../../core/services/error.service';
 
 // Types
 import {
@@ -268,7 +269,7 @@ export class TicketOverviewTab implements OnInit, OnDestroy {
           this.ticketUpdated.emit(updatedTicket);
           this.isLoading = false;
         },
-        error: (err: Error) => {
+        error: (err) => {
           this.snackBar.open(
             'Fehler beim Aktualisieren des Tickets',
             'Schließen',
@@ -278,7 +279,10 @@ export class TicketOverviewTab implements OnInit, OnDestroy {
               horizontalPosition: 'center',
             }
           );
-          console.error('Error updating ticket:', err);
+          inject(ErrorService).handleHttpError(
+            err,
+            'Fehler beim Aktualisieren des Tickets'
+          );
           this.isLoading = false;
         },
       });
@@ -317,13 +321,16 @@ export class TicketOverviewTab implements OnInit, OnDestroy {
           this.ticketDeleted.emit();
           this.isLoading = false;
         },
-        error: (err: Error) => {
+        error: (err) => {
           this.snackBar.open('Fehler beim Löschen des Tickets', 'Schließen', {
             duration: 5000,
             verticalPosition: 'top',
             horizontalPosition: 'center',
           });
-          console.error('Error deleting ticket:', err);
+          inject(ErrorService).handleHttpError(
+            err,
+            'Fehler beim Löschen des Tickets'
+          );
           this.isLoading = false;
         },
       });
@@ -375,7 +382,7 @@ export class TicketOverviewTab implements OnInit, OnDestroy {
           this.ticketUpdated.emit(updatedTicket);
           this.isLoading = false;
         },
-        error: (err: Error) => {
+        error: (err) => {
           this.snackBar.open(
             'Fehler beim Aktualisieren der Labels',
             'Schließen',
@@ -385,7 +392,10 @@ export class TicketOverviewTab implements OnInit, OnDestroy {
               horizontalPosition: 'center',
             }
           );
-          console.error('Error updating labels:', err);
+          inject(ErrorService).handleHttpError(
+            err,
+            'Fehler beim Aktualisieren der Labels'
+          );
           this.isLoading = false;
         },
       });

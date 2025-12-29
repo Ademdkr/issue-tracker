@@ -17,6 +17,7 @@ import { MatInputModule } from '@angular/material/input';
 
 import { Label } from '@issue-tracker/shared-types';
 import { ProjectsService } from 'apps/frontend/src/app/core/services/projects.service';
+import { ErrorService } from 'apps/frontend/src/app/core/services/error.service';
 
 interface DialogData {
   projectId: string;
@@ -113,7 +114,10 @@ export class LabelDialogComponent implements OnInit {
         this.dialogRef.close(true);
       },
       error: (error) => {
-        console.error('Error saving label:', error);
+        inject(ErrorService).handleHttpError(
+          error,
+          'Fehler beim Speichern des Labels'
+        );
         this.isSubmitting = false;
       },
     });

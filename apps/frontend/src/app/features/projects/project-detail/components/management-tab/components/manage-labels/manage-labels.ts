@@ -7,6 +7,7 @@ import { MatChipsModule } from '@angular/material/chips';
 
 import { Label } from '@issue-tracker/shared-types';
 import { ProjectsService } from 'apps/frontend/src/app/core/services/projects.service';
+import { ErrorService } from 'apps/frontend/src/app/core/services/error.service';
 import { LabelDialogComponent } from './components/label-dialog/label-dialog';
 
 @Component({
@@ -44,7 +45,10 @@ export class ManageLabels implements OnInit {
         this.isLoading = false;
       },
       error: (error) => {
-        console.error('Error loading labels:', error);
+        inject(ErrorService).handleHttpError(
+          error,
+          'Fehler beim Laden der Labels'
+        );
         this.isLoading = false;
       },
     });
@@ -86,7 +90,10 @@ export class ManageLabels implements OnInit {
         this.loadLabels();
       },
       error: (error) => {
-        console.error('Error deleting label:', error);
+        inject(ErrorService).handleHttpError(
+          error,
+          'Fehler beim Löschen des Labels'
+        );
       },
     });
   }

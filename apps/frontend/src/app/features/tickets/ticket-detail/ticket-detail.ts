@@ -12,6 +12,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 // Services
 import { TicketsService } from '../../../core/services/tickets.service';
+import { ErrorService } from '../../../core/services/error.service';
 
 // Types
 import { TicketWithDetails } from '@issue-tracker/shared-types';
@@ -78,9 +79,12 @@ export class TicketDetail implements OnInit, OnDestroy {
           this.ticket = ticket;
           this.isLoading = false;
         },
-        error: (err: Error) => {
+        error: (err) => {
           this.error = 'Fehler beim Laden des Tickets.';
-          console.error('Error loading ticket:', err);
+          inject(ErrorService).handleHttpError(
+            err,
+            'Fehler beim Laden des Tickets'
+          );
           this.isLoading = false;
         },
       });

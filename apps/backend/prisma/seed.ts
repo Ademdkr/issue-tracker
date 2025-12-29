@@ -6,6 +6,7 @@ import {
   TicketPriority,
 } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
+import { Logger } from './logger';
 
 const prisma = new PrismaClient({
   datasources: {
@@ -14,6 +15,8 @@ const prisma = new PrismaClient({
     },
   },
 });
+
+const logger = new Logger('Seed');
 
 /**
  * Seed Script
@@ -24,7 +27,7 @@ const prisma = new PrismaClient({
  * npx prisma db seed
  */
 async function main() {
-  console.log('🌱 Seeding database...\n');
+  logger.log('🌱 Seeding database...\n');
 
   // Passwort-Hash-Funktion
   const hashPassword = async (password: string): Promise<string> => {
@@ -34,7 +37,7 @@ async function main() {
   // ============================================================
   // USERS
   // ============================================================
-  console.log('👥 Creating users...');
+  logger.section('Creating users', '👥');
 
   const reporter = await prisma.user.upsert({
     where: { email: 'reporter@example.com' },
@@ -96,15 +99,15 @@ async function main() {
     },
   });
 
-  console.log(`  ✓ ${reporter.email} (Reporter)`);
-  console.log(`  ✓ ${developer.email} (Developer)`);
-  console.log(`  ✓ ${manager.email} (Manager)`);
-  console.log(`  ✓ ${admin.email} (Admin)`);
+  logger.success(`${reporter.email} (Reporter)`);
+  logger.success(`${developer.email} (Developer)`);
+  logger.success(`${manager.email} (Manager)`);
+  logger.success(`${admin.email} (Admin)`);
 
   // ============================================================
   // PROJECTS
   // ============================================================
-  console.log('\n📁 Creating projects...');
+  logger.section('Creating projects', '📁');
 
   const logistikPortal = await prisma.project.upsert({
     where: { id: 'c92a74df-2828-4974-91c2-25258d01e715' },
@@ -171,16 +174,16 @@ async function main() {
     },
   });
 
-  console.log(`  ✓ ${logistikPortal.name} (${logistikPortal.slug})`);
-  console.log(`  ✓ ${webShop.name} (${webShop.slug})`);
-  console.log(`  ✓ ${kiSystem.name} (${kiSystem.slug})`);
-  console.log(`  ✓ ${crmSystem.name} (${crmSystem.slug})`);
-  console.log(`  ✓ ${erpSystem.name} (${erpSystem.slug})`);
+  logger.success(`${logistikPortal.name} (${logistikPortal.slug})`);
+  logger.success(`${webShop.name} (${webShop.slug})`);
+  logger.success(`${kiSystem.name} (${kiSystem.slug})`);
+  logger.success(`${crmSystem.name} (${crmSystem.slug})`);
+  logger.success(`${erpSystem.name} (${erpSystem.slug})`);
 
   // ============================================================
   // PROJECT MEMBERS
   // ============================================================
-  console.log('\n👨‍💼 Adding project members...');
+  logger.section('Adding project members', '👨‍💼');
 
   // Logistik-Portal: Reporter + Developer
   await prisma.projectMember.upsert({
@@ -245,14 +248,14 @@ async function main() {
     },
   });
 
-  console.log(`  ✓ Logistik-Portal: Reporter, Developer`);
-  console.log(`  ✓ Web-Shop: Developer`);
-  console.log(`  ✓ ERP-System: Reporter`);
+  logger.success('Logistik-Portal: Reporter, Developer');
+  logger.success('Web-Shop: Developer');
+  logger.success('ERP-System: Reporter');
 
   // ============================================================
   // LABELS
   // ============================================================
-  console.log('\n🏷️  Creating labels...');
+  logger.section('Creating labels', '🏷️');
 
   const bugLabel = await prisma.label.upsert({
     where: { id: '76ec7f99-a754-4411-80a2-3703065863cb' },
@@ -276,13 +279,13 @@ async function main() {
     },
   });
 
-  console.log(`  ✓ ${bugLabel.name} (${logistikPortal.name})`);
-  console.log(`  ✓ ${featureLabel.name} (${logistikPortal.name})`);
+  logger.success(`${bugLabel.name} (${logistikPortal.name})`);
+  logger.success(`${featureLabel.name} (${logistikPortal.name})`);
 
   // ============================================================
   // TICKETS
   // ============================================================
-  console.log('\n🎫 Creating tickets...');
+  logger.section('Creating tickets', '🎫');
 
   const ticket1 = await prisma.ticket.upsert({
     where: { id: 'ba0981a7-1829-487c-97f4-f2fc58eb1049' },
@@ -314,34 +317,34 @@ async function main() {
     },
   });
 
-  console.log(`  ✓ ${ticket1.title} (${logistikPortal.name})`);
-  console.log(`  ✓ ${ticket2.title} (${webShop.name})`);
+  logger.success(`${ticket1.title} (${logistikPortal.name})`);
+  logger.success(`${ticket2.title} (${webShop.name})`);
 
   // ============================================================
   // ZUSAMMENFASSUNG
   // ============================================================
-  console.log('\n📊 Summary:');
-  console.log('============================================================');
-  console.log('  Users:           4 (Reporter, Developer, Manager, Admin)');
-  console.log('  Projects:        5');
-  console.log('  Project Members: 4');
-  console.log('  Labels:          2');
-  console.log('  Tickets:         2');
-  console.log('============================================================\n');
+  logger.section('Summary', '📊');
+  logger.separator();
+  logger.log('  Users:           4 (Reporter, Developer, Manager, Admin)');
+  logger.log('  Projects:        5');
+  logger.log('  Project Members: 4');
+  logger.log('  Labels:          2');
+  logger.log('  Tickets:         2');
+  logger.separator();
 
-  console.log('🔐 Test Credentials:');
-  console.log('  📧 reporter@example.com   → Password: Reporter123!');
-  console.log('  📧 developer@example.com  → Password: Developer123!');
-  console.log('  📧 manager@example.com    → Password: Manager123!');
-  console.log('  📧 admin@example.com      → Password: Admin123!\n');
+  logger.log('\n🔐 Test Credentials:');
+  logger.log('  📧 reporter@example.com   → Password: Reporter123!');
+  logger.log('  📧 developer@example.com  → Password: Developer123!');
+  logger.log('  📧 manager@example.com    → Password: Manager123!');
+  logger.log('  📧 admin@example.com      → Password: Admin123!\n');
 
-  console.log('💡 Alle Passwörter wurden mit bcrypt gehasht!');
-  console.log('🎉 Seeding completed!');
+  logger.log('💡 Alle Passwörter wurden mit bcrypt gehasht!');
+  logger.success('Seeding completed! 🎉');
 }
 
 main()
   .catch((e) => {
-    console.error('❌ Seeding failed:', e);
+    logger.error('Seeding failed', e);
     process.exit(1);
   })
   .finally(async () => {

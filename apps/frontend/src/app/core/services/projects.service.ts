@@ -7,6 +7,7 @@ import {
   ProjectMemberWithUser,
   Label,
   LabelWithProject,
+  ProjectStatus,
 } from '@issue-tracker/shared-types';
 import { environment } from '../../../environments/environment';
 @Injectable({
@@ -44,7 +45,7 @@ export class ProjectsService {
 
   update(
     id: string,
-    data: { name?: string; description?: string }
+    data: { name?: string; description?: string; status?: ProjectStatus }
   ): Observable<ProjectSummary> {
     return this.http.patch<ProjectSummary>(`${this.apiUrl}/${id}`, data);
   }

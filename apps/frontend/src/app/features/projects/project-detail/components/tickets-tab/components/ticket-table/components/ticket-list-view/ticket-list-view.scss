@@ -73,6 +73,49 @@
   mat-chip {
     font-size: 0.75rem;
     min-height: 24px;
+
+    // Status colors
+    &.status-open {
+      background-color: #90caf9 !important;
+      color: #0d47a1 !important;
+    }
+
+    &.status-in_progress {
+      background-color: #ffcc80 !important;
+      color: #e65100 !important;
+    }
+
+    &.status-resolved {
+      background-color: #a5d6a7 !important;
+      color: #1b5e20 !important;
+    }
+
+    &.status-closed {
+      background-color: #e0e0e0 !important;
+      color: #424242 !important;
+    }
+
+    // Priority colors
+    &.priority-low {
+      background-color: #c8e6c9 !important;
+      color: #2e7d32 !important;
+    }
+
+    &.priority-medium {
+      background-color: #ffe082 !important;
+      color: #f57f17 !important;
+    }
+
+    &.priority-high {
+      background-color: #ffab91 !important;
+      color: #d84315 !important;
+    }
+
+    &.priority-critical {
+      background-color: #ef5350 !important;
+      color: white !important;
+      font-weight: 600;
+    }
   }
 }
 

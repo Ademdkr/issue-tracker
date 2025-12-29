@@ -5,7 +5,11 @@ import {
   TicketActivityType,
   TicketStatus,
 } from '@issue-tracker/shared-types';
-import { TicketActivity as PrismaTicketActivity, User } from '@prisma/client';
+import {
+  TicketActivity as PrismaTicketActivity,
+  User,
+  Prisma,
+} from '@prisma/client';
 
 /**
  * TicketActivitiesService
@@ -159,8 +163,7 @@ export class TicketActivitiesService {
         ticketId,
         actorId,
         activityType: TicketActivityType.ASSIGNEE_CHANGE,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        detail: detail as any,
+        detail: detail as Prisma.InputJsonValue,
       },
       include: {
         actor: {
@@ -214,8 +217,7 @@ export class TicketActivitiesService {
         ticketId,
         actorId,
         activityType: TicketActivityType.LABEL_ADDED,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        detail: detail as any,
+        detail: detail as Prisma.InputJsonValue,
       },
       include: {
         actor: {
@@ -269,8 +271,7 @@ export class TicketActivitiesService {
         ticketId,
         actorId,
         activityType: TicketActivityType.LABEL_REMOVED,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        detail: detail as any,
+        detail: detail as Prisma.InputJsonValue,
       },
       include: {
         actor: {

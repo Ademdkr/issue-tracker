@@ -4,8 +4,10 @@ import {
   IsOptional,
   MaxLength,
   IsUUID,
+  IsEnum,
 } from 'class-validator';
 import { VALIDATION_LIMITS } from '../constants';
+import { ProjectStatus } from '../enums';
 
 /**
  * DTO für Projekt-Erstellung
@@ -46,6 +48,10 @@ export class UpdateProjectDto {
   @IsOptional()
   @IsString()
   description?: string;
+
+  @IsOptional()
+  @IsEnum(ProjectStatus)
+  status?: ProjectStatus;
 }
 
 /**

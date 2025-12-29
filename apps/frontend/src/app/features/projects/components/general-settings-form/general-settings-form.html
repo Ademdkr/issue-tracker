@@ -154,7 +154,22 @@
         Abbrechen
       </button>
 
-      <!-- Mitte: Löschen (nur Admin) -->
+      <!-- Mitte: Aktionen -->
+      <button
+        *ngIf="canEdit"
+        mat-stroked-button
+        [color]="project.status === 'OPEN' ? 'warn' : 'accent'"
+        type="button"
+        (click)="onToggleStatus()"
+        class="toggle-status-button"
+      >
+        <mat-icon
+          >{{ project.status === 'OPEN' ? 'lock' : 'lock_open' }}</mat-icon
+        >
+        {{ project.status === 'OPEN' ? 'Projekt schließen' : 'Projekt wieder
+        öffnen' }}
+      </button>
+
       <button
         *ngIf="isAdmin"
         mat-stroked-button

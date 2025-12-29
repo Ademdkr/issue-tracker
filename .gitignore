@@ -46,10 +46,16 @@ Thumbs.db
 
 .angular
 
+# AI Tools (keep configuration, ignore cache)
+.gemini/
+.claude/cache/
+.cursor/cache/
+
 # Environment variables
 .env
 .env.local
 .env.production
+.env.docker
 
 # Prisma
 # Keep the schema and migrations, but ignore the generated client and database files

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -13,6 +13,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 // Services & Types
 import { ProjectsService } from '../../../core/services/projects.service';
+import { ErrorService } from '../../../core/services/error.service';
 import { Project } from '@issue-tracker/shared-types';
 import { TicketsTab } from './components/tickets-tab/tickets-tab';
 import { ManagementTab } from './components/management-tab/management-tab';
@@ -76,13 +77,12 @@ export class ProjectDetail implements OnInit, OnDestroy {
           this.isLoading = false;
         },
         error: (error) => {
-          console.error('Fehler beim Laden des Projekts:', error);
+          inject(ErrorService).handleHttpError(
+            error,
+            'Fehler beim Laden des Projekts'
+          );
           this.error = 'Projekt konnte nicht geladen werden.';
           this.isLoading = false;
-
-          this.snackBar.open('Fehler beim Laden des Projekts', 'Schließen', {
-            duration: 3000,
-          });
         },
       });
   }

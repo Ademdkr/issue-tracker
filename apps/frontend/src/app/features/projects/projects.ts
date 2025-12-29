@@ -23,7 +23,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDivider } from '@angular/material/divider';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -31,6 +30,7 @@ import { RouterLink } from '@angular/router';
 import { ProjectsService } from '../../core/services/projects.service';
 import { AuthService } from '../../core/services/auth.service';
 import { ProjectSettingsService } from '../../core/services/project-settings.service';
+import { ErrorService } from '../../core/services/error.service';
 
 @Component({
   selector: 'app-projects',
@@ -44,7 +44,6 @@ import { ProjectSettingsService } from '../../core/services/project-settings.ser
     MatIconModule,
     MatChipsModule,
     MatProgressSpinnerModule,
-    MatSnackBarModule,
     MatDivider,
     MatTooltipModule,
     MatFormFieldModule,
@@ -57,7 +56,6 @@ import { ProjectSettingsService } from '../../core/services/project-settings.ser
 export class Projects implements OnInit, OnDestroy {
   private readonly projectsService = inject(ProjectsService);
   private readonly authService = inject(AuthService);
-  private readonly snackBar = inject(MatSnackBar);
   private readonly router = inject(Router);
   private readonly projectSettingsService = inject(ProjectSettingsService);
   private readonly cdr = inject(ChangeDetectorRef);
@@ -110,15 +108,14 @@ export class Projects implements OnInit, OnDestroy {
         this.cdr.markForCheck();
       },
       error: (error) => {
-        console.error('Fehler beim Laden der Projekte:', error);
+        inject(ErrorService).handleHttpError(
+          error,
+          'Fehler beim Laden der Projekte'
+        );
         this.error = 'Projekte konnten nicht geladen werden.';
         this.isLoading = false;
         this.isSearching = false;
         this.cdr.markForCheck();
-
-        this.snackBar.open('Fehler beim Laden der Projekte', 'Schließen', {
-          duration: 3000,
-        });
       },
     });
   }

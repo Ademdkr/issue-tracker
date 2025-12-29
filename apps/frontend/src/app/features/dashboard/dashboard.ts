@@ -3,6 +3,7 @@ import {
   OnInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
+  inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
@@ -13,6 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { BaseChartDirective } from 'ng2-charts';
 import { Chart, ChartData, ChartOptions, registerables } from 'chart.js';
 import { DashboardService } from '../../core/services/dashboard.service';
+import { ErrorService } from '../../core/services/error.service';
 import {
   DashboardStats,
   ProjectWithOpenTickets,
@@ -79,7 +81,7 @@ export class Dashboard implements OnInit {
       },
       title: {
         display: true,
-        text: 'Projekte nach Ticket-Anzahl',
+        text: 'Ticket-Anzahl nach Projekten',
       },
     },
   };
@@ -141,7 +143,10 @@ export class Dashboard implements OnInit {
         this.cdr.markForCheck();
       },
       error: (error) => {
-        console.error('Fehler beim Laden der Dashboard-Daten:', error);
+        inject(ErrorService).handleHttpError(
+          error,
+          'Fehler beim Laden der Dashboard-Daten'
+        );
       },
     });
   }

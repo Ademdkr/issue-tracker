@@ -16,6 +16,8 @@ import {
   CreateCommentDto,
   UpdateCommentDto,
   User,
+  TicketStatus,
+  TicketPriority,
 } from '@issue-tracker/shared-types';
 
 @Injectable()
@@ -132,8 +134,8 @@ export class CommentsService {
       assigneeId: ticket.assigneeId ?? undefined,
       title: ticket.title,
       description: ticket.description,
-      status: ticket.status as any,
-      priority: ticket.priority as any,
+      status: ticket.status as TicketStatus,
+      priority: ticket.priority as TicketPriority,
       createdAt: ticket.createdAt,
       updatedAt: ticket.updatedAt ?? null,
     });

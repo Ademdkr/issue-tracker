@@ -52,9 +52,11 @@ export class DashboardService {
       });
       return projects.map((p) => p.id);
     } else if (userRole === UserRole.REPORTER) {
-      // Reporter sieht nur eigene Projekte
+      // Reporter sieht nur Projekte in denen er Mitglied ist
       const projects = await this.prisma.project.findMany({
-        where: { createdBy: userId },
+        where: {
+          members: { some: { userId } },
+        },
         select: { id: true },
       });
       return projects.map((p) => p.id);
@@ -101,6 +103,7 @@ export class DashboardService {
     const projects = await this.prisma.project.findMany({
       where: {
         ...(projectIds && { id: { in: projectIds } }),
+        status: 'OPEN',
         tickets: {
           some: {
             status: { in: ['OPEN', 'IN_PROGRESS'] },

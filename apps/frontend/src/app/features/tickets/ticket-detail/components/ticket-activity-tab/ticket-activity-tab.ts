@@ -17,6 +17,7 @@ import { MatIconModule } from '@angular/material/icon';
 
 // Services
 import { ActivitiesService } from '../../../../../core/services/activities.service';
+import { ErrorService } from '../../../../../core/services/error.service';
 
 // Types
 import {
@@ -76,9 +77,12 @@ export class TicketActivityTab implements OnInit, OnChanges, OnDestroy {
           this.activities = activities;
           this.isLoading = false;
         },
-        error: (err: Error) => {
+        error: (err) => {
           this.error = 'Fehler beim Laden der Aktivitäten.';
-          console.error('Error loading activities:', err);
+          inject(ErrorService).handleHttpError(
+            err,
+            'Fehler beim Laden der Aktivitäten'
+          );
           this.isLoading = false;
         },
       });
