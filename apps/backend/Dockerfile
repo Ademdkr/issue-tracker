@@ -50,9 +50,8 @@ COPY libs ./libs
 # Create docs directory for Prisma ERD generator
 RUN mkdir -p docs/architecture
 
-# Generate Prisma Client with dummy DATABASE_URL (will be regenerated at runtime)
-ENV DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy"
-RUN npx prisma generate --schema=./apps/backend/prisma/schema.prisma
+# DON'T generate Prisma Client here - will be done at runtime
+# This prevents baking localhost:5435 into the client
 
 # Build backend
 RUN npx nx build backend --configuration=production
@@ -81,9 +80,8 @@ RUN npm ci --only=production --legacy-peer-deps --prefer-offline --no-audit && \
 
 # Copy built application from build stage
 COPY --from=build --chown=nestjs:nodejs /app/dist/apps/backend ./dist
+# DON'T copy .prisma from build - will be generated at runtime
 COPY --from=build --chown=nestjs:nodejs /app/apps/backend/prisma ./prisma
-COPY --from=build --chown=nestjs:nodejs /app/node_modules/.prisma ./node_modules/.prisma
-COPY --from=build --chown=nestjs:nodejs /app/node_modules/@prisma ./node_modules/@prisma
 
 # Copy Prisma schema for migrations
 COPY --chown=nestjs:nodejs apps/backend/prisma/schema.prisma ./prisma/
