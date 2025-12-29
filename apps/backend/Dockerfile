@@ -50,8 +50,10 @@ COPY libs ./libs
 # Create docs directory for Prisma ERD generator
 RUN mkdir -p docs/architecture
 
-# DON'T generate Prisma Client here - will be done at runtime
-# This prevents baking localhost:5435 into the client
+# Generate Prisma Client with dummy DATABASE_URL (will be overwritten at runtime)
+# This is needed for TypeScript compilation only
+RUN DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy" \
+    npx prisma generate --schema=./apps/backend/prisma/schema.prisma --generator client
 
 # Build backend
 RUN npx nx build backend --configuration=production
