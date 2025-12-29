@@ -41,36 +41,30 @@ jobs:
         run: npx nx build backend --configuration=production
 
       # Deployment via Render Deploy Hooks
-      - name: Trigger Render Backend Deployment
-        if: ${{ secrets.RENDER_DEPLOY_HOOK_BACKEND != '' }}
+      - name: Deploy to Render
+        env:
+          BACKEND_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK_BACKEND }}
+          FRONTEND_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK_FRONTEND }}
         run: |
-          curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_BACKEND }}
-          echo "✅ Backend deployment triggered on Render"
-
-      - name: Trigger Render Frontend Deployment
-        if: ${{ secrets.RENDER_DEPLOY_HOOK_FRONTEND != '' }}
-        run: |
-          curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_FRONTEND }}
-          echo "✅ Frontend deployment triggered on Render"
-
-      - name: Skip deployment (Secrets not configured)
-        if: ${{ secrets.RENDER_DEPLOY_HOOK_BACKEND == '' || secrets.RENDER_DEPLOY_HOOK_FRONTEND == '' }}
-        run: |
-          echo "⚠️  Render Deploy Hooks not configured"
-          echo "ℹ️  Configure RENDER_DEPLOY_HOOK_BACKEND and RENDER_DEPLOY_HOOK_FRONTEND secrets"
-          echo "ℹ️  See docs/deployment/RENDER_DEPLOYMENT.md for setup instructions"
-
-      - name: Wait for deployments
-        if: ${{ secrets.RENDER_DEPLOY_HOOK_BACKEND != '' && secrets.RENDER_DEPLOY_HOOK_FRONTEND != '' }}
-        run: |
-          echo "Waiting 180 seconds for Render deployments to complete..."
-          sleep 180
-
-      - name: Health check
-        if: ${{ secrets.RENDER_DEPLOY_HOOK_BACKEND != '' && secrets.RENDER_DEPLOY_HOOK_FRONTEND != '' }}
-        run: |
-          echo "Running health check..."
-          curl --fail --retry 3 --retry-delay 10 https://issue-tracker.ademdokur.dev/api/health || exit 1
+          if [ -n "$BACKEND_HOOK" ] && [ -n "$FRONTEND_HOOK" ]; then
+            echo "🚀 Triggering Render deployments..."
+            curl -X POST "$BACKEND_HOOK"
+            echo "✅ Backend deployment triggered"
+            curl -X POST "$FRONTEND_HOOK"
+            echo "✅ Frontend deployment triggered"
+            
+            echo "⏳ Waiting 180 seconds for deployments to complete..."
+            sleep 180
+            
+            echo "🏥 Running health check..."
+            curl --fail --retry 3 --retry-delay 10 https://issue-tracker.ademdokur.dev/api/health || exit 1
+            echo "✅ Health check passed"
+          else
+            echo "⚠️  Render Deploy Hooks not configured"
+            echo "ℹ️  Configure RENDER_DEPLOY_HOOK_BACKEND and RENDER_DEPLOY_HOOK_FRONTEND secrets"
+            echo "ℹ️  See docs/deployment/RENDER_DEPLOYMENT.md for setup instructions"
+            echo "✅ Build completed successfully - skipping deployment"
+          fi
 
       - name: Notify deployment success
         if: success()
