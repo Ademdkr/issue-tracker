@@ -87,13 +87,14 @@ openssl rand -base64 32
 
 #### Automatisch von Render
 
-| Variable              | Typ    | Quelle             | Beschreibung                    |
-| --------------------- | ------ | ------------------ | ------------------------------- |
+| Variable              | Typ    | Quelle             | Beschreibung                                |
+| --------------------- | ------ | ------------------ | ------------------------------------------- |
 | `DATABASE_URL`        | String | PostgreSQL Service | **Internal Database URL** (nicht External!) |
-| `RENDER_EXTERNAL_URL` | String | Render             | Öffentliche Service URL         |
-| `RENDER_INTERNAL_URL` | String | Render             | Interne Service URL             |
+| `RENDER_EXTERNAL_URL` | String | Render             | Öffentliche Service URL                     |
+| `RENDER_INTERNAL_URL` | String | Render             | Interne Service URL                         |
 
 **⚠️ WICHTIG: Verwende die Internal Database URL!**
+
 - ✅ Schneller (internes Netzwerk)
 - ✅ Sicherer (nicht öffentlich erreichbar)
 - ✅ Kostenlos (kein External Traffic)

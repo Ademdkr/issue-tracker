@@ -61,7 +61,8 @@ export const environment = {
 };
 ```
 
-**Wichtig**: 
+**Wichtig**:
+
 - ✅ Direkte Backend-URL (nicht `/api` Proxy)
 - ✅ Nginx Proxy wird NICHT verwendet
 - ✅ CORS ist Backend-seitig konfiguriert
@@ -123,27 +124,28 @@ postgresql://issue_tracker_user:***@dpg-....frankfurt-postgres.render.com/issue_
 
 ### PostgreSQL Database
 
-| Setting | Value |
-|---------|-------|
-| **Name** | issue-tracker-db |
-| **Region** | Frankfurt |
-| **Database Name** | issue_tracker_db_1u0p |
-| **User** | issue_tracker_user |
-| **Plan** | Free |
-| **Migrations** | ✅ 2 angewandt (init, add_refresh_tokens) |
+| Setting           | Value                                     |
+| ----------------- | ----------------------------------------- |
+| **Name**          | issue-tracker-db                          |
+| **Region**        | Frankfurt                                 |
+| **Database Name** | issue_tracker_db_1u0p                     |
+| **User**          | issue_tracker_user                        |
+| **Plan**          | Free                                      |
+| **Migrations**    | ✅ 2 angewandt (init, add_refresh_tokens) |
 
 ### Backend Service
 
-| Setting | Value |
-|---------|-------|
-| **Name** | issue-tracker-backend |
-| **Region** | Frankfurt |
-| **Plan** | Free |
-| **Docker File** | apps/backend/Dockerfile |
-| **Health Check** | /api/health |
-| **Auto Deploy** | ✅ Yes (bei Push auf master) |
+| Setting          | Value                        |
+| ---------------- | ---------------------------- |
+| **Name**         | issue-tracker-backend        |
+| **Region**       | Frankfurt                    |
+| **Plan**         | Free                         |
+| **Docker File**  | apps/backend/Dockerfile      |
+| **Health Check** | /api/health                  |
+| **Auto Deploy**  | ✅ Yes (bei Push auf master) |
 
 **Environment Variables**:
+
 ```bash
 NODE_ENV=production
 PORT=3000
@@ -160,14 +162,14 @@ THROTTLE_LIMIT=100
 
 ### Frontend Service
 
-| Setting | Value |
-|---------|-------|
-| **Name** | issue-tracker-frontend |
-| **Region** | Frankfurt |
-| **Plan** | Free |
-| **Docker File** | apps/frontend/Dockerfile |
-| **Custom Domain** | issue-tracker.ademdokur.dev |
-| **Auto Deploy** | ✅ Yes (bei Push auf master) |
+| Setting           | Value                        |
+| ----------------- | ---------------------------- |
+| **Name**          | issue-tracker-frontend       |
+| **Region**        | Frankfurt                    |
+| **Plan**          | Free                         |
+| **Docker File**   | apps/frontend/Dockerfile     |
+| **Custom Domain** | issue-tracker.ademdokur.dev  |
+| **Auto Deploy**   | ✅ Yes (bei Push auf master) |
 
 ---
 
@@ -180,6 +182,7 @@ THROTTLE_LIMIT=100
 **Trigger**: Push oder Merge auf `master` Branch
 
 **Schritte**:
+
 1. ✅ Checkout Code
 2. ✅ Setup Node.js 20
 3. ✅ Install Dependencies
@@ -201,7 +204,7 @@ THROTTLE_LIMIT=100
 **3-Stage Build**:
 
 1. **Dependencies Stage**: npm install
-2. **Build Stage**: 
+2. **Build Stage**:
    - Prisma Client generieren (mit dummy URL)
    - TypeScript kompilieren
 3. **Production Stage**:
@@ -210,11 +213,13 @@ THROTTLE_LIMIT=100
    - Node 20 Alpine, non-root user
 
 **CMD**:
+
 ```dockerfile
 CMD npx prisma generate --generator client && node dist/main.js
 ```
 
 **Wichtig**:
+
 - ✅ Prisma Client wird zur **Laufzeit** mit **DATABASE_URL** generiert
 - ✅ Build-Zeit: Dummy URL für TypeScript Compilation
 - ✅ Runtime: Echte DATABASE_URL aus Render Environment
@@ -257,22 +262,31 @@ CMD npx prisma generate --generator client && node dist/main.js
 
 ## 📊 Test-Daten
 
-**Seeded Users**:
+> ⚠️ **SECURITY WARNING - DEMO PROJECT ONLY**
+>
+> Diese Credentials sind **öffentlich dokumentiert** und dienen **ausschließlich Demo-Zwecken**.
+> - **Für Production**: Alle Test-Accounts löschen oder Passwörter ändern
+> - **Empfehlung**: Seed-Daten nur in Development/Staging ausführen
+> - **Sicherheit**: Bei echten Projekten keine Default-Credentials verwenden
 
-| Email | Passwort | Rolle |
-|-------|----------|-------|
-| admin@example.com | Admin123! | ADMIN |
-| manager@example.com | Manager123! | MANAGER |
+**Seeded Test Users** (nur für Demo):
+
+| Email                 | Passwort      | Rolle     |
+| --------------------- | ------------- | --------- |
+| admin@example.com     | Admin123!     | ADMIN     |
+| manager@example.com   | Manager123!   | MANAGER   |
 | developer@example.com | Developer123! | DEVELOPER |
-| reporter@example.com | Reporter123! | REPORTER |
+| reporter@example.com  | Reporter123!  | REPORTER  |
 
 **Seeded Daten**:
+
 - 5 Projekte (Logistik-Portal, Web-Shop, KI-System, CRM, ERP)
 - 4 Projekt-Mitglieder
 - 2 Labels (Bug, Feature)
 - 2 Tickets
 
 **Seeds ausführen**:
+
 ```bash
 $env:DATABASE_URL="[Internal Database URL]"
 npx tsx apps/backend/prisma/seed.ts
@@ -325,6 +339,7 @@ npx prisma migrate deploy --schema=./apps/backend/prisma/schema.prisma
 **Ursache**: PrismaService hatte hardcoded localhost URL
 
 **Lösung**:
+
 ```typescript
 // ✅ apps/backend/src/app/database/prisma.service.ts
 constructor() {
@@ -337,6 +352,7 @@ constructor() {
 **Ursache**: Frontend nutzte Nginx Proxy statt direkte Backend-Verbindung
 
 **Lösung**:
+
 ```typescript
 // ✅ apps/frontend/src/environments/environment.prod.ts
 export const environment = {
@@ -350,6 +366,7 @@ export const environment = {
 **Ursache**: Angular Build nutzte Development Environment in Production
 
 **Lösung**:
+
 ```json
 // ✅ apps/frontend/project.json
 "production": {
@@ -365,6 +382,7 @@ export const environment = {
 **Ursache**: Prisma Client nicht vor Build generiert
 
 **Lösung**:
+
 ```dockerfile
 # ✅ Dockerfile Build Stage
 RUN DATABASE_URL="postgresql://build:build@localhost:5432/build" \
@@ -375,12 +393,12 @@ RUN DATABASE_URL="postgresql://build:build@localhost:5432/build" \
 
 ## 📈 Performance
 
-| Metric | Value |
-|--------|-------|
-| **Backend Startup** | ~40s (Free Tier Cold Start) |
-| **Frontend Load** | ~2s (Static Assets) |
-| **API Response** | <100ms (Database query) |
-| **Database Connection** | Internal URL = schneller |
+| Metric                  | Value                       |
+| ----------------------- | --------------------------- |
+| **Backend Startup**     | ~40s (Free Tier Cold Start) |
+| **Frontend Load**       | ~2s (Static Assets)         |
+| **API Response**        | <100ms (Database query)     |
+| **Database Connection** | Internal URL = schneller    |
 
 ---
 
@@ -410,6 +428,7 @@ RUN DATABASE_URL="postgresql://build:build@localhost:5432/build" \
 **Status**: 🟢 Production Ready
 
 **Nächste Schritte**:
+
 1. Monitoring einrichten (Render Logs)
 2. Backup-Strategie für Database
 3. Custom Error Pages

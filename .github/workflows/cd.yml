@@ -1,0 +1,102 @@
+name: CD - Continuous Deployment
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '20.x'
+
+jobs:
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: � Cache Nx
+        uses: actions/cache@v4
+        with:
+          path: .nx/cache
+          key: nx-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: nx-${{ runner.os }}-
+
+      - name: �📦 Install Dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: 🔨 Generate Prisma Client
+        run: npx prisma generate --schema=apps/backend/prisma/schema.prisma
+
+      - name: 🏗️ Build Backend
+        run: npx nx build backend --configuration=production
+
+      - name: 🏗️ Build Frontend
+        run: npx nx build frontend --configuration=production
+
+      - name: 🚀 Deploy to Render
+        env:
+          BACKEND_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK_BACKEND }}
+          FRONTEND_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK_FRONTEND }}
+        run: |
+          echo "🚀 Triggering Render deployments..."
+
+          if [ -z "$BACKEND_HOOK" ] || [ -z "$FRONTEND_HOOK" ]; then
+            echo "❌ Deploy hooks not configured!"
+            echo "Configure RENDER_DEPLOY_HOOK_BACKEND and RENDER_DEPLOY_HOOK_FRONTEND in GitHub Secrets"
+            exit 1
+          fi
+
+          curl -X POST "$BACKEND_HOOK"
+          echo "✅ Backend deployment triggered"
+
+          curl -X POST "$FRONTEND_HOOK"
+          echo "✅ Frontend deployment triggered"
+
+          echo "⏳ Waiting 300s for deployment..."
+          sleep 300
+
+      - name: 🏥 Health Check Backend
+        run: |
+          echo "🏥 Checking backend health..."
+          if curl --fail --retry 5 --retry-delay 15 --max-time 30 \
+            https://issue-tracker-backend-23d7.onrender.com/api/health; then
+            echo "✅ Backend is healthy!"
+          else
+            echo "⚠️ Health check failed (normal for Free Tier cold starts)"
+            echo "Check: https://dashboard.render.com"
+          fi
+
+      - name: 🏥 Health Check Frontend
+        run: |
+          echo "🏥 Checking frontend..."
+          if curl --fail --max-time 30 https://issue-tracker.ademdokur.dev; then
+            echo "✅ Frontend is reachable!"
+          else
+            echo "⚠️ Frontend check failed"
+          fi
+
+      - name: ✅ Deployment Complete
+        if: success()
+        run: |
+          echo "✅ Production deployment successful!"
+          echo "🌐 Frontend: https://issue-tracker.ademdokur.dev"
+          echo "🔧 Backend API: https://issue-tracker-backend-23d7.onrender.com/api"
+          echo "📊 Render Dashboard: https://dashboard.render.com"
+
+      - name: ❌ Deployment Failed
+        if: failure()
+        run: |
+          echo "❌ Deployment failed!"
+          echo "Check logs at: https://dashboard.render.com"
+          echo "GitHub Actions: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
