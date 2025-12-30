@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: '/api', // Relative URL für Production
+  apiUrl: 'https://issue-tracker-backend-23d7.onrender.com/api', // Direct backend URL
 };
