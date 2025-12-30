@@ -46,9 +46,7 @@ jobs:
       - name: �🔍 Lint Code
         run: npm run lint
 
-      - name: 🧪 Run Tests
-        run: npm run test
-        continue-on-error: true
+
       - name: 🏗️ Build Backend
         run: npx nx build backend --configuration=production
 

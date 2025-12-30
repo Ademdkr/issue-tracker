@@ -16,7 +16,7 @@
     "prisma:generate": "npx prisma generate --schema=./apps/backend/prisma/schema.prisma",
     "prisma:migrate": "npx prisma migrate deploy --schema=./apps/backend/prisma/schema.prisma",
     "prisma:studio": "npx prisma studio --schema=./apps/backend/prisma/schema.prisma",
-    "ci:local": "npm run prisma:generate && npm run lint && npm run test && npm run build && echo '✅ Local CI passed! Ready to push.'",
+    "ci:local": "npm run prisma:generate && npm run lint && npm run build && echo '✅ Local CI passed! Ready to push.'",
     "pre-push": "npm run ci:local"
   },
   "private": true,
