@@ -80,8 +80,8 @@ jobs:
       - name: 🏥 Health Check Frontend
         run: |
           echo "🏥 Checking frontend..."
-          if curl --fail --max-time 30 https://issue-tracker.ademdokur.dev/health; then
-            echo "✅ Frontend is healthy!"
+          if curl --fail --max-time 30 https://issue-tracker.ademdokur.dev; then
+            echo "✅ Frontend is reachable!"
           else
             echo "⚠️ Frontend check failed"
           fi
