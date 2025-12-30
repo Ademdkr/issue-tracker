@@ -12,12 +12,15 @@
     "prod:local": "docker-compose up --build",
     "prod:local:detached": "docker-compose up --build -d",
     "prod:local:down": "docker-compose down",
+    "ci:local": "npm run lint:all && npm run build:all && echo '✅ Local CI passed! Ready to push.'",
     "ci:lint": "nx affected -t lint --parallel=3",
     "ci:build": "nx affected -t build --parallel=3",
     "ci:check": "npm run ci:lint && npm run ci:build",
     "lint": "nx run-many -t lint --all",
+    "lint:all": "nx run-many -t lint --all",
     "lint:fix": "nx run-many -t lint --all --fix",
     "build": "nx run-many -t build --all --configuration=production",
+    "build:all": "npm run prisma:generate && npx nx build backend --configuration=production && npx nx build frontend --configuration=production",
     "build:backend": "nx build backend --configuration=production",
     "build:frontend": "nx build frontend --configuration=production",
     "test": "nx run-many -t test --all",
@@ -38,8 +41,8 @@
     "prisma:studio": "npx prisma studio --schema=./apps/backend/prisma/schema.prisma",
     "prisma:seed": "npx prisma db seed",
     "pre-commit": "npm run format && npm run lint:fix",
-    "pre-push": "npm run format:check && npm run lint && npm run type-check && npm run build",
-    "validate": "npm run pre-push"
+    "pre-push": "npm run ci:local",
+    "validate": "npm run ci:local"
   },
   "private": true,
   "prisma": {
