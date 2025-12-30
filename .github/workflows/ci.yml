@@ -47,7 +47,8 @@ jobs:
         run: npx prisma generate --schema=apps/backend/prisma/schema.prisma
 
       - name: �🔍 Lint Code
-        run: npm run lint:all
+        run: npm run lint
+
       - name: 🧪 Run Tests
         run: npm run test
         continue-on-error: true
