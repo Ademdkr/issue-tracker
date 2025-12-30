@@ -89,9 +89,22 @@ openssl rand -base64 32
 
 | Variable              | Typ    | Quelle             | Beschreibung                    |
 | --------------------- | ------ | ------------------ | ------------------------------- |
-| `DATABASE_URL`        | String | PostgreSQL Service | Connection String zur Datenbank |
+| `DATABASE_URL`        | String | PostgreSQL Service | **Internal Database URL** (nicht External!) |
 | `RENDER_EXTERNAL_URL` | String | Render             | Öffentliche Service URL         |
 | `RENDER_INTERNAL_URL` | String | Render             | Interne Service URL             |
+
+**⚠️ WICHTIG: Verwende die Internal Database URL!**
+- ✅ Schneller (internes Netzwerk)
+- ✅ Sicherer (nicht öffentlich erreichbar)
+- ✅ Kostenlos (kein External Traffic)
+
+```bash
+# ✅ RICHTIG: Internal URL
+postgresql://user:pass@dpg-xxxxx/database
+
+# ❌ FALSCH: External URL
+postgresql://user:pass@dpg-xxxxx.frankfurt-postgres.render.com/database
+```
 
 #### Statische Konfiguration
 
