@@ -14,9 +14,6 @@ jobs:
     name: Deploy to Production
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    environment:
-      name: production
-      url: https://issue-tracker.ademdokur.dev
 
     steps:
       - name: 📥 Checkout Code
@@ -28,7 +25,14 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
 
-      - name: 📦 Install Dependencies
+      - name: � Cache Nx
+        uses: actions/cache@v4
+        with:
+          path: .nx/cache
+          key: nx-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: nx-${{ runner.os }}-
+
+      - name: �📦 Install Dependencies
         run: npm ci --legacy-peer-deps
 
       - name: 🔨 Generate Prisma Client
@@ -46,19 +50,19 @@ jobs:
           FRONTEND_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK_FRONTEND }}
         run: |
           echo "🚀 Triggering Render deployments..."
-          
+
           if [ -z "$BACKEND_HOOK" ] || [ -z "$FRONTEND_HOOK" ]; then
             echo "❌ Deploy hooks not configured!"
             echo "Configure RENDER_DEPLOY_HOOK_BACKEND and RENDER_DEPLOY_HOOK_FRONTEND in GitHub Secrets"
             exit 1
           fi
-          
+
           curl -X POST "$BACKEND_HOOK"
           echo "✅ Backend deployment triggered"
-          
+
           curl -X POST "$FRONTEND_HOOK"
           echo "✅ Frontend deployment triggered"
-          
+
           echo "⏳ Waiting 300s for deployment..."
           sleep 300
 
@@ -85,11 +89,14 @@ jobs:
       - name: ✅ Deployment Complete
         if: success()
         run: |
-          echo "✅ Deployment successful!"
-          echo "🌐 Frontend: https://issue-tracker.ademdokur.dev"
-          echo "🔧 Backend: https://issue-tracker-backend-23d7.onrender.com"
-          echo "📊 Dashboard: https://dashboard.render.com"
-        run: |
           echo "✅ Production deployment successful!"
-          echo "Frontend: https://issue-tracker.ademdokur.dev"
-          echo "API: https://issue-tracker.ademdokur.dev/api"
+          echo "🌐 Frontend: https://issue-tracker.ademdokur.dev"
+          echo "🔧 Backend API: https://issue-tracker-backend-23d7.onrender.com/api"
+          echo "📊 Render Dashboard: https://dashboard.render.com"
+
+      - name: ❌ Deployment Failed
+        if: failure()
+        run: |
+          echo "❌ Deployment failed!"
+          echo "Check logs at: https://dashboard.render.com"
+          echo "GitHub Actions: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"

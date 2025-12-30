@@ -94,9 +94,9 @@ environment:
 
 ### Secrets benötigt
 
-| Secret | Wert |
-|--------|------|
-| `RENDER_DEPLOY_HOOK_BACKEND` | https://api.render.com/deploy/... |
+| Secret                        | Wert                              |
+| ----------------------------- | --------------------------------- |
+| `RENDER_DEPLOY_HOOK_BACKEND`  | https://api.render.com/deploy/... |
 | `RENDER_DEPLOY_HOOK_FRONTEND` | https://api.render.com/deploy/... |
 
 ---
@@ -121,25 +121,27 @@ git push origin feature/mein-feature
 
 ### Verfügbare Befehle
 
-| Befehl | Beschreibung | Dauer |
-|--------|--------------|-------|
-| `npm run ci:local` | **Vollständige CI Checks** (Lint + Build) | ~3 min |
-| `npm run lint:all` | Nur Linting | ~30s |
-| `npm run build:all` | Nur Builds (Backend + Frontend) | ~2 min |
-| `npm run validate` | Alias für `ci:local` | ~3 min |
-| `npm run pre-push` | Läuft automatisch vor `git push` (wenn Hook konfiguriert) | ~3 min |
+| Befehl              | Beschreibung                                              | Dauer  |
+| ------------------- | --------------------------------------------------------- | ------ |
+| `npm run ci:local`  | **Vollständige CI Checks** (Lint + Build)                 | ~3 min |
+| `npm run lint:all`  | Nur Linting                                               | ~30s   |
+| `npm run build:all` | Nur Builds (Backend + Frontend)                           | ~2 min |
+| `npm run validate`  | Alias für `ci:local`                                      | ~3 min |
+| `npm run pre-push`  | Läuft automatisch vor `git push` (wenn Hook konfiguriert) | ~3 min |
 
 ### Git Hooks (Optional)
 
 Automatische Validierung vor Push:
 
 **1. Installiere husky**:
+
 ```bash
 npm install --save-dev husky
 npx husky init
 ```
 
 **2. Erstelle `.husky/pre-push`**:
+
 ```bash
 #!/bin/sh
 npm run ci:local
@@ -223,11 +225,13 @@ npm run ci:local
 ### CI schlägt fehl - Lokal funktioniert
 
 **Mögliche Ursachen**:
+
 1. Node.js Version unterschiedlich (lokal vs. GitHub Actions)
 2. `node_modules` cached → `npm ci` ausführen
 3. Environment Variables fehlen
 
 **Lösung**:
+
 ```bash
 # 1. Clean Install
 rm -rf node_modules
@@ -243,17 +247,20 @@ git push
 ### Deployment schlägt fehl
 
 **Prüfen**:
-1. GitHub Secrets gesetzt? (RENDER_DEPLOY_HOOK_*)
+
+1. GitHub Secrets gesetzt? (RENDER*DEPLOY_HOOK*\*)
 2. Render Services laufen?
 3. Health Check erreichbar?
 
 **Logs checken**:
+
 - GitHub Actions: https://github.com/Ademdkr/issue-tracker/actions
 - Render Dashboard: https://dashboard.render.com
 
 ### Health Check Timeout
 
 **Normal für Render Free Tier!**
+
 - Cold Start kann 5-10 Minuten dauern
 - Deployment ist trotzdem erfolgreich
 - Manuell prüfen: https://issue-tracker.ademdokur.dev
@@ -262,11 +269,11 @@ git push
 
 ## 📈 Performance
 
-| Workflow | Durchschnitt | Timeout |
-|----------|-------------|---------|
-| CI (Lint + Build) | 3-5 min | 10 min |
-| CD (Deploy) | 10-12 min | 15 min |
-| Lokale CI | 3-4 min | - |
+| Workflow          | Durchschnitt | Timeout |
+| ----------------- | ------------ | ------- |
+| CI (Lint + Build) | 3-5 min      | 10 min  |
+| CD (Deploy)       | 10-12 min    | 15 min  |
+| Lokale CI         | 3-4 min      | -       |
 
 ---
 
@@ -277,6 +284,7 @@ git push
 **Repository Settings → Secrets → Actions**:
 
 1. **RENDER_DEPLOY_HOOK_BACKEND**
+
    ```
    https://api.render.com/deploy/srv-...?key=...
    ```
