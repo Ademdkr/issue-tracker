@@ -262,7 +262,14 @@ CMD npx prisma generate --generator client && node dist/main.js
 
 ## 📊 Test-Daten
 
-**Seeded Users**:
+> ⚠️ **SECURITY WARNING - DEMO PROJECT ONLY**
+>
+> Diese Credentials sind **öffentlich dokumentiert** und dienen **ausschließlich Demo-Zwecken**.
+> - **Für Production**: Alle Test-Accounts löschen oder Passwörter ändern
+> - **Empfehlung**: Seed-Daten nur in Development/Staging ausführen
+> - **Sicherheit**: Bei echten Projekten keine Default-Credentials verwenden
+
+**Seeded Test Users** (nur für Demo):
 
 | Email                 | Passwort      | Rolle     |
 | --------------------- | ------------- | --------- |
