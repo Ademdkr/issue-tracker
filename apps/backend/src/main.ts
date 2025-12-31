@@ -65,8 +65,18 @@ async function bootstrap() {
           'https://issue-tracker.ademdokur.dev',
           // Render Backend URL für Health Checks
           'https://issue-tracker-frontend-1tn2.onrender.com',
+          // Localhost für Docker Full-Stack Testing
+          'http://localhost',
+          'http://localhost:80',
+          'http://localhost:4200',
         ]
-      : ['http://localhost:4200', 'http://localhost:4201'];
+      : [
+          'http://localhost:4200',
+          'http://localhost:4201',
+          'http://localhost',
+          'http://localhost:80',
+          'http://localhost:3000',
+        ];
 
   app.enableCors({
     origin: allowedOrigins,

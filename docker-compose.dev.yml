@@ -1,5 +1,19 @@
-# Docker Compose for Local Development
-# Usage: docker-compose -f docker-compose.dev.yml up
+# ==================================
+# Docker Compose - Lokale Entwicklung
+# ==================================
+# Startet nur die Infrastruktur (PostgreSQL + pgAdmin)
+# Backend und Frontend laufen nativ für Hot-Reload
+#
+# Verwendung:
+#   docker-compose -f docker-compose.dev.yml up -d
+#
+# Backend starten:
+#   npx nx serve backend
+#
+# Frontend starten:
+#   npx nx serve frontend
+#
+# ==================================
 
 services:
   # PostgreSQL Database
@@ -10,10 +24,10 @@ services:
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-issue_tracker_db}
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-1234}
       PGDATA: /var/lib/postgresql/data/pgdata
     ports:
-      - '5435:5432'
+      - '5435:5432'  # Mapped auf 5435 um Konflikt mit lokalem PostgreSQL zu vermeiden
     volumes:
       - postgres_data_dev:/var/lib/postgresql/data
     networks:
@@ -24,14 +38,15 @@ services:
       timeout: 5s
       retries: 5
 
-  # Optional: pgAdmin for database management
+  # pgAdmin - Database Management UI
   pgadmin:
     image: dpage/pgadmin4:latest
     container_name: issue-tracker-pgadmin-dev
     restart: unless-stopped
     environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@issuetracker.com}
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@issuetracker.local}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin123}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
     ports:
       - '5050:80'
     volumes:
@@ -40,6 +55,8 @@ services:
       - issue-tracker-network
     depends_on:
       - postgres
+    profiles:
+      - tools  # Optional - nur starten mit: docker-compose -f docker-compose.dev.yml --profile tools up
 
 volumes:
   postgres_data_dev:

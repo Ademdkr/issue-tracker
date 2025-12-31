@@ -1,8 +1,25 @@
+# ==================================
+# Docker Compose - Vollständige Containerisierung
+# ==================================
+# Startet ALLE Services in Docker-Containern (PostgreSQL, Backend, Frontend)
+# Für Testing der Production-ähnlichen Umgebung
+#
+# Verwendung:
+#   docker-compose -f docker-compose.full.yml up --build
+#
+# Zugriff:
+#   Frontend: http://localhost
+#   Backend API: http://localhost:3000/api
+#   PostgreSQL: localhost:5435
+#   pgAdmin: http://localhost:5050
+#
+# ==================================
+
 services:
   # PostgreSQL Database
   postgres:
     image: postgres:16-alpine
-    container_name: issue-tracker-postgres
+    container_name: issue-tracker-postgres-full
     restart: unless-stopped
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-issue_tracker_db}
@@ -12,7 +29,7 @@ services:
     ports:
       - '5435:5432'
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data_full:/var/lib/postgresql/data
     networks:
       - issue-tracker-network
     healthcheck:
@@ -26,20 +43,20 @@ services:
     build:
       context: .
       dockerfile: apps/backend/Dockerfile
-    container_name: issue-tracker-backend
+    container_name: issue-tracker-backend-full
     restart: unless-stopped
     ports:
       - '3000:3000'
     environment:
       NODE_ENV: production
       PORT: 3000
-      # Container-zu-Container: postgres:5432
+      # Wichtig: Container-zu-Container Kommunikation über Service-Namen
       DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-ChangeMeInProduction123!}@postgres:5432/${POSTGRES_DB:-issue_tracker_db}
       JWT_SECRET: ${JWT_SECRET:-your-super-secret-jwt-key-change-in-production-min-32-chars}
       JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-your-super-secret-refresh-key-change-in-production}
       JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-15m}
       JWT_REFRESH_EXPIRES_IN: ${JWT_REFRESH_EXPIRES_IN:-7d}
-      # CORS für Browser-Zugriff
+      # CORS für Browser-Zugriff (localhost, nicht Container-Namen!)
       FRONTEND_URL: http://localhost
       CORS_ORIGINS: http://localhost,http://localhost:80,http://localhost:4200
     depends_on:
@@ -48,36 +65,37 @@ services:
     networks:
       - issue-tracker-network
     healthcheck:
-      test: ['CMD', 'curl', '-f', 'http://localhost:3000/api/health']
+      test: ['CMD', 'node', '-e', "require('http').get('http://localhost:3000/api/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 60s
 
-  # Angular Frontend
+  # Angular Frontend (Nginx)
   frontend:
     build:
       context: .
-      dockerfile: apps/frontend/Dockerfile
-    container_name: issue-tracker-frontend
+      dockerfile: apps/frontend/Dockerfile.local  # Verwendet Development-Build
+    container_name: issue-tracker-frontend-full
     restart: unless-stopped
     ports:
       - '80:8080'
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
     networks:
       - issue-tracker-network
     healthcheck:
-      test: ['CMD', 'curl', '-f', 'http://localhost:8080/health']
+      test: ['CMD', 'wget', '--no-verbose', '--tries=1', '--spider', 'http://localhost:8080/health']
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 10s
 
-  # Optional: pgAdmin for database management
+  # pgAdmin - Database Management UI (Optional)
   pgadmin:
     image: dpage/pgadmin4:latest
-    container_name: issue-tracker-pgadmin
+    container_name: issue-tracker-pgadmin-full
     restart: unless-stopped
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@issuetracker.com}
@@ -86,16 +104,18 @@ services:
     ports:
       - '5050:80'
     volumes:
-      - pgadmin_data:/var/lib/pgadmin
+      - pgadmin_data_full:/var/lib/pgadmin
     networks:
       - issue-tracker-network
     depends_on:
       - postgres
+    profiles:
+      - tools  # Optional - nur starten mit: docker-compose --profile tools up
 
 volumes:
-  postgres_data:
+  postgres_data_full:
     driver: local
-  pgadmin_data:
+  pgadmin_data_full:
     driver: local
 
 networks:
