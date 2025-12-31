@@ -17,6 +17,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthService } from '../../../core/services/auth.service';
 import { LoginResponse } from '@issue-tracker/shared-types';
+import { Footer } from '../../../core/footer/footer';
 
 /**
  * Login Component
@@ -37,6 +38,7 @@ import { LoginResponse } from '@issue-tracker/shared-types';
     MatIconModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
+    Footer,
   ],
   templateUrl: './login.html',
   styleUrl: './login.scss',
