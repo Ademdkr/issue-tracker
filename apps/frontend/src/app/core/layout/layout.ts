@@ -273,7 +273,7 @@ export class Layout implements OnInit {
     } else {
       // Sonst öffne Dialog direkt hier (z.B. auf /tickets oder /dashboard)
       import(
-        '../../features/projects/project-detail/components/tickets-tab/components/create-ticket-dialog/create-ticket-dialog'
+        '../../features/projects/components/create-ticket-dialog/create-ticket-dialog'
       ).then((m) => {
         this.dialog.open(m.CreateTicketDialog, {
           width: '600px',

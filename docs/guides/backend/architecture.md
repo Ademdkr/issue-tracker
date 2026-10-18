@@ -339,11 +339,11 @@ GET /api/health
 
 ## 🔧 Entwicklung
 
-Siehe [Backend README](../../apps/backend/README.md) für Setup-Instruktionen.
+Siehe [Backend README](../../../apps/backend/README.md) für Setup-Instruktionen.
 
 ## 📚 Weitere Dokumentation
 
-- [Auth Guards](./guides/backend/auth/authentication-guards.md)
-- [JWT Implementation](./guides/backend/auth/jwt-implementation-guide.md)
-- [Policy System](./guides/backend/policy/policy-system-implementation.md)
-- [Mapping Strategy](./guides/backend/MAPPING_STRATEGY.md)
+- [Auth Guards](auth/authentication-guards.md)
+- [JWT Implementation](auth/jwt-implementation-guide.md)
+- [Policy System](policy/policy-system-implementation.md)
+- [Mapping Strategy](MAPPING_STRATEGY.md)

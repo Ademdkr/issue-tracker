@@ -1,69 +1,53 @@
-# Quick Start Guide
+# Schnellstart
 
-## 🚀 Schnellstart für neue Entwickler
+Alle Befehle ab dem Hauptverzeichnis. Voraussetzungen: Node.js 20, npm und
+laufendes Docker Desktop. Vorhandene `.env`-Dateien nicht überschreiben.
 
-### Option 1: Lokale Entwicklung (Empfohlen)
+## Native Entwicklung mit Docker-Datenbank
 
-```bash
-# 1. Repository klonen
-git clone https://github.com/Ademdkr/issue-tracker.git
-cd issue-tracker
-
-# 2. PostgreSQL im Docker starten
-docker-compose -f docker-compose.dev.yml up -d
-
-# 3. Environment-Variablen kopieren
-cp .env.local .env
-
-# 4. Dependencies installieren
-npm install
-
-# 5. Prisma Setup
-npx prisma generate --schema=apps/backend/prisma/schema.prisma
-npx prisma migrate dev --schema=apps/backend/prisma/schema.prisma
-
-# 6. Datenbank seeden (Test-Daten)
-cd apps/backend && npx ts-node prisma/seed.ts && cd ../..
-
-# 7. Backend starten (Terminal 1)
-npx nx serve backend
-
-# 8. Frontend starten (Terminal 2)
-npx nx serve frontend
+```sh
+npm ci --legacy-peer-deps
+# Nur wenn .env noch nicht existiert:
+cp config/env/development.env.example .env
+npm run dev:db
+npm run prisma:generate -- --generator client
+npm run prisma:migrate
+# Optional, ausschließlich für die gewünschte Entwicklungsdatenbank:
+npm run db:seed
+npm run dev
 ```
 
-**Fertig!** 🎉
+In PowerShell funktioniert `Copy-Item` anstelle von `cp`.
 
 - Frontend: http://localhost:4200
 - Backend: http://localhost:3000/api
 - Swagger: http://localhost:3000/api/docs
+- Readiness: http://localhost:3000/api/health/ready
+- PostgreSQL: localhost:5435
 
-**Test-Accounts:**
+Für pgAdmin zusätzlich das Profil `tools` starten:
 
-```
-Admin:     admin@example.com / Admin123!
-Manager:   manager@example.com / Manager123!
-Developer: developer@example.com / Developer123!
-Reporter:  reporter@example.com / Reporter123!
-```
-
----
-
-### Option 2: Full-Stack Docker
-
-```bash
-# Alle Services in Docker
-docker-compose -f docker-compose.full.yml up --build
-
-# Zugriff:
-# - Frontend: http://localhost
-# - Backend: http://localhost:3001/api
+```sh
+docker compose --project-directory . -f docker/docker-compose.dev.yml --profile tools up -d
 ```
 
----
+## Vollständiger Docker-Stack
 
-## 📖 Weiterführende Dokumentation
+```sh
+# Nur wenn .env noch nicht existiert:
+cp config/env/docker.env.example .env
+npm run docker:full
+```
 
-- [Development Environments](./DEVELOPMENT_ENVIRONMENTS.md) - Detaillierte Setup-Anleitung
-- [Backend Architecture](./guides/backend/architecture.md)
-- [Frontend Structure](./guides/frontend/folder-structure.md)
+Frontend: http://localhost, Backend: http://localhost:3001/api.
+Das Frontend verwendet den Development-Build, ausgeliefert durch Nginx.
+Für Produktionsbuilds lokal: `docker compose up --build`.
+Die Betriebsarten einzeln starten, da sie dieselben Host-Ports verwenden.
+
+Bestehende Daten liegen in getrennten Volumes je Variante. Die Volumes beim
+Wechsel erhalten; `down -v` löscht sie.
+
+## Weiterführend
+
+[Docker](../docker/README.md) · [Environment](../config/env/README.md) ·
+[Datenbankwerkzeuge](../scripts/database/README.md) · [Deployment](deployment/README.md)

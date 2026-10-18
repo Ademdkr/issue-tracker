@@ -284,7 +284,7 @@ Authorization: Bearer invalid-token-xyz
 | `auth/auth.module.ts` | JwtModule, AuthService, JwtStrategy registriert       |
 | `auth/index.ts`       | Exports für alle Auth-Components                      |
 | `core/app.module.ts`  | **JwtAuthGuard als globaler Guard aktiviert**         |
-| `prisma/seed.ts`      | **Vollständige Test-Daten mit gehashten Passwörtern** |
+| `scripts/database/seed.ts`      | **Vollständige Test-Daten mit gehashten Passwörtern** |
 | `package.json`        | `prisma.seed` Konfiguration hinzugefügt               |
 | `.env`                | `JWT_SECRET` hinzugefügt                              |
 
@@ -713,7 +713,7 @@ providers: [
 | --------------------- | ---------------------------------------------------------------- |
 | `auth/auth.module.ts` | JWT-Module, AuthService, JwtStrategy, AuthController hinzugefügt |
 | `auth/index.ts`       | Exports für neue Services/Guards/Decorators                      |
-| `prisma/seed.ts`      | Test-User mit bcrypt-gehashten Passwörtern                       |
+| `scripts/database/seed.ts`      | Test-User mit bcrypt-gehashten Passwörtern                       |
 
 ---
 

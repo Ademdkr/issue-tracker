@@ -154,7 +154,7 @@ export class AppController {
 }
 ```
 
-#### 3. **Seed-Script** (`prisma/seed.ts`)
+#### 3. **Seed-Script** (`scripts/database/seed.ts`)
 
 ```typescript
 // Erstellt automatisch Test-User bei Setup
@@ -195,7 +195,7 @@ npx prisma migrate dev --name "initial-schema"
 npx prisma generate
 
 # 5. Test-Daten erstellen
-npx ts-node prisma/seed.ts
+npm run db:seed
 
 # 6. Backend starten (aus Root-Verzeichnis)
 cd .. && npx nx serve backend

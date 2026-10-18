@@ -12,11 +12,5 @@ export * from './lib/dtos';
 // API - Response types and filters
 export * from './lib/api';
 
-// Utils - Helper functions and utilities
-export * from './lib/utils';
-
 // Constants - Shared constants between backend and frontend
 export * from './lib/constants';
-
-// Note: Authorization und Permission-System wurden entfernt - System nutzt nur noch rollenbasierte Authorization
-// Note: Legacy shared-types.ts removed to avoid export conflicts

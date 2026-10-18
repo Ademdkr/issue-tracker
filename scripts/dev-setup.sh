@@ -21,7 +21,7 @@ echo ""
 
 # Starte PostgreSQL
 echo "📦 Starte PostgreSQL Container..."
-docker-compose -f docker-compose.dev.yml up -d
+docker compose --project-directory . -f docker/docker-compose.dev.yml up -d
 echo ""
 
 # Warte auf PostgreSQL
@@ -32,7 +32,7 @@ echo ""
 # Prüfe ob .env existiert
 if [ ! -f .env ]; then
   echo "📝 Erstelle .env Datei..."
-  cp .env.local .env
+  cp config/env/development.env.example .env
   echo "✅ .env erstellt"
 else
   echo "✅ .env existiert bereits"
@@ -49,9 +49,7 @@ npx prisma migrate dev --schema=apps/backend/prisma/schema.prisma
 echo ""
 
 echo "🌱 Datenbank seeden..."
-cd apps/backend
-npx ts-node prisma/seed.ts
-cd ../..
+npm run db:seed
 echo ""
 
 echo "✅ Setup abgeschlossen!"

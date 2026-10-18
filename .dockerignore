@@ -15,6 +15,9 @@ apps/backend/.env.*
 dist
 tmp
 out-tsc
+.backups
+config
+docker
 .nx/cache
 .nx/workspace-data
 .angular
@@ -84,6 +87,9 @@ docker-compose*.yml
 # AI Tools
 .gemini
 .cursor
+.agents
+.codex
+.claude
 
 # Logs
 logs

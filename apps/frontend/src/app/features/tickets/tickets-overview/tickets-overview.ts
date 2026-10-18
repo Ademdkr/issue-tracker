@@ -23,8 +23,8 @@ import {
   TicketFilters as TicketFiltersType,
   ProjectSummary,
 } from '@issue-tracker/shared-types';
-import { TicketFilters as TicketFiltersComponent } from '../../projects/project-detail/components/tickets-tab/components/ticket-filters/ticket-filters';
-import { TicketTable } from '../../projects/project-detail/components/tickets-tab/components/ticket-table/ticket-table';
+import { TicketFilters as TicketFiltersComponent } from '../../projects/components/ticket-filters/ticket-filters';
+import { TicketTable } from '../../projects/components/ticket-table/ticket-table';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatInputModule } from '@angular/material/input';
 
