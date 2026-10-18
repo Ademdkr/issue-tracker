@@ -46,6 +46,8 @@ jobs:
       - name: �🔍 Lint Code
         run: npm run lint
 
+      - name: Check Deployment Failure Handling
+        run: npx nx run backend:deployment-check
 
       - name: 🏗️ Build Backend
         run: npx nx build backend --configuration=production

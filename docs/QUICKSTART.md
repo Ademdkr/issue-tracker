@@ -33,11 +33,13 @@ npx nx serve frontend
 ```
 
 **Fertig!** 🎉
+
 - Frontend: http://localhost:4200
 - Backend: http://localhost:3000/api
 - Swagger: http://localhost:3000/api/docs
 
 **Test-Accounts:**
+
 ```
 Admin:     admin@example.com / Admin123!
 Manager:   manager@example.com / Manager123!
@@ -55,7 +57,7 @@ docker-compose -f docker-compose.full.yml up --build
 
 # Zugriff:
 # - Frontend: http://localhost
-# - Backend: http://localhost:3000/api
+# - Backend: http://localhost:3001/api
 ```
 
 ---

@@ -35,11 +35,13 @@ FROM dependencies AS build
 WORKDIR /app
 
 # Copy source code
+COPY eslint.config.mjs ./
+COPY apps/eslint.config.mjs ./apps/eslint.config.mjs
 COPY apps/frontend ./apps/frontend
 COPY libs ./libs
 
 # Build frontend for production
-RUN npx nx build frontend --configuration=production
+RUN NX_DAEMON=false npx nx build frontend --configuration=production
 
 # Stage 4: Production - Nginx server
 FROM nginx:1.27-alpine AS production
@@ -53,7 +55,9 @@ RUN apk update && \
   rm -rf /var/cache/apk/*
 
 # Copy custom nginx configuration
-COPY apps/frontend/nginx.conf /etc/nginx/nginx.conf
+COPY apps/frontend/nginx.conf /etc/nginx/nginx.conf.template
+COPY apps/frontend/security-headers.conf /etc/nginx/security-headers.conf
+COPY apps/frontend/start.sh /app/start.sh
 
 # Copy built Angular app from build stage
 COPY --from=build /app/dist/apps/frontend/browser /usr/share/nginx/html
@@ -86,4 +90,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 
 # Start Nginx
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["sh", "/app/start.sh"]
