@@ -4,11 +4,11 @@ Dieses Projekt unterstützt **3 verschiedene Entwicklungsszenarien**:
 
 ## 📋 Übersicht der Umgebungen
 
-| Umgebung | Use Case | Backend | Frontend | Database | Hot-Reload |
-|----------|----------|---------|----------|----------|------------|
-| **Lokal (Native)** | Tägliche Entwicklung | Native (NestJS) | Native (Angular) | Docker PostgreSQL | ✅ Ja |
-| **Full-Stack Docker** | Testing vor Deployment | Docker | Docker | Docker PostgreSQL | ❌ Nein |
-| **Production (Render)** | Live Deployment | Render | Render | Render PostgreSQL | ❌ Nein |
+| Umgebung                | Use Case               | Backend         | Frontend         | Database          | Hot-Reload |
+| ----------------------- | ---------------------- | --------------- | ---------------- | ----------------- | ---------- |
+| **Lokal (Native)**      | Tägliche Entwicklung   | Native (NestJS) | Native (Angular) | Docker PostgreSQL | ✅ Ja      |
+| **Full-Stack Docker**   | Testing vor Deployment | Docker          | Docker           | Docker PostgreSQL | ❌ Nein    |
+| **Production (Render)** | Live Deployment        | Render          | Render           | Render PostgreSQL | ❌ Nein    |
 
 ---
 
@@ -69,6 +69,7 @@ CORS_ORIGINS=http://localhost:4200,http://localhost:4201
 ```
 
 ### Vorteile
+
 - ✅ **Schnellstes Hot-Reload** (Backend & Frontend)
 - ✅ **Beste Developer Experience**
 - ✅ **Voller Debugging-Support**
@@ -83,8 +84,9 @@ CORS_ORIGINS=http://localhost:4200,http://localhost:4201
 ### Setup
 
 ```bash
-# 1. Environment-Variablen setzen (optional, hat Defaults)
-cp .env.example .env
+# 1. Nur bei einer neuen Installation: Environment-Datei anlegen.
+# Bestehende .env und Datenbank-Zugangsdaten beibehalten!
+test -f .env || cp .env.example .env
 
 # 2. Alle Services starten
 docker-compose -f docker-compose.full.yml up --build
@@ -96,9 +98,26 @@ docker-compose -f docker-compose.full.yml --profile tools up --build
 ### Zugriff
 
 - **Frontend**: http://localhost
-- **Backend API**: http://localhost:3000/api
+- **Backend API**: http://localhost:3001/api
 - **PostgreSQL**: localhost:5435
 - **pgAdmin**: http://localhost:5050 (mit --profile tools)
+
+Das Backend verwendet im Container weiterhin Port 3000. Der Host-Port ist
+standardmäßig 3001, damit andere lokale Anwendungen auf Port 3000 weiterlaufen
+können. `BACKEND_HOST_PORT` und `FRONTEND_HOST_PORT` können in `.env` angepasst
+werden. Der Frontend-Proxy verwendet immer `http://backend:3000` im Docker-Netz.
+
+Compose liest hier standardmäßig `.env`. Eine abweichende `.env.docker` wird nur
+mit `--env-file .env.docker` verwendet. Bei vorhandenen PostgreSQL-Volumes müssen
+die Zugangsdaten zu dem bereits initialisierten Datenbestand passen; geänderte
+Environment-Werte ändern dessen Datenbankpasswort nicht automatisch.
+
+Bei `port is already allocated` zuerst die Belegung mit `docker ps` prüfen und
+den Host-Port konfigurieren. Vorhandene Datenbank-Volumes deshalb nicht löschen.
+
+Der Frontend-Health-Check verwendet `127.0.0.1`, weil Nginx auf IPv4 lauscht.
+BusyBox-`wget` kann `localhost` stattdessen als IPv6-Adresse `::1` auflösen und
+den Container fälschlich als ungesund markieren.
 
 ### Environment-Variablen
 
@@ -113,6 +132,7 @@ JWT_REFRESH_SECRET=your-super-secret-refresh-key-change-in-production
 ```
 
 ### Vorteile
+
 - ✅ **Production-ähnliche Umgebung**
 - ✅ **Isolierte Container**
 - ✅ **Testing von Docker Builds**
@@ -201,10 +221,12 @@ npx prisma generate --schema=apps/backend/prisma/schema.prisma
 ### Frontend kann Backend nicht erreichen
 
 **Lokale Entwicklung:**
+
 - Backend muss auf `http://localhost:3000` laufen
 - `environment.ts` nutzt `apiUrl: 'http://localhost:3000/api'`
 
 **Full-Stack Docker:**
+
 - Frontend läuft im Browser (nicht im Container!)
 - Browser greift auf `http://localhost:3000` zu (nicht `http://backend:3000`)
 - `environment.prod.ts` wird verwendet

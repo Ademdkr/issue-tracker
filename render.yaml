@@ -3,35 +3,30 @@
 # https://render.com/docs/blueprint-spec
 
 services:
-  # PostgreSQL Database
-  - type: pserv
-    name: issue-tracker-db
-    env: production
-    plan: free
-    region: frankfurt
-    databaseName: issue_tracker_db
-    databaseUser: postgres
-    ipAllowList: []
-
+  # Deploy hooks in GitHub Actions control releases after validation.
   # Backend API (NestJS)
   - type: web
     name: issue-tracker-backend
-    env: production
     runtime: docker
     plan: free
     region: frankfurt
     dockerfilePath: ./apps/backend/Dockerfile
     dockerContext: .
-    healthCheckPath: /api/health
+    branch: master
+    autoDeployTrigger: off
+    healthCheckPath: /api/health/ready
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
         value: 3000
       - key: DATABASE_URL
-        fromDatabase:
-          name: issue-tracker-db
-          property: connectionString
+        # Use the existing PostgreSQL database. Do not provision or replace it.
+        # For existing services, update this secret in the Render dashboard.
+        sync: false
+      - key: DIRECT_URL
+        # Direct PostgreSQL connection for migrations; DATABASE_URL uses the pool.
+        sync: false
       - key: JWT_SECRET
         sync: false
       - key: JWT_REFRESH_SECRET
@@ -52,15 +47,14 @@ services:
   # Frontend (Angular + Nginx)
   - type: web
     name: issue-tracker-frontend
-    env: production
     runtime: docker
     plan: free
     region: frankfurt
     dockerfilePath: ./apps/frontend/Dockerfile
     dockerContext: .
+    branch: master
+    autoDeployTrigger: off
+    healthCheckPath: /health
     envVars:
       - key: BACKEND_URL
-        fromService:
-          name: issue-tracker-backend
-          type: web
-          envVarKey: RENDER_EXTERNAL_URL
+        value: https://issue-tracker-backend-23d7.onrender.com

@@ -1,4 +1,5 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, ServiceUnavailableException } from '@nestjs/common';
+import { SkipThrottle } from '@nestjs/throttler';
 import { PrismaService } from '../database/prisma.service';
 import { Public } from '../auth/decorators/public.decorator';
 
@@ -9,8 +10,24 @@ import { Public } from '../auth/decorators/public.decorator';
  * Prüft Verfügbarkeit von Backend und Datenbank
  */
 @Controller('health')
+@SkipThrottle()
 export class HealthController {
+  private databaseCheck?: { expiresAt: number; result: Promise<void> };
+
   constructor(private readonly prisma: PrismaService) {}
+
+  private checkDatabase(): Promise<void> {
+    const now = Date.now();
+    if (!this.databaseCheck || this.databaseCheck.expiresAt <= now) {
+      // Render and Docker may probe concurrently. Share one query per minute,
+      // including failed checks, to preserve the free database query allowance.
+      this.databaseCheck = {
+        expiresAt: now + 60_000,
+        result: this.prisma.$queryRaw`SELECT 1`.then(() => undefined),
+      };
+    }
+    return this.databaseCheck.result;
+  }
 
   /**
    * Health Check Endpoint
@@ -24,8 +41,7 @@ export class HealthController {
     const timestamp = new Date().toISOString();
 
     try {
-      // Prüfe Datenbank-Verbindung mit einfacher Query
-      await this.prisma.$queryRaw`SELECT 1`;
+      await this.checkDatabase();
 
       return {
         status: 'ok',
@@ -34,16 +50,16 @@ export class HealthController {
         environment: process.env.NODE_ENV || 'development',
         database: 'connected',
         version: process.env.npm_package_version || '1.0.0',
+        commit: process.env.RENDER_GIT_COMMIT || 'local',
       };
-    } catch (error) {
-      return {
+    } catch {
+      throw new ServiceUnavailableException({
         status: 'error',
         timestamp,
         uptime: process.uptime(),
         environment: process.env.NODE_ENV || 'development',
         database: 'disconnected',
-        error: error instanceof Error ? error.message : 'Unknown error',
-      };
+      });
     }
   }
 
@@ -57,10 +73,10 @@ export class HealthController {
   @Get('ready')
   async ready() {
     try {
-      await this.prisma.$queryRaw`SELECT 1`;
-      return { ready: true };
-    } catch (error) {
-      throw new Error('Database not ready');
+      await this.checkDatabase();
+      return { ready: true, commit: process.env.RENDER_GIT_COMMIT || 'local' };
+    } catch {
+      throw new ServiceUnavailableException({ ready: false });
     }
   }
 
