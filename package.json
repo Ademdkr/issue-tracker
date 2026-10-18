@@ -6,22 +6,27 @@
     "dev": "nx run-many -t serve --projects=backend,frontend --parallel",
     "dev:backend": "nx serve backend",
     "dev:frontend": "nx serve frontend",
-    "dev:db": "docker-compose -f docker-compose.dev.yml up -d",
+    "dev:db": "docker compose --project-directory . -f docker/docker-compose.dev.yml up -d",
+    "docker:full": "docker compose --project-directory . -f docker/docker-compose.full.yml up --build",
     "build": "npm run prisma:generate && nx run-many -t build --all --configuration=production",
     "lint": "nx run-many -t lint --all",
     "lint:fix": "nx run-many -t lint --all --fix",
-    "test": "nx run-many -t test --all",
+    "test": "nx run backend:deployment-check",
     "format": "prettier --write \"**/*.{ts,js,json,html,scss,css,md}\"",
     "format:check": "prettier --check \"**/*.{ts,js,json,html,scss,css,md}\"",
     "prisma:generate": "npx prisma generate --schema=./apps/backend/prisma/schema.prisma",
     "prisma:migrate": "npx prisma migrate deploy --schema=./apps/backend/prisma/schema.prisma",
     "prisma:studio": "npx prisma studio --schema=./apps/backend/prisma/schema.prisma",
+    "db:seed": "ts-node --project scripts/database/tsconfig.json scripts/database/seed.ts",
+    "db:export": "ts-node --project scripts/database/tsconfig.json scripts/database/export-current-data.ts",
+    "db:import": "ts-node --project scripts/database/tsconfig.json scripts/database/import-seed-data.ts",
+    "db:seed-tickets": "ts-node --project scripts/database/tsconfig.json scripts/database/seed-tickets.ts",
     "ci:local": "npm run prisma:generate && npm run lint && npm run build && echo '✅ Local CI passed! Ready to push.'",
     "pre-push": "npm run ci:local"
   },
   "private": true,
   "prisma": {
-    "seed": "ts-node apps/backend/prisma/seed.ts"
+    "seed": "npm run db:seed"
   },
   "dependencies": {
     "@angular/animations": "~20.3.0",

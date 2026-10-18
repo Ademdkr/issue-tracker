@@ -1,0 +1,40 @@
+services:
+  postgres:
+    extends:
+      file: docker/compose.services.yml
+      service: postgres
+    container_name: issue-tracker-postgres-full
+    volumes:
+      - postgres_data_full:/var/lib/postgresql/data
+  backend:
+    extends:
+      file: docker/compose.services.yml
+      service: backend
+    container_name: issue-tracker-backend-full
+  frontend:
+    extends:
+      file: docker/compose.services.yml
+      service: frontend
+    build:
+      args:
+        BUILD_CONFIGURATION: development
+    container_name: issue-tracker-frontend-full
+    environment:
+      NODE_ENV: development
+  pgadmin:
+    extends:
+      file: docker/compose.services.yml
+      service: pgadmin
+    container_name: issue-tracker-pgadmin-full
+    volumes:
+      - pgadmin_data_full:/var/lib/pgadmin
+    profiles:
+      - tools
+volumes:
+  postgres_data_full:
+    driver: local
+  pgadmin_data_full:
+    driver: local
+networks:
+  issue-tracker-network:
+    driver: bridge

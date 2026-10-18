@@ -40,8 +40,9 @@ COPY apps/eslint.config.mjs ./apps/eslint.config.mjs
 COPY apps/frontend ./apps/frontend
 COPY libs ./libs
 
-# Build frontend for production
-RUN NX_DAEMON=false npx nx build frontend --configuration=production
+# Production is the default for Render; Compose can select development.
+ARG BUILD_CONFIGURATION=production
+RUN NX_DAEMON=false npx nx build frontend --configuration=${BUILD_CONFIGURATION}
 
 # Stage 4: Production - Nginx server
 FROM nginx:1.27-alpine AS production

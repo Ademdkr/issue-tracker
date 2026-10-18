@@ -28,8 +28,8 @@ On branch master
 Your branch is up to date with 'origin/master'.
 
 Changes not staged for commit:
-  modified:   docs/deployment/02-environment-variables.md
-  modified:   docs/deployment/DEPLOYMENT_SUMMARY.md
+  modified:   docs/archive/deployment/02-environment-variables.md
+  modified:   docs/archive/deployment/DEPLOYMENT_SUMMARY.md
 ```
 
 **Analyse**: Lokale Änderungen müssen erst committed werden, bevor Branch gewechselt werden kann.
@@ -106,7 +106,7 @@ Fast-forward
 | Datei | Zweck |
 |-------|-------|
 | `apps/backend/start.sh` | Runtime Prisma Generation Script |
-| `docs/deployment/DEPLOYMENT_SUMMARY.md` | Vollständige Deployment-Dokumentation |
+| `docs/archive/deployment/DEPLOYMENT_SUMMARY.md` | Vollständige Deployment-Dokumentation |
 
 ### Dateien aktualisiert (9)
 

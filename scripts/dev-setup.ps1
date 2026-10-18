@@ -20,7 +20,7 @@ Write-Host ""
 
 # Starte PostgreSQL
 Write-Host "📦 Starte PostgreSQL Container..." -ForegroundColor Yellow
-docker-compose -f docker-compose.dev.yml up -d
+docker compose --project-directory . -f docker/docker-compose.dev.yml up -d
 Write-Host ""
 
 # Warte auf PostgreSQL
@@ -31,7 +31,7 @@ Write-Host ""
 # Prüfe ob .env existiert
 if (-not (Test-Path .env)) {
     Write-Host "📝 Erstelle .env Datei..." -ForegroundColor Yellow
-    Copy-Item .env.local .env
+    Copy-Item config/env/development.env.example .env
     Write-Host "✅ .env erstellt" -ForegroundColor Green
 } else {
     Write-Host "✅ .env existiert bereits" -ForegroundColor Green
@@ -48,9 +48,7 @@ npx prisma migrate dev --schema=apps/backend/prisma/schema.prisma
 Write-Host ""
 
 Write-Host "🌱 Datenbank seeden..." -ForegroundColor Yellow
-Push-Location apps/backend
-npx ts-node prisma/seed.ts
-Pop-Location
+npm run db:seed
 Write-Host ""
 
 Write-Host "✅ Setup abgeschlossen!" -ForegroundColor Green

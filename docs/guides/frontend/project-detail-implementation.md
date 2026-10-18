@@ -650,9 +650,9 @@ Orientiere dich am Styling von `/projects`:
 
 ## 🔗 Verwandte Dokumente
 
-- [`PROJECT_DETAIL_STRUCTURE.md`](./PROJECT_DETAIL_STRUCTURE.md) - Vollständige Verzeichnisstruktur
-- [`SETUP_ANLEITUNG.md`](./SETUP_ANLEITUNG.md) - Projekt-Setup
-- [`AGENTS.md`](./AGENTS.md) - Nx-Konfiguration
+- [`PROJECT_DETAIL_STRUCTURE.md`](project-detail-structure.md) - Vollständige Verzeichnisstruktur
+- [`SETUP_ANLEITUNG.md`](../../setup/nx/SETUP_ANLEITUNG.md) - Projekt-Setup
+- [`AGENTS.md`](../../project/agents.md) - Nx-Konfiguration
 
 ---
 

@@ -2,6 +2,10 @@
 
 Automatisierte Setup-Scripts für schnellen Entwicklungsstart.
 
+- Datenbankwerkzeuge: [database/README.md](database/README.md)
+- Produktionsdeployment: `deploy-render.mjs`, verwendet durch GitHub CD
+- Deployment-Regressionstests: `npm test` beziehungsweise `backend:deployment-check`
+
 ## 📝 Verfügbare Scripts
 
 ### `dev-setup.ps1` (Windows PowerShell)
